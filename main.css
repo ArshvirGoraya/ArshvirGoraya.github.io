@@ -406,10 +406,10 @@ body {
   /*added when opened, for when closing*/
   /* display: flex !important; */
 
-  transform: translateX(10ch);
+  /* transform: translateX(20ch); */
 
-  /* transform: rotateZ(-180deg); */
-  opacity: 0;
+  transform: rotateZ(-180deg) translateY(6ch);
+  /* opacity: 0; */
 }
 
 .js-navbab__itch-github-raise {

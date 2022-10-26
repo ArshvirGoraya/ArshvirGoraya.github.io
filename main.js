@@ -64,11 +64,6 @@ burgerMenuBtn.onclick = () => {//Add style with rotation transform if not flippe
     }
     burgerMenuFlipped = !burgerMenuFlipped;
 };
-
-
-
-
-
 function collapseBurgerMenu(){
     burgerMenuBtn.classList.remove("js-navbar__burger-button");
 
@@ -92,50 +87,54 @@ function raiseBurgerMenu(){
     githubLogo.classList.add("js-navbab__itch-github-collapse");
 };
 
-
-
-
-collapsibleCheck()
+let small = null;
+resizeIsDone()
 //If window size changes past threshold WHILE Mobile/Small-screen classes are added.
 document.body.onresize =()=>{
-    collapsibleCheck();
+    resizeIsDone();
 };
 
-function collapsibleCheck() {
-    //If menu was turned off and window was scaled down, re-enable burger menu.
-    if (window.matchMedia("(min-width: 600px)").matches && burgerMenuFlipped === false){ 
-        // burgerMenuBtn.click();
-        
-        // burgerMenu.classList.remove("js-navbar__collapsible-container");
+function resizeIsDone(){
+    //Window is smaller than 600px.
+    if (window.matchMedia("(min-width: 600px)").matches && small !== true){
+        small = true;
 
-        // itchLogo.classList.remove("js-navbab__itch-github-raise");
-        // githubLogo.classList.remove("js-navbab__itch-github-raise");
-        
-        raiseBurgerMenu();
-        burgerMenuFlipped = !burgerMenuFlipped;
-        burgerMenuBtn.classList.remove("js-navbar__burger-button");
-        
-      } 
-    //if scaling up, and menu is raised, ensure burger menu is off, regardless of its on-status before.
-    else if (window.matchMedia("(max-width: 600px)").matches && burgerMenuFlipped === true){
-        burgerMenu.classList.add("js-navbar__collapsible-container-expansion");
+        // console.log("Big");
 
-        // burgerMenuBtn.click();
+        //On big: must show navLinks no matter what. 
 
-        collapseBurgerMenu();
-        burgerMenuFlipped = !burgerMenuFlipped;
-        burgerMenuBtn.classList.remove("js-navbar__burger-button");
+        burgerMenu.classList.remove("js-navbar__collapsible-container-expansion");
 
-        
+        burgerMenu.classList.remove("js-navbar__collapsible-container");
+        itchLogo.classList.remove("js-navbab__itch-github-raise");
+        githubLogo.classList.remove("js-navbab__itch-github-raise");
 
 
-        // burgerMenuFlipped = false;
+        //Button must be unflipped when it turns small.
+        if (burgerMenuFlipped === true){
+            burgerMenuFlipped = false;
 
+            burgerMenuBtn.classList.remove("js-navbar__burger-button");            
 
-        // burgerMenu.classList.add("js-navbar__collapsible-container");
+            itchLogo.classList.add("js-navbab__itch-github-collapse");
+            githubLogo.classList.add("js-navbab__itch-github-collapse");
+        }
 
-        // itchLogo.classList.add("js-navbab__itch-github-raise");
-        // githubLogo.classList.add("js-navbab__itch-github-raise");
-      } 
+    }
+     //Window is bigger than 600px.
+    else if (window.matchMedia("(max-width: 600px)").matches && small !== false){
+        small = false;
+
+        // console.log("Small");
+
+        //On small: must show ONLY if button is flipped. If not flipped, then hide (default is show at if this point in the code is reached so no need to check for show condition).
+        if (burgerMenuFlipped === false){
+
+            burgerMenu.classList.add("js-navbar__collapsible-container-expansion"); //Makes transistions duration take 0 time.
+
+            burgerMenu.classList.add("js-navbar__collapsible-container");
+            itchLogo.classList.add("js-navbab__itch-github-raise");
+            githubLogo.classList.add("js-navbab__itch-github-raise");
+        }
+    }
 };
-
