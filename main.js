@@ -46,10 +46,13 @@ function toggleLightMode() {
 
 
 const burgerMenuBtn = document.querySelector('.navbar__burger-button');
-const burgerMenu = document.querySelector('.navbar__collapsible-container');
+const burgerMenu = document.querySelector('.navbar__mob-collapsible-container');
 
-const itchLogo = document.querySelector('.itch');
-const githubLogo = document.querySelector('.github');
+const itchLogo = document.querySelector('.mob-itch');
+const githubLogo = document.querySelector('.mob-github');
+const contact = document.querySelector('.mob-contact');
+const resume = document.querySelector('.mob-resume');
+
 
 let burgerMenuFlipped = false;
 
@@ -64,77 +67,75 @@ burgerMenuBtn.onclick = () => {//Add style with rotation transform if not flippe
     }
     burgerMenuFlipped = !burgerMenuFlipped;
 };
+
 function collapseBurgerMenu(){
     burgerMenuBtn.classList.remove("js-navbar__burger-button");
-
     burgerMenu.classList.add("js-navbar__collapsible-container");
-    
+    //want display none once animation for collapsing is done.
 
     itchLogo.classList.add("js-navbab__itch-github-raise");
     githubLogo.classList.add("js-navbab__itch-github-raise");
     itchLogo.classList.remove("js-navbab__itch-github-collapse");
     githubLogo.classList.remove("js-navbab__itch-github-collapse");
+
+    itchLogo.classList.remove("js-navbab__itch-github-raised");
+    githubLogo.classList.remove("js-navbab__itch-github-raised");
+
+     // Dont want these to be focusable/tabbable.
+    // burgerMenu.addEventListener('transitionend', mobNavDisabled); //waits until closing animation is finished for them to be disabled.
+    itchLogo.classList.add("js-navbar__disable-links");
+    githubLogo.classList.add("js-navbar__disable-links");
+    resume.classList.add("js-navbar__disable-links");
+    contact.classList.add("js-navbar__disable-links");
+
+    itchLogo.tabIndex = -1;
+    githubLogo.tabIndex = -1;
+    resume.tabIndex = -1;
+    contact.tabIndex = -1;
+
+
 };
 function raiseBurgerMenu(){
-    burgerMenuBtn.classList.add("js-navbar__burger-button");
+    // Want these to be selectable again.
+    itchLogo.classList.remove("js-navbar__disable-links");
+    githubLogo.classList.remove("js-navbar__disable-links");
+    resume.classList.remove("js-navbar__disable-links");
+    contact.classList.remove("js-navbar__disable-links");
+    itchLogo.tabIndex = 0;
+    githubLogo.tabIndex = 0;
+    resume.tabIndex = 0;
+    contact.tabIndex = 0;
 
+
+    burgerMenuBtn.classList.add("js-navbar__burger-button");
     burgerMenu.classList.remove("js-navbar__collapsible-container");
 
     itchLogo.classList.remove("js-navbab__itch-github-raise");
     githubLogo.classList.remove("js-navbab__itch-github-raise");
-
     itchLogo.classList.add("js-navbab__itch-github-collapse");
     githubLogo.classList.add("js-navbab__itch-github-collapse");
+
+    itchLogo.addEventListener('transitionend', mobLogosOpened);
 };
 
-let small = null;
-resizeIsDone()
-//If window size changes past threshold WHILE Mobile/Small-screen classes are added.
-document.body.onresize =()=>{
-    resizeIsDone();
-};
+itchLogo.addEventListener('transitionend', mobLogosOpened); //no need to put on both logos, since all have the same animations.
+function mobLogosOpened(e){ // after logos have been transitioned, gets rid of any transition delay
+    itchLogo.removeEventListener('transitionend', mobLogosOpened);
 
-function resizeIsDone(){
-    //Window is smaller than 600px.
-    if (window.matchMedia("(min-width: 600px)").matches && small !== true){
-        small = true;
+    itchLogo.classList.add("js-navbab__itch-github-raised");
+    githubLogo.classList.add("js-navbab__itch-github-raised");
+}
+// function mobNavDisabled(){ //after mobile navigation's collapse transition is done. 
+//     burgerMenu.removeEventListener('transitionend', mobNavDisabled);
+//     itchLogo.classList.add("js-navbar__disable-links");
+//     githubLogo.classList.add("js-navbar__disable-links");
+//     resume.classList.add("js-navbar__disable-links");
+//     contact.classList.add("js-navbar__disable-links");
 
-        // console.log("Big");
-
-        //On big: must show navLinks no matter what. 
-
-        burgerMenu.classList.remove("js-navbar__collapsible-container-expansion");
-
-        burgerMenu.classList.remove("js-navbar__collapsible-container");
-        itchLogo.classList.remove("js-navbab__itch-github-raise");
-        githubLogo.classList.remove("js-navbab__itch-github-raise");
+//     itchLogo.tabIndex = -1;
+//     githubLogo.tabIndex = -1;
+//     resume.tabIndex = -1;
+//     contact.tabIndex = -1;
+// }
 
 
-        //Button must be unflipped when it turns small.
-        if (burgerMenuFlipped === true){
-            burgerMenuFlipped = false;
-
-            burgerMenuBtn.classList.remove("js-navbar__burger-button");            
-
-            itchLogo.classList.add("js-navbab__itch-github-collapse");
-            githubLogo.classList.add("js-navbab__itch-github-collapse");
-        }
-
-    }
-     //Window is bigger than 600px.
-    else if (window.matchMedia("(max-width: 600px)").matches && small !== false){
-        small = false;
-
-        // console.log("Small");
-
-        //On small: must show ONLY if button is flipped. If not flipped, then hide (default is show at if this point in the code is reached so no need to check for show condition).
-        if (burgerMenuFlipped === false){
-
-            burgerMenu.classList.add("js-navbar__collapsible-container-expansion"); //Makes transistions duration take 0 time.
-
-            burgerMenu.classList.add("js-navbar__collapsible-container");
-            itchLogo.classList.add("js-navbab__itch-github-raise");
-            githubLogo.classList.add("js-navbab__itch-github-raise");
-        }
-    }
-};
