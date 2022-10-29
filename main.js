@@ -44,7 +44,6 @@ function toggleLightMode() {
 //2.============================Burger Menu============================================
 //Animation of BurgerMenu (on click) + Appearance of its menu.===========================
 
-
 const burgerMenuBtn = document.querySelector('.navbar__burger-button');
 const burgerMenu = document.querySelector('.navbar__mob-collapsible-container');
 
@@ -71,7 +70,6 @@ burgerMenuBtn.onclick = () => {//Add style with rotation transform if not flippe
 function collapseBurgerMenu(){
     burgerMenuBtn.classList.remove("js-navbar__burger-button");
     burgerMenu.classList.add("js-navbar__collapsible-container");
-    //want display none once animation for collapsing is done.
 
     itchLogo.classList.add("js-navbab__itch-github-raise");
     githubLogo.classList.add("js-navbab__itch-github-raise");
@@ -82,7 +80,6 @@ function collapseBurgerMenu(){
     githubLogo.classList.remove("js-navbab__itch-github-raised");
 
      // Dont want these to be focusable/tabbable.
-    // burgerMenu.addEventListener('transitionend', mobNavDisabled); //waits until closing animation is finished for them to be disabled.
     itchLogo.classList.add("js-navbar__disable-links");
     githubLogo.classList.add("js-navbar__disable-links");
     resume.classList.add("js-navbar__disable-links");
@@ -92,8 +89,6 @@ function collapseBurgerMenu(){
     githubLogo.tabIndex = -1;
     resume.tabIndex = -1;
     contact.tabIndex = -1;
-
-
 };
 function raiseBurgerMenu(){
     // Want these to be selectable again.
@@ -125,17 +120,48 @@ function mobLogosOpened(e){ // after logos have been transitioned, gets rid of a
     itchLogo.classList.add("js-navbab__itch-github-raised");
     githubLogo.classList.add("js-navbab__itch-github-raised");
 }
-// function mobNavDisabled(){ //after mobile navigation's collapse transition is done. 
-//     burgerMenu.removeEventListener('transitionend', mobNavDisabled);
-//     itchLogo.classList.add("js-navbar__disable-links");
-//     githubLogo.classList.add("js-navbar__disable-links");
-//     resume.classList.add("js-navbar__disable-links");
-//     contact.classList.add("js-navbar__disable-links");
 
-//     itchLogo.tabIndex = -1;
-//     githubLogo.tabIndex = -1;
-//     resume.tabIndex = -1;
-//     contact.tabIndex = -1;
-// }
+//3.============================NavBar spiral dots on hover============================================
+// const itchLogoBig = document.querySelector('.itch');
+// const githubLogoBig = document.querySelector('.github');
+// const contactBig = document.querySelector('.contact');
+// const resumeBig = document.querySelector('.resume');
+// const seperatorBig = document.querySelector('.navbar__vertical-seperator');
+// const parentHolderBig = document.querySelector('.navbar__collapsible-container');
 
+// itchLogoBig.addEventListener("mouseenter", spiralDots);
+// githubLogoBig.addEventListener("mouseenter", spiralDots);
+// contactBig.addEventListener("mouseenter", spiralDots);
+// resumeBig.addEventListener("mouseenter", spiralDots);
 
+// itchLogoBig.addEventListener("mouseleave", spiralDotsItemExit);
+// githubLogoBig.addEventListener("mouseleave", spiralDotsItemExit);
+// contactBig.addEventListener("mouseleave", spiralDotsItemExit);
+// resumeBig.addEventListener("mouseleave", spiralDotsItemExit);
+
+// parentHolderBig.addEventListener("mouseleave", spiralDotsRemove);
+// // parentHolderBig.addEventListener("mouseenter", spiralDots);
+
+// function spiralDots(){
+//     // seperatorBig.style.backgroundPosition = "25%";
+
+//     if (seperatorBig.classList.contains("js-navbar__seperator-spiral-transition-center")){
+//         seperatorBig.classList.remove("js-navbar__seperator-spiral-transition-center");
+//     }
+
+//     if (seperatorBig.classList.contains("js-navbar__seperator-spiral-transition-right")){
+//         seperatorBig.classList.remove("js-navbar__seperator-spiral-transition-right");
+//     }
+//     else{
+//         seperatorBig.classList.add("js-navbar__seperator-spiral-transition-right");
+//     };
+    
+// };
+// function spiralDotsItemExit(){
+//     seperatorBig.classList.add("js-navbar__seperator-spiral-transition-center");
+// };
+// function spiralDotsRemove(){
+//     seperatorBig.classList.remove("js-navbar__seperator-spiral-transition-right");
+//     seperatorBig.classList.remove("js-navbar__seperator-spiral-transition-center");
+
+// };
