@@ -163,6 +163,40 @@ body {
   border-left: 2px dotted var(--text-color);
   width: 0;
   height: 3ch;
+
+  /* animation: updownItems 0.5s ease-in forwards; */ /*assigned in JS*/
+}
+@keyframes updownItems {
+  /*JS: animation: updownItems 0.3s ease-in forwards; -> .navbar__vertical-seperator [on click]*/
+  50% {
+    transform: translateY(-0.5ch);
+  }
+}
+@keyframes updownName {
+  /*JS: animation: updownName 0.3s ease-in forwards; -> .navbar__vertical-name-seperator [on click]*/
+
+  50% {
+    /* transform: scaleY(1.1); */
+    transform: rotateZ(20deg);
+    /* border-color: var(--text-hover-color); */
+  }
+}
+.js-navbar-name-seperator-anim {
+  /*on click*/
+  animation: updownName 0.7s forwards;
+}
+.js-navbar-vertical-seperator-anim {
+  /*for mobile toch*/
+  animation: updownItems 0.7s forwards;
+}
+
+.js-navbar-vertical-seperator-anim-up {
+  /*on desktop hover*/
+  transform: translateY(-0.3ch);
+}
+.js-navbar-vertical-seperator-anim-down {
+  /*on desktop hover alternate*/
+  transform: translateY(0.3ch);
 }
 
 .navbar__mode-container button {
@@ -297,8 +331,45 @@ body {
   height: 3.5ch;
 }
 
+@media (hover: none) {
+  /*movile styles on touch.*/
+  .navbar__item:active {
+    transition-duration: 0s;
+
+    color: var(--text-hover-color); /*for texts*/
+    fill: var(--text-hover-color); /*for logos/svg*/
+
+    outline-offset: 0.3ch;
+  }
+  /*for navbar that have a borderbottom on hover -> items*/
+  .bbottom:active {
+    transition-duration: 0s;
+
+    border-bottom: 0.1ch solid var(--text-hover-color);
+    border-bottom-left-radius: 1ch;
+    border-bottom-right-radius: 1ch;
+  }
+  /*for buttons: light/dark theme and mobile hamburger menu.*/
+  .navbar__color-mode-button:active .st0,
+  .navbar__color-mode-button:active .st1,
+  .navbar__color-mode-button:active .moon {
+    transition-duration: 0s;
+
+    fill: var(--text-hover-color); /*for logos/svg*/
+    stroke: var(--text-color);
+  }
+
+  .navbar__burger-button:active .burger {
+    transition-duration: 0s;
+
+    fill: var(--text-color);
+    stroke: var(--text-hover-color);
+    stroke-width: 1px;
+  }
+}
+
 @media (hover: hover) {
-  /* for devices that can hover (desktop only) */
+  /* for devices that can hover (not-mobile, mostly) */
   /* Detects PRIMARY input method only. Mobiles cant hover even if a stylus is being used on them that allows hovering. These setles will not aply on them.*/
 
   /*Hover and Focus-Visble Styles. Focus Visible allows hover styles to be applied for users who tab through elemenets in a better way than just using :focus (i.e., after clciking element, giving it focus, un-hovering will not keep the focus style there.)*/
@@ -309,7 +380,6 @@ body {
 
     outline-offset: 0.3ch;
   }
-
   /*for navbar that have a borderbottom on hover -> items*/
   .bbottom:hover,
   .bbottom:focus-visible {
@@ -334,35 +404,10 @@ body {
     stroke-width: 1px;
   }
 
-  .navbar__vertical-name-seperator {
-    all: unset;
-  }
-
-  .navbar__vertical-name-seperator {
-    display: none;
-    align-self: center;
-    /* border: 2px solid var(--text-color); */
-
-    width: 5ch;
-    /* max-width: 2px; */
-    height: 3.5ch;
-
-    background-image: linear-gradient(45deg, red, red, yellow, white);
-    background-repeat: space;
-
-    -webkit-mask-image: url("images/Seperator.svg");
-    mask-image: url("images/Seperator.svg");
-
-    background-size: 20000%;
-    background-position-x: left;
-    /* background-position-y: top; */
-
-    transition: background-position 0.5s;
-  }
-  .navbar__home-container:hover > .navbar__vertical-name-seperator,
-  .navbar__home-container:focus > .navbar__vertical-name-seperator {
-    background-position-x: right;
-    /* background-position-y: bottom; */
+  .navbar__home-container:hover .navbar__vertical-name-seperator,
+  .navbar__home-container:focus-visible .navbar__vertical-name-seperator {
+    /* animation: updownName 0.3s forwards; */
+    transform: rotateZ(20deg);
   }
 }
 

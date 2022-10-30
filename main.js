@@ -121,47 +121,70 @@ function mobLogosOpened(e){ // after logos have been transitioned, gets rid of a
     githubLogo.classList.add("js-navbab__itch-github-raised");
 }
 
-//3.============================NavBar spiral dots on hover============================================
-// const itchLogoBig = document.querySelector('.itch');
-// const githubLogoBig = document.querySelector('.github');
-// const contactBig = document.querySelector('.contact');
-// const resumeBig = document.querySelector('.resume');
-// const seperatorBig = document.querySelector('.navbar__vertical-seperator');
-// const parentHolderBig = document.querySelector('.navbar__collapsible-container');
+//3.============================NavBar dots anim on on desktop and mobile============================================
 
-// itchLogoBig.addEventListener("mouseenter", spiralDots);
-// githubLogoBig.addEventListener("mouseenter", spiralDots);
-// contactBig.addEventListener("mouseenter", spiralDots);
-// resumeBig.addEventListener("mouseenter", spiralDots);
+// NAME seperator (mobile only):
+const nameBig = document.querySelector('.navbar__home');
+const nameSeperator = document.querySelector('.navbar__vertical-name-seperator');
 
-// itchLogoBig.addEventListener("mouseleave", spiralDotsItemExit);
-// githubLogoBig.addEventListener("mouseleave", spiralDotsItemExit);
-// contactBig.addEventListener("mouseleave", spiralDotsItemExit);
-// resumeBig.addEventListener("mouseleave", spiralDotsItemExit);
+nameBig.addEventListener("click", () => {
+    if (nameSeperator.offsetParent !== null){ // if element is visible
+        if (window.matchMedia( "(hover: none)" ).matches) { // AND the device does not allow hovering (i.e., is mobile)
+            nameSeperator.addEventListener("animationend", SeperatorAnimDone);
+            nameSeperator.classList.add("js-navbar-name-seperator-anim");
+         }
+    }
+});
+function SeperatorAnimDone (){
+    nameSeperator.removeEventListener("animationend", SeperatorAnimDone);
+    nameSeperator.classList.remove("js-navbar-name-seperator-anim");
+};
 
-// parentHolderBig.addEventListener("mouseleave", spiralDotsRemove);
-// // parentHolderBig.addEventListener("mouseenter", spiralDots);
+// NavBar items seperator:
+const itchLogoBig = document.querySelector('.itch');
+const githubLogoBig = document.querySelector('.github');
+const contactBig = document.querySelector('.contact');
+const resumeBig = document.querySelector('.resume');
+const seperatorBig = document.querySelector('.navbar__vertical-seperator');
+const parentHolderBig = document.querySelector('.navbar__collapsible-container');
 
-// function spiralDots(){
-//     // seperatorBig.style.backgroundPosition = "25%";
+if (window.matchMedia( "(hover: none)" ).matches) {
+    // on mobile, set up mouse click listners.
+    itchLogoBig.addEventListener("click", ItemsAnimMob);
+    githubLogoBig.addEventListener("click", ItemsAnimMob);
+    contactBig.addEventListener("click", ItemsAnimMob);
+    resumeBig.addEventListener("click", ItemsAnimMob);
+}
+else{
+    // on desktop, set up hover listners.
+    itchLogoBig.addEventListener("mouseenter", ItemsAnim);
+    githubLogoBig.addEventListener("mouseenter", ItemsAnim);
+    contactBig.addEventListener("mouseenter", ItemsAnim);
+    resumeBig.addEventListener("mouseenter", ItemsAnim);
+    parentHolderBig.addEventListener("mouseleave", () => {
+        seperatorBig.classList.remove("js-navbar-vertical-seperator-anim-up");
+        seperatorBig.classList.remove("js-navbar-vertical-seperator-anim-down");
+    });
 
-//     if (seperatorBig.classList.contains("js-navbar__seperator-spiral-transition-center")){
-//         seperatorBig.classList.remove("js-navbar__seperator-spiral-transition-center");
-//     }
+};
+function ItemsAnim(){
+    // Either on mobile touch or Desktop Hover.
+    if (seperatorBig.classList.contains("js-navbar-vertical-seperator-anim-up")){
+        seperatorBig.classList.remove("js-navbar-vertical-seperator-anim-up");
+        seperatorBig.classList.add("js-navbar-vertical-seperator-anim-down");
+    }
+    else{
+        seperatorBig.classList.remove("js-navbar-vertical-seperator-anim-down");
+        seperatorBig.classList.add("js-navbar-vertical-seperator-anim-up");
+    };
+};
 
-//     if (seperatorBig.classList.contains("js-navbar__seperator-spiral-transition-right")){
-//         seperatorBig.classList.remove("js-navbar__seperator-spiral-transition-right");
-//     }
-//     else{
-//         seperatorBig.classList.add("js-navbar__seperator-spiral-transition-right");
-//     };
-    
-// };
-// function spiralDotsItemExit(){
-//     seperatorBig.classList.add("js-navbar__seperator-spiral-transition-center");
-// };
-// function spiralDotsRemove(){
-//     seperatorBig.classList.remove("js-navbar__seperator-spiral-transition-right");
-//     seperatorBig.classList.remove("js-navbar__seperator-spiral-transition-center");
+function ItemsAnimMob(){
+    seperatorBig.addEventListener("animationend", seperatorBigAnimDone);
+    seperatorBig.classList.add("js-navbar-vertical-seperator-anim");
+};
+function seperatorBigAnimDone(){
+    seperatorBig.removeEventListener("animationend", seperatorBigAnimDone);
+    seperatorBig.classList.remove("js-navbar-vertical-seperator-anim");
+}
 
-// };
