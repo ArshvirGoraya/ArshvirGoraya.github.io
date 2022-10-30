@@ -166,15 +166,38 @@ body {
 
   /* animation: updownItems 0.5s ease-in forwards; */ /*assigned in JS*/
 }
-@keyframes updownItems {
+@keyframes updownItemsUp {
   /*JS: animation: updownItems 0.3s ease-in forwards; -> .navbar__vertical-seperator [on click]*/
   50% {
     transform: translateY(-0.5ch);
   }
 }
+@keyframes updownItemsDown {
+  /*JS: animation: updownItems 0.3s ease-in forwards; -> .navbar__vertical-seperator [on click]*/
+  50% {
+    transform: translateY(0.5ch);
+  }
+}
+.js-navbar-vertical-seperator-anim-up {
+  /*for mobile toch*/
+  animation: updownItemsUp 0.7s forwards;
+}
+.js-navbar-vertical-seperator-anim-down {
+  /*for mobile toch*/
+  animation: updownItemsDown 0.7s forwards;
+}
+
+.js-navbar-vertical-seperator-trans-up {
+  /*on desktop hover*/
+  transform: translateY(-0.3ch);
+}
+.js-navbar-vertical-seperator-trans-down {
+  /*on desktop hover alternate*/
+  transform: translateY(0.3ch);
+}
+
 @keyframes updownName {
   /*JS: animation: updownName 0.3s ease-in forwards; -> .navbar__vertical-name-seperator [on click]*/
-
   50% {
     /* transform: scaleY(1.1); */
     transform: rotateZ(20deg);
@@ -184,19 +207,6 @@ body {
 .js-navbar-name-seperator-anim {
   /*on click*/
   animation: updownName 0.7s forwards;
-}
-.js-navbar-vertical-seperator-anim {
-  /*for mobile toch*/
-  animation: updownItems 0.7s forwards;
-}
-
-.js-navbar-vertical-seperator-anim-up {
-  /*on desktop hover*/
-  transform: translateY(-0.3ch);
-}
-.js-navbar-vertical-seperator-anim-down {
-  /*on desktop hover alternate*/
-  transform: translateY(0.3ch);
 }
 
 .navbar__mode-container button {
@@ -315,11 +325,11 @@ body {
   transition-property: color fill stroke;
   transition-duration: 0.5s;
 }
-.bbottom {
-  border-bottom: 0.1ch solid transparent; /*adds some height. Without this, border animation will push the item up on start.*/
+/* .bbottom {
+  border-bottom: 0.1ch solid transparent; /*adds some height. Without this, border animation will push the item up on start.
   transition-property: color fill stroke border;
   transition-duration: 0.5s;
-}
+} */
 
 .navbar__vertical-name-seperator {
   display: none;
@@ -333,31 +343,34 @@ body {
 
 @media (hover: none) {
   /*movile styles on touch.*/
-  .navbar__item:active {
+
+  /* .navbar__item:active {
     transition-duration: 0s;
 
-    color: var(--text-hover-color); /*for texts*/
-    fill: var(--text-hover-color); /*for logos/svg*/
+    color: var(--text-hover-color); 
+    fill: var(--text-hover-color); 
 
     outline-offset: 0.3ch;
-  }
+  } */
+
   /*for navbar that have a borderbottom on hover -> items*/
-  .bbottom:active {
+  /* .bbottom:active {
     transition-duration: 0s;
 
     border-bottom: 0.1ch solid var(--text-hover-color);
     border-bottom-left-radius: 1ch;
     border-bottom-right-radius: 1ch;
-  }
+  } */
+
   /*for buttons: light/dark theme and mobile hamburger menu.*/
-  .navbar__color-mode-button:active .st0,
+
+  /* .navbar__color-mode-button:active .st0,
   .navbar__color-mode-button:active .st1,
   .navbar__color-mode-button:active .moon {
     transition-duration: 0s;
-
-    fill: var(--text-hover-color); /*for logos/svg*/
+    fill: var(--text-hover-color);
     stroke: var(--text-color);
-  }
+  } */
 
   .navbar__burger-button:active .burger {
     transition-duration: 0s;
@@ -366,6 +379,15 @@ body {
     stroke: var(--text-hover-color);
     stroke-width: 1px;
   }
+}
+.js-navbar-links-touch {
+  /*when links are clicked on these styles are applied. :active pseudo class not working as desired.*/
+  transition-duration: 0s;
+
+  color: var(--text-hover-color); /*for texts*/
+  fill: var(--text-hover-color); /*for logos/svg*/
+
+  outline-offset: 0.3ch;
 }
 
 @media (hover: hover) {
@@ -381,12 +403,12 @@ body {
     outline-offset: 0.3ch;
   }
   /*for navbar that have a borderbottom on hover -> items*/
-  .bbottom:hover,
+  /* .bbottom:hover,
   .bbottom:focus-visible {
     border-bottom: 0.1ch solid var(--text-hover-color);
     border-bottom-left-radius: 1ch;
     border-bottom-right-radius: 1ch;
-  }
+  } */
   /*for buttons: light/dark theme and mobile hamburger menu.*/
   .navbar__color-mode-button:hover .st0,
   .navbar__color-mode-button:hover .st1,
@@ -443,6 +465,7 @@ body {
   transition-timing-function: cubic-bezier(0.68, -0.55, 0.27, 1.55);
   opacity: 1;
 }
+
 .navbar__mob-collapsible-container * {
   margin: 0;
 }
