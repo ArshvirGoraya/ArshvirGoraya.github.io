@@ -1,5 +1,4 @@
 //1. =========================ColorMode Switcher===============================================
-
 //If colorMode is stored in local storage, will get it.
 let colorMode = localStorage.getItem('colorMode'); 
 
@@ -45,6 +44,7 @@ function toggleLightMode() {
 //Animation of BurgerMenu (on click) + Appearance of its menu.===========================
 
 const burgerMenuBtn = document.querySelector('.navbar__burger-button');
+const burgerMenuBtnLogo = document.querySelector('.burger');
 const burgerMenu = document.querySelector('.navbar__mob-collapsible-container');
 const burgerMenuChild = document.querySelector('.navbar__mob-items-container');
 
@@ -70,6 +70,7 @@ burgerMenuBtn.onclick = () => {//Add style with rotation transform if not flippe
 
 function collapseBurgerMenu(){
     burgerMenuBtn.classList.remove("js-navbar__burger-button");
+    burgerMenuBtnLogo.classList.remove("js-navbar__burger-button-logo");
     burgerMenu.classList.add("js-navbar__collapsible-container");
 
     itchLogo.classList.add("js-navbab__itch-github-raise");
@@ -106,6 +107,7 @@ function raiseBurgerMenu(){
 
 
     burgerMenuBtn.classList.add("js-navbar__burger-button");
+    burgerMenuBtnLogo.classList.add("js-navbar__burger-button-logo");
     burgerMenu.classList.remove("js-navbar__collapsible-container");
 
     itchLogo.classList.remove("js-navbab__itch-github-raise");
@@ -141,37 +143,16 @@ mobNavElements.push(burgerMenu);
 function DocumentClickListener(e){
     //need to close navbar after detecting click outside of mobile navbar.
     if (! mobNavElements.includes(e.target)){
-        console.log("NavBar not clicked... Must close.");
-
+        // console.log("NavBar not clicked... Must close.");
         collapseBurgerMenu();
         burgerMenuFlipped = !burgerMenuFlipped;
     }
-    // else{
-    //     console.log("navbar clicked... no need to close");
-
-    // }
 };
-
-
 //3.============================NavBar dots anim on on desktop and mobile============================================
 
-
-// NAME seperator (mobile only):
+// NAME seperator (small screens only):
 const nameBig = document.querySelector('.navbar__home');
 const nameSeperator = document.querySelector('.navbar__vertical-name-seperator');
-
-nameBig.addEventListener("click", () => {
-    if (nameSeperator.offsetParent !== null){ // if element is visible
-        if (window.matchMedia( "(hover: none)" ).matches) { // AND the device does not allow hovering (i.e., is mobile)
-            nameSeperator.addEventListener("animationend", SeperatorAnimDone);
-            nameSeperator.classList.add("js-navbar-name-seperator-anim");
-         }
-    }
-});
-function SeperatorAnimDone (){
-    nameSeperator.removeEventListener("animationend", SeperatorAnimDone);
-    nameSeperator.classList.remove("js-navbar-name-seperator-anim");
-};
 
 // NavBar items seperator:
 const itchLogoBig = document.querySelector('.itch');
@@ -180,58 +161,218 @@ const contactBig = document.querySelector('.contact');
 const resumeBig = document.querySelector('.resume');
 const seperatorBig = document.querySelector('.navbar__vertical-seperator');
 const parentHolderBig = document.querySelector('.navbar__collapsible-container');
+// const colorModeToggle = document.querySelector('.navbar__color-mode-button');
 
+//////////////////////////////////////////////links seperator///////////////////////////////////////////////////////////
 if (window.matchMedia( "(hover: none)" ).matches) {
-    // on mobile, set up mouse click listners.
+    // on mobile, set up mouse click listeners.
+
     itchLogoBig.addEventListener("touchstart", ItemsAnimMob);
     githubLogoBig.addEventListener("touchstart", ItemsAnimMob);
     contactBig.addEventListener("touchstart", ItemsAnimMob);
     resumeBig.addEventListener("touchstart", ItemsAnimMob);
+
 }
 else{
-    // on desktop, set up hover listners.
+    // on desktop, set up hover listeners.
     itchLogoBig.addEventListener("mouseenter", ItemsAnim);
     githubLogoBig.addEventListener("mouseenter", ItemsAnim);
     contactBig.addEventListener("mouseenter", ItemsAnim);
     resumeBig.addEventListener("mouseenter", ItemsAnim);
-    parentHolderBig.addEventListener("mouseleave", () => {
-        seperatorBig.classList.remove("js-navbar-vertical-seperator-trans-up");
-        seperatorBig.classList.remove("js-navbar-vertical-seperator-trans-down");
+
+    itchLogoBig.addEventListener("focusout", () => {
+        itchLogoBigJustClicked = false;
+        ItemsAnimMobOut()});
+    githubLogoBig.addEventListener("focusout", () => {
+        githubLogoBigJustClicked = false;
+        ItemsAnimMobOut()});
+    contactBig.addEventListener("focusout", () => {
+        contactBigJustClicked = false;
+        ItemsAnimMobOut()});
+    resumeBig.addEventListener("focusout", () => {
+        resumeBigJustClicked = false;
+        ItemsAnimMobOut()});
+
+    ////////////////////////
+    let itchLogoBigJustClicked = false;
+    let githubLogoBigJustClicked = false;
+    let resumeBigJustClicked = false;
+    let contactBigJustClicked = false;
+
+    itchLogoBig.addEventListener("mousedown", () => {
+        itchLogoBigJustClicked = true;
+        ItemsAnim();
     });
-};
-//Mobile:
-let up = true //controls which mobile animation is going to play.
-function ItemsAnimMob(){
-    seperatorBig.addEventListener("animationend", seperatorBigAnimDone); //removes the animation after its done.
-    if (up){
-        seperatorBig.classList.add("js-navbar-vertical-seperator-anim-up"); //adds the animation class.
-    }
-    else{
-        seperatorBig.classList.add("js-navbar-vertical-seperator-anim-down"); //adds the animation class.
-    };
-    up = !up;
-};
-function seperatorBigAnimDone(){
-    seperatorBig.removeEventListener("animationend", seperatorBigAnimDone);
-    seperatorBig.classList.remove("js-navbar-vertical-seperator-anim-up");
-    seperatorBig.classList.remove("js-navbar-vertical-seperator-anim-down");
-}
-//Desktop:
-function ItemsAnim(){
-    // Either on mobile touch or Desktop Hover.
-    if (seperatorBig.classList.contains("js-navbar-vertical-seperator-trans-up")){
+    itchLogoBig.addEventListener("focusin", () => { //runs right AFTER the mousedown function.
+        if (itchLogoBigJustClicked){itchLogoBigJustClicked = false;}
+        else{ItemsAnim();}
+    }); 
+    githubLogoBig.addEventListener("mousedown", () => {
+        githubLogoBigJustClicked = true;
+        ItemsAnim();
+    });
+    githubLogoBig.addEventListener("focusin", () => { //runs right AFTER the mousedown function.
+        if (githubLogoBigJustClicked){githubLogoBigJustClicked = false;}
+        else{ItemsAnim();}
+    }); 
+    resumeBig.addEventListener("mousedown", () => {
+        resumeBigJustClicked = true;
+        ItemsAnim();
+    });
+    resumeBig.addEventListener("focusin", () => { //runs right AFTER the mousedown function.
+        if (resumeBigJustClicked){resumeBigJustClicked = false;}
+        else{ItemsAnim();}
+    }); 
+    contactBig.addEventListener("mousedown", () => {
+        contactBigJustClicked = true;
+        ItemsAnim();
+    });
+    contactBig.addEventListener("focusin", () => { //runs right AFTER the mousedown function.
+        if (contactBigJustClicked){contactBigJustClicked = false;}
+        else{ItemsAnim();}
+    }); 
+    parentHolderBig.addEventListener("mouseleave", ItemsAnimMobOut);
+
+    function ItemsAnimMobOut(){
         seperatorBig.classList.remove("js-navbar-vertical-seperator-trans-up");
-        seperatorBig.classList.add("js-navbar-vertical-seperator-trans-down");
-    }
-    else{
         seperatorBig.classList.remove("js-navbar-vertical-seperator-trans-down");
-        seperatorBig.classList.add("js-navbar-vertical-seperator-trans-up");
+    }
+    //Desktop:
+    let deskUp = true;
+    function ItemsAnim(){
+        if (deskUp){
+            seperatorBig.classList.remove("js-navbar-vertical-seperator-trans-down");
+            seperatorBig.classList.add("js-navbar-vertical-seperator-trans-up");
+        }
+        else{
+            seperatorBig.classList.remove("js-navbar-vertical-seperator-trans-up");
+            seperatorBig.classList.add("js-navbar-vertical-seperator-trans-down");
+        }
+        deskUp = !deskUp;
     };
 };
 
-//3.============================Mobile Link Styles on Tocuh============================================
-if (window.matchMedia( "(hover: none)" ).matches) {
-    // on mobile, set up mouse click listners.
+//Touch only:
+let up = true;
+let timeoutIDNav;
+function ItemsAnimMob(){ //when a link is touched, plays either of these animations.
+    clearTimeout(timeoutIDNav);
+    if (up){
+        seperatorBig.classList.remove("js-navbar-vertical-seperator-trans-down");
+        seperatorBig.classList.add("js-navbar-vertical-seperator-trans-up");
+        
+        
+        timeoutIDNav = setTimeout(() => {
+            seperatorBig.classList.remove("js-navbar-vertical-seperator-trans-up");
+        }, 400); //after 0.x seconds
+        up = false;
+
+    }
+    else{
+        seperatorBig.classList.remove("js-navbar-vertical-seperator-trans-up");
+        seperatorBig.classList.add("js-navbar-vertical-seperator-trans-down");
+
+        timeoutIDNav = setTimeout(() => {
+            seperatorBig.classList.remove("js-navbar-vertical-seperator-trans-down");
+        }, 400); //after 0.x seconds
+        up = true;
+    }
+};
+//////////////////////////////////////////////name seperator///////////////////////////////////////////////////////////
+//For big dots next to name:
+let left = true;
+let timeoutIDName = null;
+//touchout not needed since its on a timer.
+
+nameBig.addEventListener("touchstart", nameSeperatorAnimationTouch); 
+
+//For touching:
+function nameSeperatorAnimationTouch() {
+    //must check if seperator is even visible first (on larger screens, it may not be).
+    //Element that enables animations is always visible so must ensure the seperator is visible along with it before anims can run.
+    //UInlike for the links seperator, whose enabler is alwaysd visible ALONG WITH the seperator.
+    if (window.getComputedStyle(nameSeperator).display === "none"){
+        return;
+    }
+    clearTimeout(timeoutIDName);
+    if (left){
+        nameSeperator.classList.remove("js-navbar-name-seperator-trans-left");
+        nameSeperator.classList.add("js-navbar-name-seperator-trans-right");
+        left = false;
+        
+        timeoutIDName = setTimeout(() => {
+            nameSeperator.classList.remove("js-navbar-name-seperator-trans-right");
+        }, 400); //after 0.4 seconds
+    }
+    else{
+        nameSeperator.classList.remove("js-navbar-name-seperator-trans-right");
+        nameSeperator.classList.add("js-navbar-name-seperator-trans-left");
+
+        timeoutIDName = setTimeout(() => {
+            nameSeperator.classList.remove("js-navbar-name-seperator-trans-left");
+        }, 400); //after 0.4 seconds
+        left = true;
+    }
+}
+
+
+
+
+
+//for tabbing + clicking + hovering:
+if (window.matchMedia("(hover: hover)").matches) { //Device has hover (i.e., not mobile).
+        //hover effects
+    nameBig.addEventListener("mouseenter", nameSeperatorAnimationHoverIn);
+    nameBig.addEventListener("mouseleave", nameSeperatorAnimationHoverOut);
+
+    let nameJustClicked = false;
+
+    nameBig.addEventListener("focusout", () => {
+        nameJustClicked = false;
+        nameSeperatorAnimationHoverOut();
+    });
+    nameBig.addEventListener("mousedown", () => {
+        nameJustClicked = true;
+        nameSeperatorAnimationHoverIn();
+    });
+    nameBig.addEventListener("focusin", () => { //runs right AFTER the mousedown function.
+        if (nameJustClicked === true){
+            nameJustClicked = false;
+        }
+        else{
+            nameSeperatorAnimationHoverIn();
+        }
+    }); 
+
+    function nameSeperatorAnimationHoverIn(){
+        if (window.getComputedStyle(nameSeperator).display === "none"){
+            return;
+        }
+        //on hover or on focus visible:
+        if (left){
+            left = false;
+            nameSeperator.classList.remove("js-navbar-name-seperator-trans-left");
+            nameSeperator.classList.add("js-navbar-name-seperator-trans-right");
+        }
+        else{
+            left = true;    
+            nameSeperator.classList.remove("js-navbar-name-seperator-trans-right");
+            nameSeperator.classList.add("js-navbar-name-seperator-trans-left");
+        }
+    }
+    function nameSeperatorAnimationHoverOut(){  
+        if (window.getComputedStyle(nameSeperator).display === "none"){
+            return;
+        }
+        nameSeperator.classList.remove("js-navbar-name-seperator-trans-left");
+        nameSeperator.classList.remove("js-navbar-name-seperator-trans-right");
+    }
+}
+
+
+//3.============================Mobile Link Styles on Touch (navbar)============================================
+///////////hover color on touch - no animations included here.//
+if (window.matchMedia( "(hover: none)" ).matches) {  // on mobile, set up mouse click listners.
     itchLogo.addEventListener("touchstart", LinkStyle);
     githubLogo.addEventListener("touchstart", LinkStyle);
     contact.addEventListener("touchstart", LinkStyle);
@@ -255,23 +396,36 @@ if (window.matchMedia( "(hover: none)" ).matches) {
     resumeBig.addEventListener("touchend", LinkStyleRemove);
 
     nameBig.addEventListener("touchend", LinkStyleRemove);
+    //
+    itchLogo.addEventListener("touchcancel", LinkStyleRemove);
+    githubLogo.addEventListener("touchcancel", LinkStyleRemove);
+    contact.addEventListener("touchcancel", LinkStyleRemove);
+    resume.addEventListener("touchcancel", LinkStyleRemove);
+
+    itchLogoBig.addEventListener("touchcancel", LinkStyleRemove);
+    githubLogoBig.addEventListener("touchcancel", LinkStyleRemove);
+    contactBig.addEventListener("touchcancel", LinkStyleRemove);
+    resumeBig.addEventListener("touchcancel", LinkStyleRemove);
+
+    nameBig.addEventListener("touchcancel", LinkStyleRemove);
 }
+let StyledElement = null;
 
 function LinkStyle(e){
     // console.log(e);
     if (e.target.className === "ln" || e.target.className === "fn"){ //if children of name clicked, simply add to the name.
         nameBig.classList.add("js-navbar-links-touch");
+        StyledElement = nameBig;
     }
     else{
         e.target.classList.add("js-navbar-links-touch");
+        StyledElement = e.target; 
     }
 };
-function LinkStyleRemove(e){
-    if (e.target.className === "ln" || e.target.className === "fn"){ //if children of name clicked, simply add to the name.
-        nameBig.classList.remove("js-navbar-links-touch");
-    }
-    else{
-        e.target.classList.remove("js-navbar-links-touch");
+function LinkStyleRemove(){
+    if (StyledElement != null){
+        StyledElement.classList.remove("js-navbar-links-touch");
+        StyledElement = null;
     }
 };
 

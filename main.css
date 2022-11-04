@@ -161,30 +161,12 @@ body {
 .navbar__vertical-seperator {
   margin-left: 1ch;
   border-left: 2px dotted var(--text-color);
-  width: 0;
-  height: 3ch;
+  /* outline: 2px dotted var(--text-color); */
+
+  min-width: 0;
+  min-height: 3ch;
 
   /* animation: updownItems 0.5s ease-in forwards; */ /*assigned in JS*/
-}
-@keyframes updownItemsUp {
-  /*JS: animation: updownItems 0.3s ease-in forwards; -> .navbar__vertical-seperator [on click]*/
-  50% {
-    transform: translateY(-0.5ch);
-  }
-}
-@keyframes updownItemsDown {
-  /*JS: animation: updownItems 0.3s ease-in forwards; -> .navbar__vertical-seperator [on click]*/
-  50% {
-    transform: translateY(0.5ch);
-  }
-}
-.js-navbar-vertical-seperator-anim-up {
-  /*for mobile toch*/
-  animation: updownItemsUp 0.7s forwards;
-}
-.js-navbar-vertical-seperator-anim-down {
-  /*for mobile toch*/
-  animation: updownItemsDown 0.7s forwards;
 }
 
 .js-navbar-vertical-seperator-trans-up {
@@ -196,17 +178,18 @@ body {
   transform: translateY(0.3ch);
 }
 
-@keyframes updownName {
-  /*JS: animation: updownName 0.3s ease-in forwards; -> .navbar__vertical-name-seperator [on click]*/
-  50% {
-    /* transform: scaleY(1.1); */
-    transform: rotateZ(20deg);
-    /* border-color: var(--text-hover-color); */
-  }
+/* .js-navbar-vertical-seperator-trans-up {
+  transform: translateY(-0.5ch);
 }
-.js-navbar-name-seperator-anim {
-  /*on click*/
-  animation: updownName 0.7s forwards;
+.js-navbar-vertical-seperator-trans-down {
+  transform: translateY(0.5ch);
+} */
+
+.js-navbar-name-seperator-trans-left {
+  transform: rotateZ(20deg);
+}
+.js-navbar-name-seperator-trans-right {
+  transform: rotateZ(-20deg);
 }
 
 .navbar__mode-container button {
@@ -372,13 +355,13 @@ body {
     stroke: var(--text-color);
   } */
 
-  .navbar__burger-button:active .burger {
+  /* .navbar__mode-container .navbar__burger-button:active .burger {
     transition-duration: 0s;
 
     fill: var(--text-color);
     stroke: var(--text-hover-color);
     stroke-width: 1px;
-  }
+  } */
 }
 .js-navbar-links-touch {
   /*when links are clicked on these styles are applied. :active pseudo class not working as desired.*/
@@ -425,17 +408,16 @@ body {
     stroke: var(--text-hover-color);
     stroke-width: 1px;
   }
-
-  .navbar__home-container:hover .navbar__vertical-name-seperator,
-  .navbar__home-container:focus-visible .navbar__vertical-name-seperator {
-    /* animation: updownName 0.3s forwards; */
-    transform: rotateZ(20deg);
-  }
 }
 
 /* Burger Menu JS styles. Added onto burger menu once it is clicked on. Removed when menu is closed.*/
 .js-navbar__burger-button {
   transform: rotate(-270deg);
+}
+.js-navbar__burger-button-logo {
+  fill: var(--text-color);
+  stroke: var(--text-hover-color);
+  stroke-width: 1px;
 }
 
 /* max: applies if screen is SMALLER than a certain amount */
@@ -464,6 +446,9 @@ body {
   transition-duration: 0.5s;
   transition-timing-function: cubic-bezier(0.68, -0.55, 0.27, 1.55);
   opacity: 1;
+
+  /* z-index: -1; */
+  outline: solid var(--navbar-color) 1px;
 }
 
 .navbar__mob-collapsible-container * {
