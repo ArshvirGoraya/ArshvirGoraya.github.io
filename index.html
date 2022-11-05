@@ -240,16 +240,46 @@
         </ul>
       </nav>
 
-      <footer></footer>
+      <footer class="footer">
+        <div class="footer-curve">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+            viewBox="0 0 200 16"
+            class="footer-curve-svg"
+          >
+            <polygon
+              class="background"
+              opacity="0.25"
+              points="150,0.8 125,8.4 100,0.8 75,8.4 50,0.8 25,8.4 0,0.8 0,16.1 200,16.1 200,0.8 175,8.4 "
+            />
+            <path
+              class="middleground"
+              opacity="0.7"
+              d="M175,14.7C162.5,14.7,162.5,0,150,0c-12.5,0-12.5,14.7-25,14.7C112.5,14.7,112.5,0,100,0
+     C87.5,0,87.5,14.7,75,14.7C62.5,14.7,62.5,0,50,0C37.5,0,37.5,14.7,25,14.7C12.5,14.7,12.5,0,0,0v16.1h200V0
+     C187.5,0,187.5,14.7,175,14.7z"
+            />
+            <path
+              class="foreground"
+              d="M100,2.4c-25,0-25,12-50,12c-25,0-25-12-50-12v13.8h200V2.4c-25,0-25,12-50,12S125,2.4,100,2.4z"
+            />
+          </svg>
+        </div>
 
-      <!-- 
-      <nav class="footer">
-        <ul>
-          <li>
-            <a href="mailto:arshvir.s.goraya@gmail.com"></a>
+        <ul class="footer__list">
+          <li class="footer__email">
+            <a
+              class="footer__email-link"
+              href="mailto:arshvir.s.goraya@gmail.com"
+              >arshvir.s.goraya@gmail.com</a
+            >
+          </li>
+          <li class="footer__copyright">
+            &copy; 2022 Arshvir Goraya. All Rights Reserved.
           </li>
         </ul>
-      </nav> -->
+      </footer>
     </div>
   </body>
 </html>

@@ -429,3 +429,22 @@ function LinkStyleRemove(){
     }
 };
 
+
+//4.============================Footer============================================
+const footerEmail = document.querySelector('.footer__email-link');
+const footerCurveMiddleGround = document.querySelector('.middleground');
+const footerCurveBackGround = document.querySelector('.background');
+
+
+footerEmail.addEventListener("mouseenter", () => {
+    footerCurveMiddleGround.classList.add("js-footer-middleground-hover-color");
+    footerCurveBackGround.classList.add("js-footer-backgroundground-hover-color");
+    
+    footerEmail.addEventListener("mouseleave", function footerMouseExitFunction() {
+        footerEmail.removeEventListener("mouseleave", footerMouseExitFunction);
+
+        footerCurveMiddleGround.classList.remove("js-footer-middleground-hover-color");
+        footerCurveBackGround.classList.remove("js-footer-backgroundground-hover-color");
+    })
+})
+

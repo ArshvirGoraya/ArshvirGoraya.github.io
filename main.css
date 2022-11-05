@@ -10,6 +10,10 @@
   --navbar-color: #1a9960;
 
   --accent-color: #ff6978;
+
+  --clickable-link: #62e4aa;
+  --clickable-link-highlight: #8d5a97;
+  /* --clickable-link-highlight: #c03221; */
 }
 
 /*is set to dark mode by default. Following is the style for light mode.*/
@@ -71,6 +75,9 @@ body {
   height: 100%;
   background-color: var(--main-wraper-bg);
   transition: background-color 1s;
+
+  /* display: flex;
+  flex-direction: column; */
   /* overflow: hidden; */
 }
 
@@ -580,4 +587,99 @@ body {
 
 .js-navbar__disable-links {
   pointer-events: none;
+}
+
+/* FOOTER */
+
+.footer {
+  /* position: relative; */
+  bottom: 0;
+  /* height: 100%; */
+  font-size: 2ch;
+  overflow-x: hidden;
+  border: 2px red solid;
+}
+
+.footer-curve {
+  z-index: 0;
+  position: relative;
+
+  /* border: red 1px solid; */
+  fill: var(--navbar-color);
+  width: 200%;
+
+  /* transform: rotateX(30deg); */
+}
+.footer-curve-svg {
+  /* border: 30px purple solid; */
+
+  display: flex;
+  flex-direction: column;
+}
+
+.foreground {
+  animation: waveLeft 10s infinite linear;
+  /* fill: red; */
+}
+.middleground {
+  animation: waveLeft 15s infinite linear reverse;
+  transition: fill 0.5s;
+  /* fill: red; */
+}
+.background {
+  animation: waveLeft 20s infinite linear;
+  transition: fill 0.5s;
+  /* fill: red; */
+}
+.js-footer-middleground-hover-color {
+  fill: #676f85;
+}
+.js-footer-backgroundground-hover-color {
+  fill: #8d5a97;
+}
+
+@keyframes waveLeft {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.footer__list {
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 1ch;
+  background-color: var(--navbar-color);
+  font-size: 1.5ch;
+}
+.footer__email {
+  margin-bottom: 1ch;
+}
+.footer__email-link {
+  background-color: var(--clickable-link);
+
+  border: 1ch solid var(--clickable-link);
+  border-top: 0.5ch solid var(--clickable-link);
+  border-bottom: 0.5ch solid var(--clickable-link);
+  border-radius: 0.5ch;
+  transition-property: background-color border;
+  transition-duration: 0.5s;
+}
+
+.footer__email-link:hover,
+.footer__email-link:focus-visible {
+  background-color: var(--clickable-link-highlight);
+
+  border: 1ch solid var(--clickable-link-highlight);
+  border-top: 0.5ch solid var(--clickable-link-highlight);
+  border-bottom: 0.5ch solid var(--clickable-link-highlight);
+}
+.footer__copyright {
+  letter-spacing: normal;
+  font-size: 1ch;
+  margin-bottom: 2ch;
 }
