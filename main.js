@@ -43,6 +43,9 @@ function toggleLightMode() {
 //2.============================Burger Menu============================================
 //Animation of BurgerMenu (on click) + Appearance of its menu.===========================
 
+
+
+
 const burgerMenuBtn = document.querySelector('.navbar__burger-button');
 const burgerMenuBtnLogo = document.querySelector('.burger');
 const burgerMenu = document.querySelector('.navbar__mob-collapsible-container');
@@ -53,6 +56,12 @@ const githubLogo = document.querySelector('.mob-github');
 const contact = document.querySelector('.mob-contact');
 const resume = document.querySelector('.mob-resume');
 
+//want to make burger menu items unselectable in the beginning (since these will not be displayed on page load).
+itchLogo.tabIndex = -1;
+githubLogo.tabIndex = -1;
+resume.tabIndex = -1;
+contact.tabIndex = -1;
+//
 
 let burgerMenuFlipped = false;
 
@@ -148,6 +157,9 @@ function DocumentClickListener(e){
         burgerMenuFlipped = !burgerMenuFlipped;
     }
 };
+
+
+
 //3.============================NavBar dots anim on on desktop and mobile============================================
 
 // NAME seperator (small screens only):
@@ -436,15 +448,71 @@ const footerCurveMiddleGround = document.querySelector('.middleground');
 const footerCurveBackGround = document.querySelector('.background');
 
 
-footerEmail.addEventListener("mouseenter", () => {
+
+
+
+
+
+if (window.matchMedia( "(hover: hover)" ).matches) { //desktop - apply waves styles.
+    footerEmail.addEventListener("focusin", () => {        
+        FooterEmailInteract();
+
+        footerEmail.addEventListener("focusout", function MouseEmailInteractEnd() {
+            FooterEmailInteractEnd();
+
+            footerEmail.removeEventListener("focusout", MouseEmailInteractEnd);
+            footerEmail.removeEventListener("mouseleave", MouseEmailInteractEnd);
+        });
+    });     
+
+    footerEmail.addEventListener("mouseenter", () => {
+        if (footerEmail === document.activeElement){
+            return; // do not want to add/remove elements on mouse leave IF element has focus.
+        }
+        FooterEmailInteract();
+        footerEmail.addEventListener("mouseleave", function MouseEmailInteractEnd() {
+            if (footerEmail === document.activeElement){
+                return; // do not want to add/remove elements on mouse leave IF element has focus.
+            }
+            FooterEmailInteractEnd();
+            footerEmail.removeEventListener("mouseleave", MouseEmailInteractEnd);
+        });
+    });
+}
+
+if (window.matchMedia( "(hover: none)" ).matches) { // mobile
+    // footerEmail.addEventListener("touchend", () => {
+    //     FooterEmailInteractEnd();
+    //     footerEmail.classList.remove("js-footer__email-touch-start");
+    // });
+
+    // footerEmail.addEventListener("touchcancel", () => {
+    //     FooterEmailInteractEnd();
+    //     footerEmail.classList.remove("js-footer__email-touch-start");
+    // });
+
+    footerEmail.addEventListener("touchstart", () => {
+
+        FooterEmailInteract();
+        footerEmail.classList.add("js-footer__email-touch-start");
+
+        let bruh = setTimeout(() => {
+            footerEmail.classList.remove("js-footer__email-touch-start");
+
+            FooterEmailInteractEnd();
+        }, 400); //after 0.4 seconds
+    });
+}
+
+function FooterEmailInteract() {
+    // footerEmail.classList.add("js-footer__email-touch-start");
+
     footerCurveMiddleGround.classList.add("js-footer-middleground-hover-color");
     footerCurveBackGround.classList.add("js-footer-backgroundground-hover-color");
-    
-    footerEmail.addEventListener("mouseleave", function footerMouseExitFunction() {
-        footerEmail.removeEventListener("mouseleave", footerMouseExitFunction);
+};
+function FooterEmailInteractEnd(){
+    // footerEmail.classList.remove("js-footer__email-touch-start");
 
-        footerCurveMiddleGround.classList.remove("js-footer-middleground-hover-color");
-        footerCurveBackGround.classList.remove("js-footer-backgroundground-hover-color");
-    })
-})
-
+    footerCurveMiddleGround.classList.remove("js-footer-middleground-hover-color");
+    footerCurveBackGround.classList.remove("js-footer-backgroundground-hover-color");
+} ;

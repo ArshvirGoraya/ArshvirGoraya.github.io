@@ -371,7 +371,7 @@ body {
   } */
 }
 .js-navbar-links-touch {
-  /*when links are clicked on these styles are applied. :active pseudo class not working as desired.*/
+  /*when links are TOUCHED on these styles are applied. :active/focus-visible pseudo class not working as desired.*/
   transition-duration: 0s;
 
   color: var(--text-hover-color); /*for texts*/
@@ -597,7 +597,7 @@ body {
   /* height: 100%; */
   font-size: 2ch;
   overflow-x: hidden;
-  border: 2px red solid;
+  /* border: 2px red solid; */
 }
 
 .footer-curve {
@@ -670,14 +670,26 @@ body {
   transition-duration: 0.5s;
 }
 
-.footer__email-link:hover,
-.footer__email-link:focus-visible {
+@media (hover: hover) {
+  .footer__email-link:hover,
+  .footer__email-link:focus-visible {
+    background-color: var(--clickable-link-highlight);
+
+    border: 1ch solid var(--clickable-link-highlight);
+    border-top: 0.5ch solid var(--clickable-link-highlight);
+    border-bottom: 0.5ch solid var(--clickable-link-highlight);
+  }
+}
+
+.js-footer__email-touch-start {
+  /*for mobile only*/
   background-color: var(--clickable-link-highlight);
 
   border: 1ch solid var(--clickable-link-highlight);
   border-top: 0.5ch solid var(--clickable-link-highlight);
   border-bottom: 0.5ch solid var(--clickable-link-highlight);
 }
+
 .footer__copyright {
   letter-spacing: normal;
   font-size: 1ch;
