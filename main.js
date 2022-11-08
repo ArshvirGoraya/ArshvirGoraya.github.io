@@ -516,3 +516,121 @@ function FooterEmailInteractEnd(){
     footerCurveMiddleGround.classList.remove("js-footer-middleground-hover-color");
     footerCurveBackGround.classList.remove("js-footer-backgroundground-hover-color");
 } ;
+
+//4.============================GAME============================================
+const gameBox = document.querySelector('.game-area');
+const gameCircle = document.querySelector('.game-button');
+
+let gameBoxSize = [gameBox.clientWidth , gameBox.clientHeight];
+let gameCircleSize = [gameCircle.offsetWidth, gameCircle.offsetHeight];
+let coordArea = [gameBoxSize[0] - gameCircleSize[0], gameBoxSize[1] - gameCircleSize[1]]
+
+//want to get size of gameArea and gameCircle agains if window resizes.
+
+let resizeTimeOutID; //ensures that resize function does not run on EACH resize, but whenever the user stops resizing (for at least for a few ms).
+window.addEventListener("resize", () => {
+    clearTimeout(resizeTimeOutID);
+
+    resizeTimeOutID = setTimeout(() => {
+        gameBoxSize = [gameBox.clientWidth , gameBox.clientHeight]; //client size = content + padding.
+        gameCircleSize = [gameCircle.offsetWidth, gameCircle.offsetHeight]; //offset size = content + padding + border + margin
+
+        //Area used to generate random coord point:
+            //Since top right of the circle is the anchor point, want to ensure
+                //its width and height don't go outside the game area. 
+                //Simply subtracted circle's width and height from area's width and height.)
+                //Coord area ensures a point is generated that DOES NOT let the circle go outside of the game area.
+        coordArea = [gameBoxSize[0] - gameCircleSize[0], gameBoxSize[1] - gameCircleSize[1]] 
+
+
+    }, 150);
+});
+
+let easyMode = false;
+let score = 0;
+const scoreElement = document.querySelector('.score');
+
+const gameCircleDuplicate = gameCircle.cloneNode(); //can have multiple game circles (no need for deep clone since it has no children or text)
+gameBox.appendChild(gameCircleDuplicate);
+gameCircleDuplicate.style.display = "none";
+
+
+gameCircle.onclick = generateRandomCoordsAndSet;
+gameCircleDuplicate.onclick = generateRandomCoordsAndSet;
+
+
+function generateRandomCoordsAndSet(){
+    let newCirclePosition = [Math.floor(Math.random() * coordArea[0] + 1), Math.floor(Math.random() * coordArea[1] + 1)];
+
+    score +=1;
+    scoreElement.textContent  = score;
+
+    if (easyMode){
+        // let newCirclePosition = [Math.floor(Math.random() * coordArea[0] + 1), Math.floor(Math.random() * coordArea[1] + 1)];
+        setCircleToRandomPoint(gameCircle, newCirclePosition);
+    }
+    else{
+        if (gameCircle.style.display === "none"){ //display gameCircle 1. Hide 2.
+            gameCircleDuplicate.style.display = "none";
+
+            //set game Circle 1 to random point before displaying.
+            setCircleToRandomPoint(gameCircle, newCirclePosition);
+
+            gameCircle.style.display = "initial"; //set to inital to display.
+
+        }
+        else{                                     //display gameCircle 2. Hide 1.
+            gameCircle.style.display = "none";
+
+            setCircleToRandomPoint(gameCircleDuplicate, newCirclePosition);
+            
+            gameCircleDuplicate.style.display = "initial";
+        }
+    }
+
+
+    if (score === 100){ //when score reaches triple digits.
+        document.querySelector('.score').style.fontSize = "9ch"
+    }
+    else if (score === 1000){ //when score reaches 4 digits.
+        document.querySelector('.score').style.fontSize = "7ch"
+    }
+
+}
+function setCircleToRandomPoint(circleElement, Coords){
+    circleElement.style.transform = "translate(" + (Coords[0]) + "px, " + (Coords[1]) + "px)";
+};
+
+//Difficulty setter:
+const difficultyCheckbox = document.querySelector('#difficulty-checkbox');
+
+//hard mode or easy mode selected.
+difficultyCheckbox.onchange = () => { 
+    if (difficultyCheckbox.checked === true){ //hard mode selected
+        easyMode = false;
+    }
+    else{                           //easy mode selected
+        easyMode = true;
+        gameCircleDuplicate.style.display = "none";
+        gameCircle.style.display = "initial"
+    }
+};
+
+//Difficulty checkbox (want to be able to check it with the enter key)
+difficultyCheckbox.onkeypress = (e) => {
+    if(e.key === "Enter"){ //CHECKBOX set by defauly if space is hit so no need to check for space.
+        // console.log("enter pressed?");
+        difficultyCheckbox.checked = !difficultyCheckbox.checked;
+    }
+};
+
+
+
+
+
+
+// function getRandomCoordFromArea (areaWidth, areaHeight){
+//     return [Math.floor(Math.random() * areaWidth + 1), Math.floor(Math.random() * areaHeight + 1)]
+// };
+
+
