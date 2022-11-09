@@ -243,27 +243,49 @@
       <section class="game-section">
         <div class="game-wrapper">
           <div class="game-area">
-            <div class="game-difficulty-wrapper">
-              <p>easy mode</p>
-              <!-- <button id="difficulty-checkbox"></button> -->
-              <input
-                type="checkbox"
-                id="difficulty-checkbox"
-                checked="checkbox"
-                aria-label="game hard mode difficulty"
-                aria-checked="true"
-              />
-              <label class="difficulty-switch-label" for="difficulty-checkbox">
-              </label>
-              <p>hard mode</p>
+            <div class="game-area-overlay">
+              <div class="starting__options">
+                <div class="starting__options-hi-message">
+                  <button class="hi__message">
+                    <p>Hi! I'm Arshvir :)</p>
+                    <span>v</span>
+                  </button>
+                </div>
+
+                <div class="starting__options-selections">
+                  <div class="game__start-container">
+                    <button class="game__start">Play Game</button>
+                    <div class="game-difficulty-wrapper">
+                      <input
+                        type="checkbox"
+                        id="difficulty-checkbox"
+                        checked="checkbox"
+                        aria-label="game hard mode difficulty"
+                        aria-checked="true"
+                      />
+                      <label
+                        class="difficulty-switch-label"
+                        for="difficulty-checkbox"
+                      >
+                      </label>
+                      <p class="difficulty-text"><span></span></p>
+                    </div>
+                  </div>
+
+                  <a class="scroll__down" href="">Scroll Down</a>
+                </div>
+              </div>
             </div>
+
             <div class="score-wrapper"><div class="score">0</div></div>
 
             <button
               aria-label="game hit button"
               class="game-button"
               tabindex="-1"
-            ></button>
+            >
+              hit me!
+            </button>
           </div>
         </div>
       </section>

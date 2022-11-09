@@ -737,47 +737,164 @@ body {
 
   /* aspect-ratio: 1; */
 }
+
 .game-wrapper {
   width: 50%;
   height: 100%;
   padding: 2ch;
 
-  border: rgb(128, 0, 128) 2px solid;
+  border: rgba(128, 0, 128, 0.033) 2px solid;
 
   background-color: rgba(15, 33, 195, 0.042);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
+.game-area-overlay {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+
+  /* position: relative; */
+}
+.starting__options {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  /* transition: all 0.5s; */
+  z-index: 1;
+}
+.hi__message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1ch;
+  transition: all 0.5s;
+  /* height: 0; */
+  /* transform: translateY(1ch); */
+}
+.hi__message,
+.game__start,
+.scroll__down {
+  background-color: transparent;
+  border: none;
+
+  cursor: pointer;
+
+  color: var(--text-color);
+  font-weight: bolder;
+  font-size: 1.5ch;
+}
+.starting__options-hi-message {
+  position: relative;
+  transition: all 0.5s;
+  transform: translateY(5ch);
+  z-index: 2;
+}
+.starting__options-selections {
+  /* display: flex; */
+  flex-direction: column;
+  margin-right: 4ch;
+
+  transition: all 0.5s;
+
+  /* width: 0;
+  height: 0; */
+
+  scale: 0;
+}
+
+.game__start,
+.scroll__down {
+  background-color: var(--clickable-link);
+  border: initial;
+  border-radius: 0.5ch;
+
+  padding: 0ch 1ch;
+  /* margin-bottom: 0.5ch; */
+  /* width: 75%; */
+
+  text-align: center;
+  font-size: 1.5ch;
+
+  font-weight: 600;
+  font-family: sans-serif;
+  transition: background-color 0.5s;
+}
+.game__start {
+  letter-spacing: 0.1ch;
+}
+.game__start:hover,
+.scroll__down:hover {
+  background-color: var(--clickable-link-highlight);
+}
+
+.hi__message span {
+  animation: upDownNameArrow 1.5s alternate ease-in-out infinite;
+}
+
+.hi__message:hover {
+  color: var(--clickable-link-highlight);
+}
+
+@keyframes upDownNameArrow {
+  from {
+    transform: translateY(-0.5ch);
+  }
+  to {
+    transform: translateY(0.5ch);
+  }
+}
+
 .game-area {
+  display: flex;
+  flex-direction: column;
+
   margin: 0;
   padding: 0;
   width: 100%;
   height: 100%;
-  border: yellow 2px solid;
+  /* border: yellow 2px solid; */
 
-  display: flex;
-  flex-direction: column;
+  position: relative;
 }
 
 .score-wrapper {
   width: 100%;
   height: 100%;
+
   display: flex;
   justify-content: center;
   align-items: center;
+
+  position: absolute;
+  z-index: 0;
+  /* display: none; */
 }
 .score {
-  /* width: 100%; */
-  /* height: 100%; */
-
+  opacity: 0;
+  transition: opacity 0.5s;
+  /* display: none; */
   /* align-self: center; */
-  text-align: center;
+  /* position: absolute; */
+
+  /* text-align: center; */
 
   margin: 0.2ch 0ch;
 
-  border: 1px red solid;
+  /* border: 1px red solid; */
 
   color: rgba(255, 255, 255, 0.323);
   font-size: 14ch;
   font-weight: bolder;
+
+  animation: glow 2s ease-in-out infinite alternate;
 
   -webkit-touch-callout: none;
   -webkit-user-select: none;
@@ -786,17 +903,37 @@ body {
   -ms-user-select: none;
   user-select: none;
 }
+@keyframes glow {
+  from {
+    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px peru, 0 0 40px #e60073,
+      0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px peru;
+  }
+  to {
+    text-shadow: 0 0 20px #fff, 0 0 30px peru, 0 0 40px peru, 0 0 50px #ff4da6,
+      0 0 60px peru, 0 0 70px peru, 0 0 80px peru;
+  }
+}
+
+.game__start-container {
+  width: 100%;
+  /* height: 100%; */
+
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5ch;
+}
 
 .game-difficulty-wrapper {
-  position: absolute;
+  /* position: absolute; */
   /*only made absolute so score text does not take this element into account when settings its position*/
 
   /* border: 1px red solid; */
 
-  align-self: center;
-
   display: flex;
-  align-items: center;
+  margin: 0;
+  padding: 0;
+  /* height: 100%; */
+  /* align-self: center; */
 }
 #difficulty-checkbox {
   opacity: 0;
@@ -812,7 +949,8 @@ body {
 
 .difficulty-switch-label {
   /* background of slider */
-  margin: 0 0.5ch;
+
+  margin: 0ch 0.3ch;
   width: 2ch;
   height: 1ch;
 
@@ -845,11 +983,34 @@ body {
   background-color: yellow;
 }
 #difficulty-checkbox:checked + .difficulty-switch-label::after {
-  background-color: red;
+  background-color: purple;
   margin-left: 1.1ch;
 }
 #difficulty-checkbox:focus-visible + .difficulty-switch-label {
   outline: auto;
+}
+.difficulty-text span {
+  position: absolute;
+}
+.difficulty-text span::after {
+  /* Hard mode when unchecked */
+  content: "hard mode";
+  width: 10ch;
+  display: none;
+}
+.difficulty-text span::before {
+  /* Easy mode when unchecked */
+  display: inline-block;
+  content: "easy mode";
+  width: 10ch;
+}
+#difficulty-checkbox:checked ~ .difficulty-text span::after {
+  /* Hard mode when checked */
+  display: inline-block;
+}
+#difficulty-checkbox:checked ~ .difficulty-text span::before {
+  /* Easy mode when checked */
+  display: none;
 }
 
 .game-button {
@@ -873,9 +1034,11 @@ body {
   /* X/Horizontal + Y/Vertical: should never be negative*/
   /* X/Horizontal + Y/Vertical: should never be more than the width/height of the game area*/
 
-  /* transform: translate(5em, 5em); */
-  /* transform-origin: center; */
+  transform: translate(5.2em, 6em);
   transform-origin: top left;
+
+  opacity: 0;
+  z-index: 0;
 }
 
 .game-button:hover {

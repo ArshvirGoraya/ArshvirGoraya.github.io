@@ -521,14 +521,44 @@ function FooterEmailInteractEnd(){
 const gameBox = document.querySelector('.game-area');
 const gameCircle = document.querySelector('.game-button');
 
+//Difficulty setter:
+const difficultyCheckbox = document.querySelector('#difficulty-checkbox');
+
+//Difficulty checkbox (want to be able to check it with the enter key)
+difficultyCheckbox.onkeypress = (e) => {
+    if(e.key === "Enter"){ //CHECKBOX set by defauly if space is hit so no need to check for space.
+        // console.log("enter pressed?");
+        difficultyCheckbox.checked = !difficultyCheckbox.checked;
+    }
+};
+
+
 let gameBoxSize = [gameBox.clientWidth , gameBox.clientHeight];
 let gameCircleSize = [gameCircle.offsetWidth, gameCircle.offsetHeight];
-let coordArea = [gameBoxSize[0] - gameCircleSize[0], gameBoxSize[1] - gameCircleSize[1]]
+let coordArea;
+
+//Game display button
+const gameStart = document.querySelector('.game__start');
+const startingDisplay = document.querySelector('.starting__options');
+
+
+gameStart.onclick = () => {
+    startingDisplay.style.display = "none";
+    gameBox.style.display = "flex";
+
+    coordArea = [gameBoxSize[0] - gameCircleSize[0], gameBoxSize[1] - gameCircleSize[1]];
+    console.log("resized new coords: ", coordArea);
+
+    gameCircle.style.opacity = "1";
+    scoreElement.style.opacity = "1";
+};
+
+
 
 //want to get size of gameArea and gameCircle agains if window resizes.
 
 let resizeTimeOutID; //ensures that resize function does not run on EACH resize, but whenever the user stops resizing (for at least for a few ms).
-window.addEventListener("resize", () => {
+gameBox.addEventListener("resize", () => {
     clearTimeout(resizeTimeOutID);
 
     resizeTimeOutID = setTimeout(() => {
@@ -540,8 +570,9 @@ window.addEventListener("resize", () => {
                 //its width and height don't go outside the game area. 
                 //Simply subtracted circle's width and height from area's width and height.)
                 //Coord area ensures a point is generated that DOES NOT let the circle go outside of the game area.
-        coordArea = [gameBoxSize[0] - gameCircleSize[0], gameBoxSize[1] - gameCircleSize[1]] 
+        coordArea = [gameBoxSize[0] - gameCircleSize[0], gameBoxSize[1] - gameCircleSize[1]];
 
+        console.log("resized new coords: ", coordArea);
 
     }, 150);
 });
@@ -553,6 +584,7 @@ const scoreElement = document.querySelector('.score');
 const gameCircleDuplicate = gameCircle.cloneNode(); //can have multiple game circles (no need for deep clone since it has no children or text)
 gameBox.appendChild(gameCircleDuplicate);
 gameCircleDuplicate.style.display = "none";
+gameCircleDuplicate.style.opacity = "1"; //duplication also copies inital opacity value so must reset it to 1.
 
 
 gameCircle.onclick = generateRandomCoordsAndSet;
@@ -561,6 +593,8 @@ gameCircleDuplicate.onclick = generateRandomCoordsAndSet;
 
 function generateRandomCoordsAndSet(){
     let newCirclePosition = [Math.floor(Math.random() * coordArea[0] + 1), Math.floor(Math.random() * coordArea[1] + 1)];
+
+    console.log("circle position: ", newCirclePosition);
 
     score +=1;
     scoreElement.textContent  = score;
@@ -601,8 +635,6 @@ function setCircleToRandomPoint(circleElement, Coords){
     circleElement.style.transform = "translate(" + (Coords[0]) + "px, " + (Coords[1]) + "px)";
 };
 
-//Difficulty setter:
-const difficultyCheckbox = document.querySelector('#difficulty-checkbox');
 
 //hard mode or easy mode selected.
 difficultyCheckbox.onchange = () => { 
@@ -616,21 +648,29 @@ difficultyCheckbox.onchange = () => {
     }
 };
 
-//Difficulty checkbox (want to be able to check it with the enter key)
-difficultyCheckbox.onkeypress = (e) => {
-    if(e.key === "Enter"){ //CHECKBOX set by defauly if space is hit so no need to check for space.
-        // console.log("enter pressed?");
-        difficultyCheckbox.checked = !difficultyCheckbox.checked;
+//Game UI stuff:
+
+const hi_message = document.querySelector('.starting__options-hi-message');
+const starting_options = document.querySelector('.starting__options-selections');
+
+hi_message.onclick = () =>{
+    if (hi_message.style.transform === "translateY(0ch)"){ //turn off
+        hi_message.style.transform = "translateY(5ch)";
+        starting_options.style.scale = "0";
+
+        //ensure scaled down buttons CANNOT be tabbed into!
+
+        // gameCircle.style.opacity = "0";
+        // scoreElement.style.opacity = "0";
+
+    }
+    else{ //turn on 
+        hi_message.style.transform = "translateY(0ch)";
+        starting_options.style.scale = "1";
+
+        //ensure scaled up buttons CAN be tabbed into!
+
+        // gameCircle.style.opacity = "1";
+        // scoreElement.style.opacity = "1";
     }
 };
-
-
-
-
-
-
-// function getRandomCoordFromArea (areaWidth, areaHeight){
-//     return [Math.floor(Math.random() * areaWidth + 1), Math.floor(Math.random() * areaHeight + 1)]
-// };
-
-
