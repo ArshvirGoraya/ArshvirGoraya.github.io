@@ -653,12 +653,22 @@ difficultyCheckbox.onchange = () => {
 const hi_message = document.querySelector('.starting__options-hi-message');
 const starting_options = document.querySelector('.starting__options-selections');
 
+gameStart.tabIndex = -1;
+difficultyCheckbox.tabIndex = -1;
+const scrollDown = document.querySelector('.scroll__down');
+scrollDown.tabIndex = -1;
+
+
+
 hi_message.onclick = () =>{
     if (hi_message.style.transform === "translateY(0ch)"){ //turn off
         hi_message.style.transform = "translateY(5ch)";
         starting_options.style.scale = "0";
 
         //ensure scaled down buttons CANNOT be tabbed into!
+        gameStart.tabIndex = -1;
+        difficultyCheckbox.tabIndex = -1;
+        scrollDown.tabIndex = -1;
 
         // gameCircle.style.opacity = "0";
         // scoreElement.style.opacity = "0";
@@ -669,6 +679,9 @@ hi_message.onclick = () =>{
         starting_options.style.scale = "1";
 
         //ensure scaled up buttons CAN be tabbed into!
+        gameStart.tabIndex = 0;
+        difficultyCheckbox.tabIndex = 0;
+        scrollDown.tabIndex = 0;
 
         // gameCircle.style.opacity = "1";
         // scoreElement.style.opacity = "1";

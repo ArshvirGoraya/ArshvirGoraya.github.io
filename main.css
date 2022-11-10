@@ -957,11 +957,10 @@ body {
   cursor: pointer;
   background-color: var(--clickable-link);
   border-radius: 1em;
-  transition: background-color 0.4s;
 
-  /* display: flex;
-  align-items: center; */
+  transition: background-color 0.4s;
 }
+
 .difficulty-switch-label::after {
   /* slider knob */
   content: "";
@@ -986,6 +985,10 @@ body {
   background-color: purple;
   margin-left: 1.1ch;
 }
+.difficulty-switch-label:hover {
+  background-color: #e0bdff !important; /*more specific selectors above, so simply put !important here*/
+}
+
 #difficulty-checkbox:focus-visible + .difficulty-switch-label {
   outline: auto;
 }
