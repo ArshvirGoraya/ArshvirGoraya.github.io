@@ -520,6 +520,8 @@ function FooterEmailInteractEnd(){
 //4.============================GAME============================================
 const gameBox = document.querySelector('.game-area');
 const gameCircle = document.querySelector('.game-button');
+const gameCircleTimerVisual = document.querySelector('.timerGrow');
+
 
 //Difficulty setter:
 const difficultyCheckbox = document.querySelector('#difficulty-checkbox');
@@ -532,31 +534,12 @@ difficultyCheckbox.onkeypress = (e) => {
     }
 };
 
-
+//Game set-up stuff
 let gameBoxSize = [gameBox.clientWidth , gameBox.clientHeight];
 let gameCircleSize = [gameCircle.offsetWidth, gameCircle.offsetHeight];
 let coordArea;
 
-//Game display button
-const gameStart = document.querySelector('.game__start');
-const startingDisplay = document.querySelector('.starting__options');
-
-
-gameStart.onclick = () => {
-    startingDisplay.style.display = "none";
-    gameBox.style.display = "flex";
-
-    coordArea = [gameBoxSize[0] - gameCircleSize[0], gameBoxSize[1] - gameCircleSize[1]];
-    console.log("resized new coords: ", coordArea);
-
-    gameCircle.style.opacity = "1";
-    scoreElement.style.opacity = "1";
-};
-
-
-
 //want to get size of gameArea and gameCircle agains if window resizes.
-
 let resizeTimeOutID; //ensures that resize function does not run on EACH resize, but whenever the user stops resizing (for at least for a few ms).
 gameBox.addEventListener("resize", () => {
     clearTimeout(resizeTimeOutID);
@@ -577,8 +560,10 @@ gameBox.addEventListener("resize", () => {
     }, 150);
 });
 
-let easyMode = false;
+//Gameplay stuff.
+let easyMode = true;
 let score = 0;
+let lives = 10;
 const scoreElement = document.querySelector('.score');
 
 const gameCircleDuplicate = gameCircle.cloneNode(); //can have multiple game circles (no need for deep clone since it has no children or text)
@@ -586,12 +571,44 @@ gameBox.appendChild(gameCircleDuplicate);
 gameCircleDuplicate.style.display = "none";
 gameCircleDuplicate.style.opacity = "1"; //duplication also copies inital opacity value so must reset it to 1.
 
-
 gameCircle.onclick = generateRandomCoordsAndSet;
 gameCircleDuplicate.onclick = generateRandomCoordsAndSet;
 
+let currentCircleTimer = null;
+let circleTimerMiliSeconds = 1000;
+function startCircleTimer(){ //on circle appear.
+    currentCircleTimer = setTimeout(() => {
+        missedCircle();
 
-function generateRandomCoordsAndSet(){
+    }, circleTimerMiliSeconds); //timer is cleared if circle is clicked before it runs out.
+};
+
+function missedCircle(){    //on circle timeout.
+    lives -= 1;
+    console.log("missed circle");
+    clearTimeout(currentCircleTimer);
+    
+
+    if (lives <= 0){
+        console.log("game lost");
+        startingDisplay.style.display = "flex";
+
+        gameCircle.style.display = "initial";
+        gameCircle.style.opacity = "0";
+        gameCircleDuplicate.style.display = "none";
+    }
+    else{
+        //if not lost, generate the next circle.
+        generateRandomCoordsAndSet();
+    }
+}
+function generateRandomCoordsAndSet(){  //on circle click + on circle missed.
+
+
+
+
+    clearTimeout(currentCircleTimer);
+
     let newCirclePosition = [Math.floor(Math.random() * coordArea[0] + 1), Math.floor(Math.random() * coordArea[1] + 1)];
 
     console.log("circle position: ", newCirclePosition);
@@ -606,22 +623,17 @@ function generateRandomCoordsAndSet(){
     else{
         if (gameCircle.style.display === "none"){ //display gameCircle 1. Hide 2.
             gameCircleDuplicate.style.display = "none";
-
             //set game Circle 1 to random point before displaying.
             setCircleToRandomPoint(gameCircle, newCirclePosition);
-
             gameCircle.style.display = "initial"; //set to inital to display.
 
         }
         else{                                     //display gameCircle 2. Hide 1.
             gameCircle.style.display = "none";
-
             setCircleToRandomPoint(gameCircleDuplicate, newCirclePosition);
-            
             gameCircleDuplicate.style.display = "initial";
         }
     }
-
 
     if (score === 100){ //when score reaches triple digits.
         document.querySelector('.score').style.fontSize = "9ch"
@@ -630,25 +642,48 @@ function generateRandomCoordsAndSet(){
         document.querySelector('.score').style.fontSize = "7ch"
     }
 
+    //Make visualizer 0.
+    gameCircleTimerVisual.style.transition = "scale " + 0 + "ms";
+    gameCircleTimerVisual.style.scale = "0";
+    currentCircleTimer = setTimeout(() => { //require a breif timeout before showing timer visualizer.
+        //increase visualizer
+        gameCircleTimerVisual.style.transition = "scale " + circleTimerMiliSeconds + "ms linear";
+        gameCircleTimerVisual.style.scale = "1";
+        startCircleTimer();
+    }, 1);
 }
+
+
 function setCircleToRandomPoint(circleElement, Coords){
     circleElement.style.transform = "translate(" + (Coords[0]) + "px, " + (Coords[1]) + "px)";
 };
 
 
-//hard mode or easy mode selected.
-difficultyCheckbox.onchange = () => { 
-    if (difficultyCheckbox.checked === true){ //hard mode selected
-        easyMode = false;
-    }
-    else{                           //easy mode selected
-        easyMode = true;
-        gameCircleDuplicate.style.display = "none";
-        gameCircle.style.display = "initial"
-    }
-};
+
+
+
+
 
 //Game UI stuff:
+//Game display button
+const gameStart = document.querySelector('.game__start');
+const startingDisplay = document.querySelector('.starting__options');
+
+gameStart.onclick = () => {
+    score = 0;
+    scoreElement.textContent  = score;
+    document.querySelector('.score').style.fontSize = "14ch"
+    
+    startingDisplay.style.display = "none";
+    gameBox.style.display = "flex";
+
+    coordArea = [gameBoxSize[0] - gameCircleSize[0], gameBoxSize[1] - gameCircleSize[1]];
+    console.log("resized new coords: ", coordArea);
+
+    gameCircle.style.opacity = "1";
+    scoreElement.style.opacity = "1";
+};
+
 
 const hi_message = document.querySelector('.starting__options-hi-message');
 const starting_options = document.querySelector('.starting__options-selections');
@@ -657,8 +692,6 @@ gameStart.tabIndex = -1;
 difficultyCheckbox.tabIndex = -1;
 const scrollDown = document.querySelector('.scroll__down');
 scrollDown.tabIndex = -1;
-
-
 
 hi_message.onclick = () =>{
     if (hi_message.style.transform === "translateY(0ch)"){ //turn off
@@ -685,5 +718,17 @@ hi_message.onclick = () =>{
 
         // gameCircle.style.opacity = "1";
         // scoreElement.style.opacity = "1";
+    }
+};
+
+//hard mode or easy mode selected.
+difficultyCheckbox.onchange = () => { 
+    if (difficultyCheckbox.checked === true){ //hard mode selected
+        easyMode = false;
+    }
+    else{                           //easy mode selected
+        easyMode = true;
+        gameCircleDuplicate.style.display = "none";
+        gameCircle.style.display = "initial"
     }
 };
