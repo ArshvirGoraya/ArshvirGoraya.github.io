@@ -1016,6 +1016,37 @@ body {
   display: none;
 }
 
+.lives-wrapper {
+  /* border: 1px solid green; */
+  display: flex;
+  align-items: flex-start;
+  position: absolute;
+  right: 0;
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+.lives-wrapper * {
+  margin-right: 0.5ch;
+}
+.lives-wrapper p {
+  color: var(--text-color);
+  font-size: 1.1ch;
+}
+.life {
+  border-left: 0.5ch solid transparent;
+  border-right: 0.5ch solid transparent;
+
+  border-bottom: 1ch solid green;
+
+  transform-origin: center;
+  transition-property: transform border-bottom;
+  transition-duration: 0.5s;
+}
+.js-Life-Off {
+  border-bottom: 1ch solid red;
+  transform: rotate(180deg);
+}
+
 .game-button {
   margin: 0;
   padding: 0;

@@ -520,7 +520,6 @@ function FooterEmailInteractEnd(){
 //4.============================GAME============================================
 const gameBox = document.querySelector('.game-area');
 const gameCircle = document.querySelector('.game-button');
-const gameCircleTimerVisual = document.querySelector('.timerGrow');
 
 
 //Difficulty setter:
@@ -561,12 +560,14 @@ gameBox.addEventListener("resize", () => {
 });
 
 //Gameplay stuff.
-let easyMode = true;
-let score = 0;
-let lives = 10;
+let easyMode = false;
+let score; //increment on game button click, reset to 0 on play game button click
+let lives; //set on playgame button click.
 const scoreElement = document.querySelector('.score');
+const livesElement = document.querySelector('.lives-wrapper');
 
-const gameCircleDuplicate = gameCircle.cloneNode(); //can have multiple game circles (no need for deep clone since it has no children or text)
+const gameCircleDuplicate = gameCircle.cloneNode(true); //can have multiple game circles (no need for deep clone since it has no children or text)
+
 gameBox.appendChild(gameCircleDuplicate);
 gameCircleDuplicate.style.display = "none";
 gameCircleDuplicate.style.opacity = "1"; //duplication also copies inital opacity value so must reset it to 1.
@@ -583,10 +584,18 @@ function startCircleTimer(){ //on circle appear.
     }, circleTimerMiliSeconds); //timer is cleared if circle is clicked before it runs out.
 };
 
+let CurrentLife = 1;
 function missedCircle(){    //on circle timeout.
+    if (CurrentLife <= 3){
+        const CurrentLifeVisual = document.querySelector('.life-' + CurrentLife);
+        CurrentLifeVisual.classList.add("js-Life-Off");
+        CurrentLife+=1;
+    }
+
     lives -= 1;
     console.log("missed circle");
     clearTimeout(currentCircleTimer);
+
     
 
     if (lives <= 0){
@@ -602,11 +611,9 @@ function missedCircle(){    //on circle timeout.
         generateRandomCoordsAndSet();
     }
 }
+let currentCircleElement = gameCircle;
+let currentGameCircleTimerVisual = currentCircleElement.firstElementChild;
 function generateRandomCoordsAndSet(){  //on circle click + on circle missed.
-
-
-
-
     clearTimeout(currentCircleTimer);
 
     let newCirclePosition = [Math.floor(Math.random() * coordArea[0] + 1), Math.floor(Math.random() * coordArea[1] + 1)];
@@ -627,11 +634,15 @@ function generateRandomCoordsAndSet(){  //on circle click + on circle missed.
             setCircleToRandomPoint(gameCircle, newCirclePosition);
             gameCircle.style.display = "initial"; //set to inital to display.
 
+            currentCircleElement = gameCircle;
+
         }
         else{                                     //display gameCircle 2. Hide 1.
             gameCircle.style.display = "none";
             setCircleToRandomPoint(gameCircleDuplicate, newCirclePosition);
             gameCircleDuplicate.style.display = "initial";
+
+            currentCircleElement = gameCircleDuplicate;
         }
     }
 
@@ -642,16 +653,21 @@ function generateRandomCoordsAndSet(){  //on circle click + on circle missed.
         document.querySelector('.score').style.fontSize = "7ch"
     }
 
-    //Make visualizer 0.
-    gameCircleTimerVisual.style.transition = "scale " + 0 + "ms";
-    gameCircleTimerVisual.style.scale = "0";
+
+    currentGameCircleTimerVisual = currentCircleElement.firstElementChild;
+    console.log(currentGameCircleTimerVisual);
+
+    // Make visualizer 0.
+    currentGameCircleTimerVisual.style.transition = "scale " + 0 + "ms";
+    currentGameCircleTimerVisual.style.scale = "0";
     currentCircleTimer = setTimeout(() => { //require a breif timeout before showing timer visualizer.
         //increase visualizer
-        gameCircleTimerVisual.style.transition = "scale " + circleTimerMiliSeconds + "ms linear";
-        gameCircleTimerVisual.style.scale = "1";
+        currentGameCircleTimerVisual.style.transition = "scale " + circleTimerMiliSeconds + "ms linear";
+        currentGameCircleTimerVisual.style.scale = "1";
         startCircleTimer();
     }, 1);
 }
+
 
 
 function setCircleToRandomPoint(circleElement, Coords){
@@ -680,8 +696,24 @@ gameStart.onclick = () => {
     coordArea = [gameBoxSize[0] - gameCircleSize[0], gameBoxSize[1] - gameCircleSize[1]];
     console.log("resized new coords: ", coordArea);
 
+    lives = 3;
+
     gameCircle.style.opacity = "1";
     scoreElement.style.opacity = "1";
+    livesElement.style.opacity = "1";
+
+    CurrentLife = 1;
+    document.querySelector('.life-' + 1).classList.remove("js-Life-Off");
+    document.querySelector('.life-' + 2).classList.remove("js-Life-Off");
+    document.querySelector('.life-' + 3).classList.remove("js-Life-Off");
+
+    // gameCircleTimerVisual.style.transition = "scale " + 0 + "ms";
+    // gameCircleTimerVisual.style.scale = "0";
+    currentCircleElement = gameCircle;
+    currentGameCircleTimerVisual = currentCircleElement.firstElementChild;
+    
+    currentGameCircleTimerVisual.style.transition = "scale " + 0 + "ms";
+    currentGameCircleTimerVisual.style.scale = "0";
 };
 
 
