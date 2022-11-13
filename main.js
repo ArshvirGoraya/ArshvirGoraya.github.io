@@ -566,7 +566,9 @@ let lives; //set on playgame button click.
 const scoreElement = document.querySelector('.score');
 const livesElement = document.querySelector('.lives-wrapper');
 
-const gameCircleDuplicate = gameCircle.cloneNode(true); //can have multiple game circles (no need for deep clone since it has no children or text)
+const gameCircleDuplicate = gameCircle.cloneNode(true); //can have multiple game circles
+
+
 
 gameBox.appendChild(gameCircleDuplicate);
 gameCircleDuplicate.style.display = "none";
@@ -576,8 +578,15 @@ gameCircle.onclick = generateRandomCoordsAndSet;
 gameCircleDuplicate.onclick = generateRandomCoordsAndSet;
 
 let currentCircleTimer = null;
-let circleTimerMiliSeconds = 1000;
+let circleTimerMiliSeconds;
 function startCircleTimer(){ //on circle appear.
+    if (easyMode === true){
+        //want to wait until the transition of the circle moving to its new location is over.
+        //This is set to take 0.5s in CSS.
+
+        let EasyModeWaitTime = setTimeout(()=>{console.log("easy mode wait")}, 500); //500ms = 0.5s. //does nothing and then excudtes code below this if statemwent.
+    };
+
     currentCircleTimer = setTimeout(() => {
         missedCircle();
 
@@ -595,8 +604,7 @@ function missedCircle(){    //on circle timeout.
     lives -= 1;
     console.log("missed circle");
     clearTimeout(currentCircleTimer);
-
-    
+    currentCircleIsGreen = false; 
 
     if (lives <= 0){
         console.log("game lost");
@@ -613,18 +621,25 @@ function missedCircle(){    //on circle timeout.
 }
 let currentCircleElement = gameCircle;
 let currentGameCircleTimerVisual = currentCircleElement.firstElementChild;
+let chanceOfGreen; //starts at 10% or 0.1f.
+let currentCircleIsGreen; // is false
+
+let increasePercentage; //resets to 0 after a certain number (5). Increases the speed at which circle's dissapear.
 function generateRandomCoordsAndSet(){  //on circle click + on circle missed.
+    if (score === 0){  //removes the "hit me!" text on the first hit.
+        gameCircle.removeChild(gameCircle.lastChild);
+    }
+
     clearTimeout(currentCircleTimer);
 
     let newCirclePosition = [Math.floor(Math.random() * coordArea[0] + 1), Math.floor(Math.random() * coordArea[1] + 1)];
 
-    console.log("circle position: ", newCirclePosition);
+    // console.log("circle position: ", newCirclePosition);
 
     score +=1;
     scoreElement.textContent  = score;
 
     if (easyMode){
-        // let newCirclePosition = [Math.floor(Math.random() * coordArea[0] + 1), Math.floor(Math.random() * coordArea[1] + 1)];
         setCircleToRandomPoint(gameCircle, newCirclePosition);
     }
     else{
@@ -647,17 +662,69 @@ function generateRandomCoordsAndSet(){  //on circle click + on circle missed.
     }
 
     if (score === 100){ //when score reaches triple digits.
-        document.querySelector('.score').style.fontSize = "9ch"
+        document.querySelector('.score').style.fontSize = "9ch";
     }
     else if (score === 1000){ //when score reaches 4 digits.
-        document.querySelector('.score').style.fontSize = "7ch"
+        document.querySelector('.score').style.fontSize = "7ch";
     }
 
 
-    currentGameCircleTimerVisual = currentCircleElement.firstElementChild;
-    console.log(currentGameCircleTimerVisual);
+    //Green Button Check
+    currentCircleElement.style.backgroundColor = ""; //if was green, then resets to default.
 
-    // Make visualizer 0.
+    if (currentCircleIsGreen){ //if is green and just hit it.
+        currentCircleIsGreen = false;
+        lives += 1;
+        console.log("Hit green circle");
+        //also need to increase lives visually
+        CurrentLife-=1;
+        document.querySelector('.life-' + CurrentLife).classList.remove("js-Life-Off");
+    };
+
+    if (score < 75){
+        if (score === 25){
+            chanceOfGreen = 0.15; //increases chance of green to 15%.
+            console.log("Chance of green increased to 15%");
+
+            //also want to make second circle SMALL at 50 score.
+            gameCircleDuplicate.style.scale = "0.75";
+        }
+        else if (score === 50){
+            chanceOfGreen = 0.2; //increases chance of green to 20%.
+            console.log("Chance of green increased to 20%");
+        }
+        else if (score === 75){
+            chanceOfGreen = 0.4; //increases chance of green to 40%.
+            console.log("Chance of green increased to 40%");
+        };
+    };
+
+    if (lives < 3){ //can only turn green IF have less than max lives.
+        var RandomFloat = Math.random() //generates 0 - 1 float.
+        if (RandomFloat <= chanceOfGreen){ // Chance of Green starts at 10% (0.1) but can change mid-game.
+            console.log("Green chance met");
+            currentCircleElement.style.backgroundColor = "green";
+
+            currentCircleIsGreen = true;
+        }
+    };
+
+
+    //Increase speed of circke Timer.
+    increasePercentage +=1;
+
+    if (circleTimerMiliSeconds >= 600 && increasePercentage >= 5){ //Does not allow circle timer to go below ~600 milliseconds.
+        increasePercentage = 0;
+
+        var percent = (5 / 100) * circleTimerMiliSeconds; //gets 5% of Circle timer.
+        circleTimerMiliSeconds -= percent; //subtracts 5% from circle timer.
+        console.log("Circle Timer: ", circleTimerMiliSeconds);
+    };
+
+
+    //Circle Timer Visualizer.
+    currentGameCircleTimerVisual = currentCircleElement.firstElementChild;
+
     currentGameCircleTimerVisual.style.transition = "scale " + 0 + "ms";
     currentGameCircleTimerVisual.style.scale = "0";
     currentCircleTimer = setTimeout(() => { //require a breif timeout before showing timer visualizer.
@@ -665,7 +732,7 @@ function generateRandomCoordsAndSet(){  //on circle click + on circle missed.
         currentGameCircleTimerVisual.style.transition = "scale " + circleTimerMiliSeconds + "ms linear";
         currentGameCircleTimerVisual.style.scale = "1";
         startCircleTimer();
-    }, 1);
+    }, 50); //delay timer can be anyting above 0.
 }
 
 
@@ -703,17 +770,26 @@ gameStart.onclick = () => {
     livesElement.style.opacity = "1";
 
     CurrentLife = 1;
-    document.querySelector('.life-' + 1).classList.remove("js-Life-Off");
-    document.querySelector('.life-' + 2).classList.remove("js-Life-Off");
-    document.querySelector('.life-' + 3).classList.remove("js-Life-Off");
+    document.querySelector('.life-1').classList.remove("js-Life-Off");
+    document.querySelector('.life-2').classList.remove("js-Life-Off");
+    document.querySelector('.life-3').classList.remove("js-Life-Off");
 
-    // gameCircleTimerVisual.style.transition = "scale " + 0 + "ms";
-    // gameCircleTimerVisual.style.scale = "0";
     currentCircleElement = gameCircle;
     currentGameCircleTimerVisual = currentCircleElement.firstElementChild;
-    
+
     currentGameCircleTimerVisual.style.transition = "scale " + 0 + "ms";
     currentGameCircleTimerVisual.style.scale = "0";
+
+    circleTimerMiliSeconds = 1000;
+    increasePercentage = 0;
+
+    currentCircleElement.style.backgroundColor = "";
+    chanceOfGreen = 0.1;
+    currentCircleIsGreen = false;
+    //
+    gameCircleDuplicate.style.scale = "";
+
+    gameCircle.append("hit me!"); //adds hit me as text on the game button to notify the user. is removed on the first hit.
 };
 
 
