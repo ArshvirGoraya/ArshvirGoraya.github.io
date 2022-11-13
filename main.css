@@ -455,7 +455,6 @@ body {
   transition-timing-function: cubic-bezier(0.68, -0.55, 0.27, 1.55);
   opacity: 1;
 
-  /* z-index: -1; */
   outline: solid var(--navbar-color) 1px;
 }
 
@@ -616,7 +615,6 @@ body {
 }
 
 .footer-curve {
-  /* z-index: 0; */
   position: relative;
 
   fill: var(--navbar-color);
@@ -677,7 +675,6 @@ body {
 }
 
 .footer__list {
-  /* z-index: 1; */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -768,7 +765,7 @@ body {
   justify-content: center;
   width: 100%;
   /* transition: all 0.5s; */
-  z-index: 1;
+  z-index: 998;
 }
 .hi__message {
   display: flex;
@@ -795,7 +792,7 @@ body {
   position: relative;
   transition: all 0.5s;
   transform: translateY(5ch);
-  z-index: 2;
+  z-index: 999;
 }
 .starting__options-selections {
   /* display: flex; */
@@ -874,7 +871,7 @@ body {
   align-items: center;
 
   position: absolute;
-  z-index: 0;
+  z-index: 2;
   /* display: none; */
 }
 .score {
@@ -905,12 +902,22 @@ body {
 }
 @keyframes glow {
   from {
-    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px peru, 0 0 40px #e60073,
+    text-shadow: 0 0 10px peru, 0 0 20px indigo, 0 0 30px peru, 0 0 40px #e60073,
       0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px peru;
   }
   to {
-    text-shadow: 0 0 20px #fff, 0 0 30px peru, 0 0 40px peru, 0 0 50px #ff4da6,
+    text-shadow: 0 0 20px peru, 0 0 30px indigo, 0 0 40px peru, 0 0 50px #ff4da6,
       0 0 60px peru, 0 0 70px peru, 0 0 80px peru;
+  }
+}
+@keyframes glowRainBowJS {
+  from {
+    text-shadow: 0 0 10px violet, 0 0 20px indigo, 0 0 30px blue, 0 0 40px green,
+      0 0 50px green, 0 0 60px yellow, 0 0 70px orange, 0 0 80px red;
+  }
+  to {
+    text-shadow: 0 0 20px violet, 0 0 30px indigo, 0 0 40px blue, 0 0 50px green,
+      0 0 60px yellow, 0 0 70px orange, 0 0 80px red;
   }
 }
 
@@ -1067,19 +1074,11 @@ body {
   transition-property: box-shadow background-color;
   transition-duration: 0.5s; /* easy mode */
 
-  /* Moving button around: */
-  /* X/Horizontal + Y/Vertical: should never be negative*/
-  /* X/Horizontal + Y/Vertical: should never be more than the width/height of the game area*/
-
   transform: translate(5.2em, 6em);
   transform-origin: top left;
 
   opacity: 0;
-  z-index: 0;
-
-  /* display: flex;
-  justify-content: center;
-  align-items: center; */
+  z-index: 4;
 }
 
 .game-button:hover {
@@ -1114,6 +1113,86 @@ body {
 
   font-size: 1.3ch;
 
-  scale: 0;
-  /*transition-property: scale; /*get biffer with JS*/
+  scale: 0; /*get bigger with JS*/
+}
+
+.confetti-wrapper {
+  margin: 0;
+  padding: 0;
+  top: 0;
+  left: 0;
+  transform-origin: top left;
+
+  position: absolute;
+
+  pointer-events: none;
+
+  width: 4.5ch;
+  height: 4.5ch;
+
+  /* background-color: black; */
+  z-index: 3;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.confetti {
+  display: none;
+  margin: 0;
+  padding: 0;
+  top: 0;
+  left: 0;
+
+  margin-right: 1ch;
+  margin-bottom: 1ch;
+
+  opacity: 1;
+  transition: opacity 1s;
+}
+.confetti-sqauare,
+.confetti-line {
+  transition-property: transform opacity;
+  transition-duration: 0.5s;
+
+  position: absolute;
+  width: 1ch;
+  height: 1ch;
+
+  background-color: rgb(102, 128, 0);
+  border-width: 0;
+}
+.confetti-line {
+  width: 0.4ch;
+}
+.confetti-circle {
+  transition-property: transform opacity;
+  transition-duration: 0.5s;
+
+  position: absolute;
+
+  width: 1ch;
+  height: 1ch;
+
+  background-color: purple;
+  border-width: 0;
+
+  border-radius: 50%;
+
+  /* rotate: 90deg; */ /*random rotation in JS*/
+  /* transform: translateY(4ch); */ /*TranslateY in JS*/
+}
+.confetti-triagle {
+  transition-property: transform opacity;
+  transition-duration: 0.5s;
+
+  position: absolute;
+
+  width: 0;
+  height: 0;
+
+  border-left: 0.5ch solid transparent;
+  border-right: 0.5ch solid transparent;
+  border-bottom: 1ch solid rgb(122, 128, 0);
 }

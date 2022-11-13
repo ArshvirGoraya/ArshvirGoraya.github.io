@@ -520,6 +520,7 @@ function FooterEmailInteractEnd(){
 //4.============================GAME============================================
 const gameBox = document.querySelector('.game-area');
 const gameCircle = document.querySelector('.game-button');
+const confettiElement = document.querySelector('.confetti-wrapper'); 
 
 
 //Difficulty setter:
@@ -616,7 +617,7 @@ function missedCircle(){    //on circle timeout.
     }
     else{
         //if not lost, generate the next circle.
-        generateRandomCoordsAndSet();
+        generateRandomCoordsAndSet(null, true);
     }
 }
 let currentCircleElement = gameCircle;
@@ -625,7 +626,7 @@ let chanceOfGreen; //starts at 10% or 0.1f.
 let currentCircleIsGreen; // is false
 
 let increasePercentage; //resets to 0 after a certain number (5). Increases the speed at which circle's dissapear.
-function generateRandomCoordsAndSet(){  //on circle click + on circle missed.
+function generateRandomCoordsAndSet(event, missed = false){  //on circle click + on circle missed.
     if (score === 0){  //removes the "hit me!" text on the first hit.
         gameCircle.removeChild(gameCircle.lastChild);
     }
@@ -636,8 +637,12 @@ function generateRandomCoordsAndSet(){  //on circle click + on circle missed.
 
     // console.log("circle position: ", newCirclePosition);
 
-    score +=1;
-    scoreElement.textContent  = score;
+    if (missed === false){
+        console.log("not missed");
+        score +=1;
+        scoreElement.textContent  = score;
+    }
+
 
     if (easyMode){
         setCircleToRandomPoint(gameCircle, newCirclePosition);
@@ -650,7 +655,6 @@ function generateRandomCoordsAndSet(){  //on circle click + on circle missed.
             gameCircle.style.display = "initial"; //set to inital to display.
 
             currentCircleElement = gameCircle;
-
         }
         else{                                     //display gameCircle 2. Hide 1.
             gameCircle.style.display = "none";
@@ -662,11 +666,11 @@ function generateRandomCoordsAndSet(){  //on circle click + on circle missed.
     }
 
     if (score === 100){ //when score reaches triple digits.
-        document.querySelector('.score').style.fontSize = "9ch";
+        scoreElement.style.fontSize = "9ch";
     }
     else if (score === 1000){ //when score reaches 4 digits.
-        document.querySelector('.score').style.fontSize = "7ch";
-    }
+        scoreElement.style.fontSize = "7ch";
+    };
 
 
     //Green Button Check
@@ -698,9 +702,22 @@ function generateRandomCoordsAndSet(){  //on circle click + on circle missed.
             console.log("Chance of green increased to 40%");
         };
     };
+    if (score >= 0){ //SHOULD BE 100!!!! NOT 0!!! JUST TESTING...
+        if (score === 100){ //changes score glow.
+            scoreElement.style.animation = "glowRainBowJS 2s ease-in-out infinite alternate";
+
+            //Want to reset Circle Timer.
+            circleTimerMiliSeconds = 1000;
+
+            //Want to add a third circle. Which now appears ALONG SIDE the other circles.
+        }
+        confettiOnCurrentCircle();
+    }
+
+
 
     if (lives < 3){ //can only turn green IF have less than max lives.
-        var RandomFloat = Math.random() //generates 0 - 1 float.
+        const RandomFloat = Math.random(); //generates 0 - 1 float.
         if (RandomFloat <= chanceOfGreen){ // Chance of Green starts at 10% (0.1) but can change mid-game.
             console.log("Green chance met");
             currentCircleElement.style.backgroundColor = "green";
@@ -741,7 +758,53 @@ function setCircleToRandomPoint(circleElement, Coords){
     circleElement.style.transform = "translate(" + (Coords[0]) + "px, " + (Coords[1]) + "px)";
 };
 
+function confettiOnCurrentCircle(){
+    //ALSO want to chance the circle's color
+    const r = Math.floor(Math.random() * 255 + 1);
+    const g = Math.floor(Math.random() * 255 + 1);
+    const b = Math.floor(Math.random() * 255 + 1);
 
+    currentCircleElement.style.backgroundColor = "rgb(" + r + "," + g +"," + b +")";
+
+    const confettiElementClone = confettiElement.cloneNode(true);
+    confettiElementClone.style.transform = currentCircleElement.style.transform;
+
+
+    confettiElementClone.style.scale = currentCircleElement.style.scale;
+    // confettiElementClone.style.scale = currentCircleElement.style.scale;
+
+    gameBox.appendChild(confettiElementClone);
+    
+
+    confettiElementClone.children[0].style.display = "unset";
+
+    for (let i = 0; i < confettiElementClone.children[0].children.length; i++) {
+        const confetti = confettiElementClone.children[0].children[i];
+
+        const confettiRotation = Math.floor(Math.random() * 360 + 1); //0 - 360//
+
+        confetti.style.rotate = confettiRotation + "deg";
+        const hold = setTimeout(() => {
+            confetti.style.transform = "translateY(4ch)"; //starts a transition. 
+            confetti.style.opacity = "0"; //starts a transtion
+
+            //want to give each a randomized color.
+            confetti.style.backgroundColor = "rgb(" + r + "," + g +"," + b +")";
+            r = Math.floor(Math.random() * 255 + 1);
+            g = Math.floor(Math.random() * 255 + 1);
+            b = Math.floor(Math.random() * 255 + 1);
+        
+        }, 100); //need to hold for a moment to let animation play.
+    }
+    
+    
+
+
+    const deleteTimer = setTimeout(() => {
+        confettiElementClone.remove();
+        
+    } ,550); //0.5s is when animation ends.
+};
 
 
 
@@ -788,6 +851,7 @@ gameStart.onclick = () => {
     currentCircleIsGreen = false;
     //
     gameCircleDuplicate.style.scale = "";
+    // scoreElement.style.animation = "";
 
     gameCircle.append("hit me!"); //adds hit me as text on the game button to notify the user. is removed on the first hit.
 };
