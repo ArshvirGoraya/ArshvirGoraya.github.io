@@ -537,7 +537,7 @@ difficultyCheckbox.onkeypress = (e) => {
 //Game set-up stuff
 let gameBoxSize = [gameBox.clientWidth , gameBox.clientHeight];
 let gameCircleSize = [gameCircle.offsetWidth, gameCircle.offsetHeight];
-let coordArea;
+let coordArea = [gameBoxSize[0] - gameCircleSize[0], gameBoxSize[1] - gameCircleSize[1]];
 
 //want to get size of gameArea and gameCircle agains if window resizes.
 let resizeTimeOutID; //ensures that resize function does not run on EACH resize, but whenever the user stops resizing (for at least for a few ms).
@@ -561,26 +561,51 @@ gameBox.addEventListener("resize", () => {
 });
 
 //Gameplay stuff.
-let easyMode = false;
 let score; //increment on game button click, reset to 0 on play game button click
+
+let easyMode = false;
+difficultyCheckbox.checked = true;
+
+gameCircle.style.transitionDuration = "0s"; //if easymode is false.
+
 let lives; //set on playgame button click.
 const scoreElement = document.querySelector('.score');
 const livesElement = document.querySelector('.lives-wrapper');
 
-const gameCircleDuplicate = gameCircle.cloneNode(true); //can have multiple game circles
+let extraCircles = [];
+
+function CreateNewCircle(Glide = false, TimerMS = null, Small = false, ToggleScale = false){
+    if (TimerMS === null){TimerMS = gameCircle.getAttribute("CircleTimerMS")};
+
+    const gameCircleDuplicate = gameCircle.cloneNode(true);
+
+    if (Glide){gameCircleDuplicate.style.transitionDuration = "0.5s";}
+    else {gameCircleDuplicate.style.transitionDuration = "0s";}
+
+    gameCircleDuplicate.onclick = ()  => {generateRandomCoordsAndSet(null, false, gameCircleDuplicate)};
+    gameBox.appendChild(gameCircleDuplicate);
+
+    extraCircles.push(gameCircleDuplicate);
+
+    gameCircleDuplicate.setAttribute("CircleTimerMS", TimerMS);
 
 
+    //addditional attributes
+    if (Small){
+        gameCircleDuplicate.style.scale = "0.75";
+    }
+    if (ToggleScale){
+        gameCircleDuplicate.setAttribute("ToggleScale", null); //Scale will toggle on and off depending on if it has this attribute
+    }
 
-gameBox.appendChild(gameCircleDuplicate);
-gameCircleDuplicate.style.display = "none";
-gameCircleDuplicate.style.opacity = "1"; //duplication also copies inital opacity value so must reset it to 1.
 
-gameCircle.onclick = generateRandomCoordsAndSet;
-gameCircleDuplicate.onclick = generateRandomCoordsAndSet;
+    startMissedTimer(gameCircleDuplicate);
+    return gameCircleDuplicate; //optional return
+}
 
-let currentCircleTimer = null;
-let circleTimerMiliSeconds;
-function startCircleTimer(){ //on circle appear.
+// let currentCircleTimer = null;
+
+function startCircleTimer(currentCircle, CircleTimer){ //on circle appear.
     if (easyMode === true){
         //want to wait until the transition of the circle moving to its new location is over.
         //This is set to take 0.5s in CSS.
@@ -588,24 +613,23 @@ function startCircleTimer(){ //on circle appear.
         let EasyModeWaitTime = setTimeout(()=>{console.log("easy mode wait")}, 500); //500ms = 0.5s. //does nothing and then excudtes code below this if statemwent.
     };
 
-    currentCircleTimer = setTimeout(() => {
-        missedCircle();
 
-    }, circleTimerMiliSeconds); //timer is cleared if circle is clicked before it runs out.
+    currentCircle.setAttribute("TimeoutID", setTimeout(() => {
+        missedCircle(currentCircle);
+    }, CircleTimer)); //timer is cleared if circle is clicked before it runs out.
+    console.log("Missed timer on Circle: ", currentCircle.className, " = ", currentCircle.getAttribute("TimeoutID"));
 };
-
 let CurrentLife = 1;
-function missedCircle(){    //on circle timeout.
+function missedCircle(circleMissed){    //on circle timeout.
     if (CurrentLife <= 3){
         const CurrentLifeVisual = document.querySelector('.life-' + CurrentLife);
         CurrentLifeVisual.classList.add("js-Life-Off");
         CurrentLife+=1;
     }
+    clearTimeout(circleMissed.getAttribute("TimeoutID"));
 
     lives -= 1;
-    console.log("missed circle");
-    clearTimeout(currentCircleTimer);
-    currentCircleIsGreen = false; 
+    console.log("missed circle: ", circleMissed.className);
 
     if (lives <= 0){
         console.log("game lost");
@@ -613,85 +637,95 @@ function missedCircle(){    //on circle timeout.
 
         gameCircle.style.display = "initial";
         gameCircle.style.opacity = "0";
-        gameCircleDuplicate.style.display = "none";
+
+        //delete all extra circles here. 
+        extraCircles.forEach(element => {
+            console.log("removed circle: ", element.className);
+            gameBox.removeChild(element);
+        });
+        extraCircles = [];
     }
     else{
         //if not lost, generate the next circle.
-        generateRandomCoordsAndSet(null, true);
+        generateRandomCoordsAndSet(null, true, circleMissed);
     }
 }
 let currentCircleElement = gameCircle;
 let currentGameCircleTimerVisual = currentCircleElement.firstElementChild;
 let chanceOfGreen; //starts at 10% or 0.1f.
-let currentCircleIsGreen; // is false
+// let circleTimerMiliSeconds;
 
 let increasePercentage; //resets to 0 after a certain number (5). Increases the speed at which circle's dissapear.
-function generateRandomCoordsAndSet(event, missed = false){  //on circle click + on circle missed.
+
+let oneoff = true;
+let amountOfCircles = 1;
+
+gameCircle.onclick = () => {generateRandomCoordsAndSet(null, false, gameCircle)}; //must be declared LAST. 
+
+function generateRandomCoordsAndSet(event, missed = false, ClickedCircleElement){  //on circle click + on circle missed.
+    // console.log("Circle clicked: ", ClickedCircleElement.className);
+
     if (score === 0){  //removes the "hit me!" text on the first hit.
         gameCircle.removeChild(gameCircle.lastChild);
     }
+    else{
+        //want to clear out the TimeOutID of the clicked circle. 
+        clearTimeout(ClickedCircleElement.getAttribute("TimeoutID")); //ensure it is "current" and not "clicked" here.
+        console.log("Unset missed timer on: ", ClickedCircleElement.className);
 
-    clearTimeout(currentCircleTimer);
+    }
+    currentCircleElement = ClickedCircleElement;
+
+    
+    
 
     let newCirclePosition = [Math.floor(Math.random() * coordArea[0] + 1), Math.floor(Math.random() * coordArea[1] + 1)];
 
-    // console.log("circle position: ", newCirclePosition);
-
-    if (missed === false){
-        console.log("not missed");
+    if (missed === false){ //update score.
         score +=1;
-        scoreElement.textContent  = score;
-    }
 
-
-    if (easyMode){
-        setCircleToRandomPoint(gameCircle, newCirclePosition);
-    }
-    else{
-        if (gameCircle.style.display === "none"){ //display gameCircle 1. Hide 2.
-            gameCircleDuplicate.style.display = "none";
-            //set game Circle 1 to random point before displaying.
-            setCircleToRandomPoint(gameCircle, newCirclePosition);
-            gameCircle.style.display = "initial"; //set to inital to display.
-
-            currentCircleElement = gameCircle;
+        if (score === 100){ //when score reaches triple digits.
+            scoreElement.style.fontSize = "9ch";
         }
-        else{                                     //display gameCircle 2. Hide 1.
-            gameCircle.style.display = "none";
-            setCircleToRandomPoint(gameCircleDuplicate, newCirclePosition);
-            gameCircleDuplicate.style.display = "initial";
+        else if (score === 1000){ //when score reaches 4 digits.
+            scoreElement.style.fontSize = "7ch";
+        };
 
-            currentCircleElement = gameCircleDuplicate;
-        }
+        scoreElement.textContent = score;
     }
 
-    if (score === 100){ //when score reaches triple digits.
-        scoreElement.style.fontSize = "9ch";
-    }
-    else if (score === 1000){ //when score reaches 4 digits.
-        scoreElement.style.fontSize = "7ch";
-    };
-
+    setCircleToRandomPoint(ClickedCircleElement, newCirclePosition);
 
     //Green Button Check
-    currentCircleElement.style.backgroundColor = ""; //if was green, then resets to default.
+    ClickedCircleElement.style.backgroundColor = ""; //if was green, then resets to default.
 
-    if (currentCircleIsGreen){ //if is green and just hit it.
-        currentCircleIsGreen = false;
-        lives += 1;
-        console.log("Hit green circle");
-        //also need to increase lives visually
-        CurrentLife-=1;
-        document.querySelector('.life-' + CurrentLife).classList.remove("js-Life-Off");
-    };
+    if (ClickedCircleElement.getAttribute("isGreen") === "true"){ //if is green and just hit it.
 
+        console.log("====> IS GREEN!");
+
+        ClickedCircleElement.setAttribute("isGreen", "false");
+
+        if (lives < 3){ //multiple green circles can appear at once, clicking one may set it to 3, clicking the other should do nothing.
+            lives += 1;
+            //also need to increase lives visually
+            CurrentLife-=1;
+            document.querySelector('.life-' + CurrentLife).classList.remove("js-Life-Off");
+        }
+    }
+    else{
+        console.log("green attribute: is false ", ClickedCircleElement.getAttribute("isGreen"));
+    }
+
+
+
+
+    //difficulty decrease (to account for faster and faster circle timers)
     if (score < 75){
         if (score === 25){
             chanceOfGreen = 0.15; //increases chance of green to 15%.
             console.log("Chance of green increased to 15%");
 
-            //also want to make second circle SMALL at 50 score.
-            gameCircleDuplicate.style.scale = "0.75";
+            gameCircle.setAttribute("ToggleScale", null); //togglesd scaling after score 25
         }
         else if (score === 50){
             chanceOfGreen = 0.2; //increases chance of green to 20%.
@@ -702,55 +736,101 @@ function generateRandomCoordsAndSet(event, missed = false){  //on circle click +
             console.log("Chance of green increased to 40%");
         };
     };
+
+
+    //difficulty increase. scaling toggle.
+    if (ClickedCircleElement.hasAttribute("ToggleScale")){
+        if (ClickedCircleElement.style.scale === ""){
+            ClickedCircleElement.style.scale = "0.75";
+        }
+        else{
+            ClickedCircleElement.style.scale = "";
+        }
+    };
+
+
+    //Game changes after 100 score.
     if (score >= 0){ //SHOULD BE 100!!!! NOT 0!!! JUST TESTING...
         if (score === 100){ //changes score glow.
             scoreElement.style.animation = "glowRainBowJS 2s ease-in-out infinite alternate";
+            
 
-            //Want to reset Circle Timer.
-            circleTimerMiliSeconds = 1000;
+            //Want to reset Circle Timer of ALL circles.
+                //loop through all circles and reset their timers.
+            //circleTimerMiliSeconds = 1000; 
 
             //Want to add a third circle. Which now appears ALONG SIDE the other circles.
         }
-        confettiOnCurrentCircle();
-    }
 
+
+        confettiOnSpecificCircle(currentCircleElement);
+
+        if (oneoff){ //one off -> remove this and put everything on difficulty increase segment above.
+            oneoff = false;
+            //for when score is 75
+
+                                                    //Glide = false, TimerMS = null, Small = false, ToggleScale = false
+            // const newCircle = CreateNewCircle(true); 
+            const newCircle = CreateNewCircle(true, 1000, true, true); //glides, a lot of time before click, starts small, toggle scale.
+
+
+            setCircleToRandomPoint(newCircle, [Math.floor(Math.random() * coordArea[0] + 1), Math.floor(Math.random() * coordArea[1] + 1)]);
+            amountOfCircles+=1; 
+            newCircle.classList.add ("CircleNum-"+amountOfCircles);
+        }
+    };
 
 
     if (lives < 3){ //can only turn green IF have less than max lives.
         const RandomFloat = Math.random(); //generates 0 - 1 float.
         if (RandomFloat <= chanceOfGreen){ // Chance of Green starts at 10% (0.1) but can change mid-game.
             console.log("Green chance met");
-            currentCircleElement.style.backgroundColor = "green";
+            ClickedCircleElement.style.backgroundColor = "green";
 
-            currentCircleIsGreen = true;
+            ClickedCircleElement.setAttribute("isGreen", "true");
+
         }
     };
 
-
-    //Increase speed of circke Timer.
+    //Increase speed of circle Timer.
     increasePercentage +=1;
+
+    let circleTimerMiliSeconds = currentCircleElement.getAttribute("CircleTimerMS");
 
     if (circleTimerMiliSeconds >= 600 && increasePercentage >= 5){ //Does not allow circle timer to go below ~600 milliseconds.
         increasePercentage = 0;
 
         var percent = (5 / 100) * circleTimerMiliSeconds; //gets 5% of Circle timer.
         circleTimerMiliSeconds -= percent; //subtracts 5% from circle timer.
-        console.log("Circle Timer: ", circleTimerMiliSeconds);
+
+        currentCircleElement.setAttribute("CircleTimerMS", circleTimerMiliSeconds);
     };
 
 
-    //Circle Timer Visualizer.
-    currentGameCircleTimerVisual = currentCircleElement.firstElementChild;
 
-    currentGameCircleTimerVisual.style.transition = "scale " + 0 + "ms";
-    currentGameCircleTimerVisual.style.scale = "0";
-    currentCircleTimer = setTimeout(() => { //require a breif timeout before showing timer visualizer.
-        //increase visualizer
-        currentGameCircleTimerVisual.style.transition = "scale " + circleTimerMiliSeconds + "ms linear";
-        currentGameCircleTimerVisual.style.scale = "1";
-        startCircleTimer();
-    }, 50); //delay timer can be anyting above 0.
+    startMissedTimer(ClickedCircleElement);
 }
+
+function startMissedTimer(Circle){
+    let circleTimerMiliSeconds = Circle.getAttribute("CircleTimerMS");
+
+    //Start Circle Timer.
+    let TimerIndicator = Circle.firstElementChild;
+    if (Circle.classList.contains ("CircleNum-2")){
+        console.log(Circle.className, " timer visualizer: ", TimerIndicator);
+    }
+
+    TimerIndicator.style.transition = "scale " + 0 + "ms";
+    TimerIndicator.style.scale = "0";
+
+    let TimerVisualDelay = setTimeout(() => { //require a brief timeout before showing timer visualizer.
+        //increase visualizer
+        TimerIndicator.style.transition = "scale " + circleTimerMiliSeconds + "ms linear";
+        TimerIndicator.style.scale = "1";
+        startCircleTimer(Circle, circleTimerMiliSeconds);
+    }, 50);
+};
+
 
 
 
@@ -758,20 +838,20 @@ function setCircleToRandomPoint(circleElement, Coords){
     circleElement.style.transform = "translate(" + (Coords[0]) + "px, " + (Coords[1]) + "px)";
 };
 
-function confettiOnCurrentCircle(){
+function confettiOnSpecificCircle(SpecificCircle){
     //ALSO want to chance the circle's color
-    const r = Math.floor(Math.random() * 255 + 1);
-    const g = Math.floor(Math.random() * 255 + 1);
-    const b = Math.floor(Math.random() * 255 + 1);
+    let r = Math.floor(Math.random() * 255 + 1);
+    let g = Math.floor(Math.random() * 255 + 1);
+    let b = Math.floor(Math.random() * 255 + 1);
 
-    currentCircleElement.style.backgroundColor = "rgb(" + r + "," + g +"," + b +")";
+    SpecificCircle.style.backgroundColor = "rgb(" + r + "," + g +"," + b +")";
 
     const confettiElementClone = confettiElement.cloneNode(true);
-    confettiElementClone.style.transform = currentCircleElement.style.transform;
+    confettiElementClone.style.transform = SpecificCircle.style.transform;
 
 
-    confettiElementClone.style.scale = currentCircleElement.style.scale;
-    // confettiElementClone.style.scale = currentCircleElement.style.scale;
+    confettiElementClone.style.scale = SpecificCircle.style.scale;
+    // confettiElementClone.style.scale = SpecificCircle.style.scale;
 
     gameBox.appendChild(confettiElementClone);
     
@@ -796,10 +876,6 @@ function confettiOnCurrentCircle(){
         
         }, 100); //need to hold for a moment to let animation play.
     }
-    
-    
-
-
     const deleteTimer = setTimeout(() => {
         confettiElementClone.remove();
         
@@ -810,7 +886,6 @@ function confettiOnCurrentCircle(){
 
 
 
-//Game UI stuff:
 //Game display button
 const gameStart = document.querySelector('.game__start');
 const startingDisplay = document.querySelector('.starting__options');
@@ -843,14 +918,19 @@ gameStart.onclick = () => {
     currentGameCircleTimerVisual.style.transition = "scale " + 0 + "ms";
     currentGameCircleTimerVisual.style.scale = "0";
 
-    circleTimerMiliSeconds = 1000;
+        //Delete all new circles. Reset circle timer on first circles.
+    gameCircle.setAttribute("CircleTimerMS", 2000);
+    // circleTimerMiliSeconds = 2000;
+
+
     increasePercentage = 0;
 
     currentCircleElement.style.backgroundColor = "";
     chanceOfGreen = 0.1;
-    currentCircleIsGreen = false;
-    //
-    gameCircleDuplicate.style.scale = "";
+    gameCircle.removeAttribute("isGreen");
+
+    gameCircle.style.scale = "";
+    // gameCircleDuplicate.style.scale = "";
     // scoreElement.style.animation = "";
 
     gameCircle.append("hit me!"); //adds hit me as text on the game button to notify the user. is removed on the first hit.
@@ -877,7 +957,6 @@ hi_message.onclick = () =>{
 
         // gameCircle.style.opacity = "0";
         // scoreElement.style.opacity = "0";
-
     }
     else{ //turn on 
         hi_message.style.transform = "translateY(0ch)";
@@ -892,15 +971,21 @@ hi_message.onclick = () =>{
         // scoreElement.style.opacity = "1";
     }
 };
-
 //hard mode or easy mode selected.
 difficultyCheckbox.onchange = () => { 
     if (difficultyCheckbox.checked === true){ //hard mode selected
         easyMode = false;
+
+
+        gameCircle.style.transitionDuration = "0s";
+
     }
     else{                           //easy mode selected
         easyMode = true;
-        gameCircleDuplicate.style.display = "none";
-        gameCircle.style.display = "initial"
+
+        gameCircle.style.transitionDuration = "0.5s";
+        // gameCircleDuplicate.style.display = "none";
+        // gameCircle.style.display = "initial"
     }
 };
+
