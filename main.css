@@ -105,7 +105,7 @@ body {
   border: 0;
   /* font-family: sans-serif; */
   font-family: monospace;
-  font-size: 1.6em;
+  font-size: 1.4em;
 }
 .navbar__home-container .fn {
   align-self: center;
@@ -1004,14 +1004,14 @@ body {
 }
 .difficulty-text span::after {
   /* Hard mode when unchecked */
-  content: "hard mode";
+  content: "fast mode";
   width: 10ch;
   display: none;
 }
 .difficulty-text span::before {
   /* Easy mode when unchecked */
   display: inline-block;
-  content: "easy mode";
+  content: "slow mode";
   width: 10ch;
 }
 #difficulty-checkbox:checked ~ .difficulty-text span::after {
@@ -1074,7 +1074,7 @@ body {
   transition-property: box-shadow background-color;
   transition-duration: 0.5s; /* easy mode */
 
-  transform: translate(5.2em, 6em);
+  transform: translate(3.7em, 9em);
   transform-origin: top left;
 
   opacity: 0;
@@ -1136,6 +1136,8 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+
+  /* border: red 1px solid; */
 }
 
 .confetti {
