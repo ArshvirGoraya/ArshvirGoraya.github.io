@@ -14,6 +14,10 @@
   --clickable-link: #62e4aa;
   --clickable-link-highlight: #8d5a97;
   /* --clickable-link-highlight: #c03221; */
+
+  --GameHeightJS: calc(
+    75 * 100vh / 100
+  ); /*returns 75% of the screen height. dont want to use "VH" so will use JS to overwrite this.*/
 }
 
 /*is set to dark mode by default. Following is the style for light mode.*/
@@ -65,8 +69,10 @@ html {
 }
 
 body {
-  /*height: 200%; /* testing */
   height: 100%;
+
+  /*height: 200%; /* testing */
+
   display: flex;
   justify-content: center;
 }
@@ -90,6 +96,8 @@ body {
   flex-wrap: nowrap;
   background-color: var(--navbar-color);
   min-height: 5ch;
+
+  z-index: 1000;
 }
 
 .navbar__item {
@@ -332,45 +340,6 @@ body {
   height: 3.5ch;
 }
 
-@media (hover: none) {
-  /*movile styles on touch.*/
-
-  /* .navbar__item:active {
-    transition-duration: 0s;
-
-    color: var(--text-hover-color); 
-    fill: var(--text-hover-color); 
-
-    outline-offset: 0.3ch;
-  } */
-
-  /*for navbar that have a borderbottom on hover -> items*/
-  /* .bbottom:active {
-    transition-duration: 0s;
-
-    border-bottom: 0.1ch solid var(--text-hover-color);
-    border-bottom-left-radius: 1ch;
-    border-bottom-right-radius: 1ch;
-  } */
-
-  /*for buttons: light/dark theme and mobile hamburger menu.*/
-
-  /* .navbar__color-mode-button:active .st0,
-  .navbar__color-mode-button:active .st1,
-  .navbar__color-mode-button:active .moon {
-    transition-duration: 0s;
-    fill: var(--text-hover-color);
-    stroke: var(--text-color);
-  } */
-
-  /* .navbar__mode-container .navbar__burger-button:active .burger {
-    transition-duration: 0s;
-
-    fill: var(--text-color);
-    stroke: var(--text-hover-color);
-    stroke-width: 1px;
-  } */
-}
 .js-navbar-links-touch {
   /*when links are TOUCHED on these styles are applied. :active/focus-visible pseudo class not working as desired.*/
   transition-duration: 0s;
@@ -488,63 +457,6 @@ body {
   display: flex;
   justify-content: center;
   margin: 0 0.7ch;
-}
-
-@media (max-width: 1300px) {
-  .navbar__parent-container {
-    margin: 0 5ch;
-  }
-}
-@media (max-width: 600px) {
-  .navbar__vertical-name-seperator {
-    display: inline-block;
-  }
-  .navbar__mode-container .navbar__burger-button {
-    display: flex;
-    margin-left: 0ch;
-  }
-  .sun {
-    scale: 1.5;
-  }
-  .burger {
-    scale: 1.25;
-  }
-  .moon {
-    scale: 1.25;
-  }
-
-  .navbar__mob-collapsible-container {
-    display: flex;
-  }
-  .navbar__collapsible-container {
-    display: none;
-  }
-}
-@media (min-width: 600px) {
-  .navbar__mob-collapsible-container {
-    display: none;
-  }
-}
-
-@media (max-width: 450px) {
-  .main-wrapper {
-    width: 100%;
-  }
-}
-@media (max-width: 300px) {
-  .navbar__parent-container {
-    margin: 0 1ch;
-  }
-  .navbar__mob-collapsible-container {
-    margin: 0 0;
-  }
-  .navbar__mode-container button {
-    width: 3ch;
-    scale: 1;
-  }
-  .navbar__color-mode-button {
-    margin-right: 1ch;
-  }
 }
 
 .js-navbar__collapsible-container {
@@ -726,17 +638,20 @@ body {
 .game-section {
   /*height control*/
   width: 100%;
-  height: 100%;
+  height: 60%; /*bigger than 1300 width = smaller height*/
   /* border: red 2px solid; */
 
   display: flex;
   justify-content: center;
+  background: linear-gradient(var(--navbar-color), transparent);
+
+  /*flex-shrink: 0; /*does not allow shrinking*/
 
   /* aspect-ratio: 1; */
 }
 
 .game-wrapper {
-  width: 50%;
+  width: 25%; /*bigger than 1300 width = smaller width.*/
   height: 100%;
   padding: 2ch;
 
@@ -748,6 +663,10 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
+  flex-shrink: 0;
+
+  border: 1px pink solid;
 }
 .game-area-overlay {
   display: flex;
@@ -823,6 +742,8 @@ body {
   font-weight: 600;
   font-family: sans-serif;
   transition: background-color 0.5s;
+
+  white-space: nowrap;
 }
 .game__start {
   letter-spacing: 0.1ch;
@@ -1197,4 +1118,91 @@ body {
   border-left: 0.5ch solid transparent;
   border-right: 0.5ch solid transparent;
   border-bottom: 1ch solid rgb(122, 128, 0);
+}
+
+@media (max-width: 1300px) {
+  /* Width <= 1300 */
+  .navbar__parent-container {
+    margin: 0 5ch;
+  }
+
+  .game-section {
+    /* height: 100%; */
+    height: var(--GameHeightJS); /*75% of screen height*/
+  }
+  .game-wrapper {
+    width: calc(var(--GameHeightJS) / 1.5); /*Game Height / 1.5*/
+  }
+}
+
+@media (max-width: 600px) {
+  .main-wrapper {
+    width: 100%;
+  }
+
+  .navbar__vertical-name-seperator {
+    display: inline-block;
+  }
+  .navbar__mode-container .navbar__burger-button {
+    display: flex;
+    margin-left: 0ch;
+  }
+  .sun {
+    scale: 1.5;
+  }
+  .burger {
+    scale: 1.25;
+  }
+  .moon {
+    scale: 1.25;
+  }
+
+  .navbar__mob-collapsible-container {
+    display: flex;
+  }
+  .navbar__collapsible-container {
+    display: none;
+  }
+}
+@media (min-width: 600px) {
+  .navbar__mob-collapsible-container {
+    display: none;
+  }
+}
+
+@media (max-width: 400px) {
+  .game-wrapper {
+    width: 100%;
+  }
+}
+
+.game-alt {
+  display: none;
+  align-items: center;
+}
+
+@media (max-height: 400px) {
+  /*Height limit: replace game with image*/
+  .game-wrapper {
+    display: none;
+  }
+  .game-alt {
+    display: flex;
+  }
+}
+
+@media (max-width: 300px) {
+  .navbar__parent-container {
+    margin: 0 1ch;
+  }
+  .navbar__mob-collapsible-container {
+    margin: 0 0;
+  }
+  .navbar__mode-container button {
+    width: 3ch;
+    scale: 1;
+  }
+  .navbar__color-mode-button {
+    margin-right: 1ch;
+  }
 }

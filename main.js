@@ -518,7 +518,11 @@ function FooterEmailInteractEnd(){
 } ;
 
 //4.============================GAME============================================
+const gameBoxWrapper = document.querySelector('.game-wrapper'); //Width
+const gameSection = document.querySelector('.game-section'); //Height 
+
 const gameBox = document.querySelector('.game-area');
+
 const gameCircle = document.querySelector('.game-button');
 const confettiElement = document.querySelector('.confetti-wrapper'); 
 
@@ -543,19 +547,27 @@ let coordArea = [gameBoxSize[0] - gameCircleSize[0], gameBoxSize[1] - gameCircle
 let resizeTimeOutID; //ensures that resize function does not run on EACH resize, but whenever the user stops resizing (for at least for a few ms).
 
 window.onresize = () => {
-    console.log("window resized...")
     clearTimeout(resizeTimeOutID);
     resizeTimeOutID = setTimeout(() => {
         coordArea = calculateGameBoxArea()
         console.log("resized new coords: ", coordArea);
-    }, 150);
+        console.log("Game Circle Size: ", gameCircleSize)
+    }, 200);
 };
-
-// gameBox.addEventListener("resize", () => {
-//     console.log("GameBox resized...")
-// });
-
 function calculateGameBoxArea(){ //whenever window size changes (and hence when gameArea changes).
+    console.log("window resized: ", window.outerWidth , " x ", window.outerHeight);
+
+    document.documentElement.style.setProperty('--GameHeightJS', 75 * window.innerHeight / 100 + "px");
+
+    // gameSection.style.height = (75 * window.innerHeight / 100) + "px"; //75% of window's height.
+
+
+    // gameBoxWrapper.style.width = gameSection.clientHeight / 1.5 + "px";
+
+    // gameCircle.style.width = gameBox.clientWidth * 0.2 + "px";
+    // gameCircle.style.height = gameCircle.style.width;
+
+
 
     gameBoxSize = [gameBox.clientWidth , gameBox.clientHeight]; //client size = content + padding.
     gameCircleSize = [gameCircle.offsetWidth, gameCircle.offsetHeight]; //offset size = content + padding + border + margin
@@ -698,18 +710,6 @@ let alwaysGreenCircleOneOff = true;
 
 gameCircle.onclick = () => {generateRandomCoordsAndSet(null, false, gameCircle)}; //must be declared LAST. 
 
-
-// const AUDIO_HEALTH_UP = 1;
-// const AUDIO_HEALTH_DOWN = 2;
-// const AUDIO_100_INCREMENT = 3;
-// const AUDIO_GAME_LOSS = 4;
-// const AUDIO_GAME_WIN = 5;
-
-//Audio:
-// const Audio_Circle2 = new Audio("/audio/Circle_Pop_2.mp3"); 
-// Audio_Circle2.preservesPitch = false;
-// Audio_Circle2.volume = 0.4;
-
 const Audio_Circle = new Audio("/audio/Circle_Pop_6.mp3"); 
 const Audio_Circle_Right = new Audio("/audio/Circle_Pop_6_Right.mp3"); 
 const Audio_Circle_Left = new Audio("/audio/Circle_Pop_6_Left.mp3"); 
@@ -775,7 +775,6 @@ function playSoundWithRandomPitch(Sound, StayLow = false, alternate = false){
                 ButtonSoundIncrement = 0;
                 Sound.playbackRate = 1.5;
                 break;
-
         }
     }
     else{
@@ -811,28 +810,7 @@ function generateRandomCoordsAndSet(event, missed = false, ClickedCircleElement)
                 break;
         }
 
-
-
-        // const random2 = Math.floor(Math.random() * 2);
-
-        // if (random2 === 1){
-        //     playSoundWithRandomPitch(Audio_Circle2);
-        //     console.log("playing 2");
-        // }
-        // else{
-        //     playSoundWithRandomPitch(Audio_Circle);
-        //     console.log("playing 1");
-        // }
     }
-
-
-
-    // if (score % 100 === 0 && score != 0){
-    //     console.log("100 increment: ");
-    //     Audio_100_Increment.play();
-    // }
-
-    // console.log("Circle clicked: ", ClickedCircleElement.className);
 
     if (score === 0){  //removes the "hit me!" text on the first hit.
         gameCircle.removeChild(gameCircle.lastChild);
@@ -1181,6 +1159,7 @@ gameStart.onclick = () => {
 
     coordArea = calculateGameBoxArea();
     console.log("resized new coords: ", coordArea);
+    console.log("Game Circle Size: ", gameCircleSize)
 
     lives = 3;
 
