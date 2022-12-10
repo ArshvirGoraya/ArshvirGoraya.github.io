@@ -341,7 +341,7 @@ body {
 }
 
 .js-navbar-links-touch {
-  /*when links are TOUCHED on these styles are applied. :active/focus-visible pseudo class not working as desired.*/
+  /*when links are TOUCHED on, then these styles are applied. Using JS cus :active/focus-visible not working as desired with jsut CSS.*/
   transition-duration: 0s;
 
   color: var(--text-hover-color); /*for texts*/
@@ -590,7 +590,8 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 1ch;
+  padding-top: 5ch;
+
   background-color: var(--navbar-color);
   font-size: 1.5ch;
 }
@@ -651,6 +652,8 @@ body {
 }
 
 .game-wrapper {
+  touch-action: manipulation; /*disables zoom on double tap for all but safari.*/
+
   width: 25%; /*bigger than 1300 width = smaller width.*/
   height: 100%;
   padding: 2ch;
@@ -695,6 +698,7 @@ body {
   /* height: 0; */
   /* transform: translateY(1ch); */
 }
+
 .hi__message,
 .game__start,
 .scroll__down {
@@ -748,17 +752,9 @@ body {
 .game__start {
   letter-spacing: 0.1ch;
 }
-.game__start:hover,
-.scroll__down:hover {
-  background-color: var(--clickable-link-highlight);
-}
 
 .hi__message span {
   animation: upDownNameArrow 1.5s alternate ease-in-out infinite;
-}
-
-.hi__message:hover {
-  color: var(--clickable-link-highlight);
 }
 
 @keyframes upDownNameArrow {
@@ -913,8 +909,18 @@ body {
   background-color: purple;
   margin-left: 1.1ch;
 }
-.difficulty-switch-label:hover {
-  background-color: #e0bdff !important; /*more specific selectors above, so simply put !important here*/
+
+@media (hover: hover) {
+  .game__start:hover,
+  .scroll__down:hover {
+    background-color: var(--clickable-link-highlight);
+  }
+  .hi__message:hover {
+    color: var(--clickable-link-highlight);
+  }
+  .difficulty-switch-label:hover {
+    background-color: #e0bdff !important; /*more specific selectors above, so simply put !important here*/
+  }
 }
 
 #difficulty-checkbox:focus-visible + .difficulty-switch-label {
@@ -964,7 +970,7 @@ body {
   border-left: 0.5ch solid transparent;
   border-right: 0.5ch solid transparent;
 
-  border-bottom: 1ch solid green;
+  border-bottom: 1ch solid #bcffbc;
 
   transform-origin: center;
   transition-property: transform border-bottom;
@@ -1002,13 +1008,34 @@ body {
   z-index: 4;
 }
 
-.game-button:hover {
+@media (hover: hover) {
+  /*Desktop only*/
+  .game-button:hover {
+    box-shadow: 0 0 0 0 purple, 0 0 50px 0 peru;
+    background-color: yellow;
+    /* background-color: purple; */
+  }
+}
+.js-game-button_overlay-touch {
   box-shadow: 0 0 0 0 purple, 0 0 50px 0 peru;
   background-color: yellow;
-  /* background-color: purple; */
+
+  opacity: 1;
+
+  /* transition-duration: 0.5s; */
 }
-.game-button:active {
-  background-color: red;
+
+@keyframes js-game-button-touch {
+  50% {
+    box-shadow: 0 0 0 0 purple, 0 0 50px 0 peru;
+    background-color: yellow;
+  }
+}
+
+.js-game-button-touch {
+  /* Mobile only */
+  box-shadow: 0 0 0 0 purple, 0 0 50px 0 peru;
+  background-color: yellow;
 }
 
 .game-button .timerGrow {

@@ -625,6 +625,8 @@ function CreateNewCircle(Glide = false, TimerMS = null, Small = false, ToggleSca
     console.log("Created a circle!");
 
     startMissedTimer(gameCircleDuplicate);
+
+    giveCircleTouchStyles(gameCircleDuplicate);
     return gameCircleDuplicate; //optional return
 }
 
@@ -982,7 +984,7 @@ function generateRandomCoordsAndSet(event, missed = false, ClickedCircleElement)
         const RandomFloat = Math.random(); //generates 0 - 1 float.
         if (RandomFloat <= chanceOfGreen){ // Chance of Green starts at 10% (0.1) but can change mid-game.
             console.log("Green chance met");
-            ClickedCircleElement.style.backgroundColor = "green";
+            ClickedCircleElement.style.backgroundColor = "#bcffbc";
 
             ClickedCircleElement.setAttribute("isGreen", "true");
 
@@ -1090,7 +1092,6 @@ function randomColorOnSpecificCircle(SpecificCircle){
 function confettiOnSpecificCircle(SpecificCircle){
     const confettiElementClone = confettiElement.cloneNode(true);
 
-    //SpecificCircle.appendChild(confettiElementClone);   //childing the confetti onto the circle ensures it will be in the same position as the circle.
     
 
     confettiElementClone.style.transform = SpecificCircle.style.transform;
@@ -1207,6 +1208,7 @@ gameStart.onclick = () => {
 
 
 const hi_message = document.querySelector('.starting__options-hi-message');
+const hi_messageButton = document.querySelector('.hi__message-game');
 const starting_options = document.querySelector('.starting__options-selections');
 
 gameStart.tabIndex = -1;
@@ -1226,6 +1228,10 @@ hi_message.onclick = () =>{
 
         // gameCircle.style.opacity = "0";
         // scoreElement.style.opacity = "0";
+
+        hi_messageButton.style.color = "";
+
+
     }
     else{ //turn on 
         hi_message.style.transform = "translateY(0ch)";
@@ -1235,6 +1241,9 @@ hi_message.onclick = () =>{
         gameStart.tabIndex = 0;
         difficultyCheckbox.tabIndex = 0;
         scrollDown.tabIndex = 0;
+
+        hi_messageButton.style.color = getComputedStyle(document.documentElement).getPropertyValue('--clickable-link-highlight');
+        
 
         // gameCircle.style.opacity = "1";
         // scoreElement.style.opacity = "1";
@@ -1257,4 +1266,25 @@ difficultyCheckbox.onchange = () => {
         // gameCircle.style.display = "initial"
     }
 };
+
+
+//Game-Touch Event Styles
+giveCircleTouchStyles(gameCircle);
+
+function giveCircleTouchStyles(circleElement){ //also called on each new circle addition.
+
+    // scoreElement.style.animation = "2s ease-in-out 0s infinite alternate none running glowRainBowJS";
+
+    if (window.matchMedia( "(hover: none)" ).matches) {
+
+        circleElement.addEventListener("animationend", ()=> {circleElement.style.animation = "";}, false); //removes animations after finished.
+
+        circleElement.addEventListener("touchstart", ()=> {
+            // circleElement.style.animation = "0.2s ease-in forwards js-game-button-touch"; //plays animations
+
+            circleElement.style.animation = "0.2s ease-in forwards js-game-button-touch"; //plays animations
+        });
+    }
+
+}
 
