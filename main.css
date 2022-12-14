@@ -970,7 +970,7 @@ body {
   border-left: 0.5ch solid transparent;
   border-right: 0.5ch solid transparent;
 
-  border-bottom: 1ch solid #bcffbc;
+  border-bottom: 1ch solid #14ff00;
 
   transform-origin: center;
   transition-property: transform border-bottom;
@@ -994,11 +994,13 @@ body {
   border: none;
   border-radius: 50%;
 
+  color: black;
+
   background-color: red;
 
   position: absolute;
 
-  transition-property: box-shadow background-color;
+  transition-property: all;
   transition-duration: 0.5s; /* easy mode */
 
   transform: translate(3.7em, 9em);
@@ -1034,8 +1036,8 @@ body {
 
 .js-game-button-touch {
   /* Mobile only */
-  box-shadow: 0 0 0 0 purple, 0 0 50px 0 peru;
-  background-color: yellow;
+  box-shadow: 0 0 0 0 purple, 0 0 50px 0 peru !important;
+  background-color: yellow !important;
 }
 
 .game-button .timerGrow {
@@ -1161,7 +1163,12 @@ body {
     width: calc(var(--GameHeightJS) / 1.5); /*Game Height / 1.5*/
   }
 }
-
+@media (hover: none) {
+  /*mobiles shouldn't have bars on the side*/
+  .main-wrapper {
+    width: 100%;
+  }
+}
 @media (max-width: 600px) {
   .main-wrapper {
     width: 100%;

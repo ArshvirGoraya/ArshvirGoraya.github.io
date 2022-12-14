@@ -555,9 +555,28 @@ window.onresize = () => {
     }, 200);
 };
 function calculateGameBoxArea(){ //whenever window size changes (and hence when gameArea changes).
-    console.log("window resized: ", window.outerWidth , " x ", window.outerHeight);
 
-    document.documentElement.style.setProperty('--GameHeightJS', 75 * window.innerHeight / 100 + "px");
+    console.log("window resized: ", window.outerWidth , " x ", window.outerHeight);
+    console.log("Screen height: ", screen.availHeight );
+
+
+
+    if (window.matchMedia( "(hover: hover)" ).matches) {
+        //desktop uses window height.
+        // footerEmail.append(window.outerWidth, "x", window.innerHeight);
+
+
+        document.documentElement.style.setProperty('--GameHeightJS', 75 * window.innerHeight / 100 + "px");
+    }
+    else{
+        //mobile uses screen height.
+        // footerEmail.append(screen.availWidth, "x", screen.availHeight);
+
+        document.documentElement.style.setProperty('--GameHeightJS', 75 * screen.availHeight  / 100 + "px");
+
+    }
+
+
 
     // gameSection.style.height = (75 * window.innerHeight / 100) + "px"; //75% of window's height.
 
@@ -599,6 +618,7 @@ function CreateNewCircle(Glide = false, TimerMS = null, Small = false, ToggleSca
     if (TimerMS === null){TimerMS = gameCircle.getAttribute("CircleTimerMS")};
 
     const gameCircleDuplicate = gameCircle.cloneNode(true);
+    gameCircleDuplicate.classList.remove("js-game-button-touch"); //incase it duplicated while main circle has this style...
 
     if (Glide){gameCircleDuplicate.style.transitionDuration = "0.5s";}
     else {gameCircleDuplicate.style.transitionDuration = "0s";}
@@ -661,7 +681,10 @@ function missedCircle(circleMissed){    //on circle timeout.
         console.log("game lost");
         gameLost = true;
 
-        startingDisplay.style.display = "flex";
+        let restartDelay = setTimeout(() => {
+            startingDisplay.style.display = "flex"; //re-enable mini-game options after half a second after losing.
+        }, 2000);
+
 
         gameCircle.style.display = "initial";
         gameCircle.style.opacity = "0";
@@ -791,8 +814,6 @@ function playSoundWithRandomPitch(Sound, StayLow = false, alternate = false){
 
 function generateRandomCoordsAndSet(event, missed = false, ClickedCircleElement){  //on circle click + on circle missed.
     if (missed === false){
-
-
         const random3 = Math.floor(Math.random() * 4 + 1);
         switch (random3){
             case 0:
@@ -811,7 +832,6 @@ function generateRandomCoordsAndSet(event, missed = false, ClickedCircleElement)
                 playSoundWithRandomPitch(Audio_Circle_LeftExtra, false, true);
                 break;
         }
-
     }
 
     if (score === 0){  //removes the "hit me!" text on the first hit.
@@ -984,7 +1004,7 @@ function generateRandomCoordsAndSet(event, missed = false, ClickedCircleElement)
         const RandomFloat = Math.random(); //generates 0 - 1 float.
         if (RandomFloat <= chanceOfGreen){ // Chance of Green starts at 10% (0.1) but can change mid-game.
             console.log("Green chance met");
-            ClickedCircleElement.style.backgroundColor = "#bcffbc";
+            ClickedCircleElement.style.backgroundColor = "#14ff00";
 
             ClickedCircleElement.setAttribute("isGreen", "true");
 
@@ -1201,7 +1221,7 @@ gameStart.onclick = () => {
     // gameCircleDuplicate.style.scale = "";
     // scoreElement.style.animation = "";
 
-    gameCircle.append("hit me!"); //adds hit me as text on the game button to notify the user. is removed on the first hit.
+    gameCircle.append("H I T ME!"); //adds hit me as text on the game button to notify the user. is removed on the first hit.
 
     console.log("Running slow mode:", easyMode);
 };
@@ -1242,7 +1262,7 @@ hi_message.onclick = () =>{
         difficultyCheckbox.tabIndex = 0;
         scrollDown.tabIndex = 0;
 
-        hi_messageButton.style.color = getComputedStyle(document.documentElement).getPropertyValue('--clickable-link-highlight');
+        hi_messageButton.style.color = "#ffef00";
         
 
         // gameCircle.style.opacity = "1";
@@ -1276,15 +1296,21 @@ function giveCircleTouchStyles(circleElement){ //also called on each new circle 
     // scoreElement.style.animation = "2s ease-in-out 0s infinite alternate none running glowRainBowJS";
 
     if (window.matchMedia( "(hover: none)" ).matches) {
-
-        circleElement.addEventListener("animationend", ()=> {circleElement.style.animation = "";}, false); //removes animations after finished.
-
         circleElement.addEventListener("touchstart", ()=> {
-            // circleElement.style.animation = "0.2s ease-in forwards js-game-button-touch"; //plays animations
+            //circleElement.style.animation = "0.2s ease-in forwards js-game-button-touch"; //plays animations
 
-            circleElement.style.animation = "0.2s ease-in forwards js-game-button-touch"; //plays animations
+            // circleElement.style.boxShadow = "0 0 0 0 purple, 0 0 50px 0 peru";
+            // circleElement.style.backgroundColor = "yellow";
+
+            circleElement.classList.add("js-game-button-touch");
+
+            const TouchYellowDelay = setTimeout(() => { //require a brief timeout before showing timer visualizer.
+                circleElement.classList.remove("js-game-button-touch");
+
+                // circleElement.style.boxShadow = "";
+                // circleElement.style.backgroundColor = "";
+            }, 200);
         });
     }
-
 }
 
