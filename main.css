@@ -17,7 +17,13 @@
 
   --GameHeightJS: calc(
     75 * 100vh / 100
-  ); /*returns 75% of the screen height. dont want to use "VH" so will use JS to overwrite this.*/
+  ); /*returns 75% of the screen height. dont want to use "VH" so will use JS to overwrite this. Game does not display if JS is disabled anyway.*/
+
+  --GameWidthJS: calc(var(--GameHeightJS) / 1.5); /*Game Height / 1.5*/
+
+  --GameCircleSize: calc(var(--GameWidthJS) * 0.13);
+
+  --ScreenWidth: 100vw;
 }
 
 /*is set to dark mode by default. Following is the style for light mode.*/
@@ -61,6 +67,7 @@ html {
   font-weight: bold;
 
   height: 100%;
+
   width: 100%;
 
   background-color: var(--background-color);
@@ -69,7 +76,7 @@ html {
 }
 
 body {
-  height: 100%;
+  min-height: 100%;
 
   /*height: 200%; /* testing */
 
@@ -78,8 +85,9 @@ body {
 }
 
 .main-wrapper {
+  min-height: 100%;
+
   width: 75%;
-  height: 100%;
   background-color: var(--main-wraper-bg);
   transition: background-color 1s;
 
@@ -505,13 +513,16 @@ body {
 
 .footer {
   /* position: relative; */
+
+  margin: 0;
+  padding: 0;
+  border: 0;
+
   bottom: 0;
-  /* height: 100%; */
   font-size: 2ch;
-  /* overflow-x: hidden; */
-  /* overflow-y: hidden; */
 
   margin-top: auto; /*makes footer stick to the bottom as long as body wrapper is a flex display*/
+  margin-bottom: 0;
   /* border: 2px red solid; */
 
   display: inline-block;
@@ -639,7 +650,7 @@ body {
 .game-section {
   /*height control*/
   width: 100%;
-  height: 60%; /*bigger than 1300 width = smaller height*/
+  height: 75%; /*bigger than 1300 width = smaller height*/
   /* border: red 2px solid; */
 
   display: flex;
@@ -649,28 +660,50 @@ body {
   /*flex-shrink: 0; /*does not allow shrinking*/
 
   /* aspect-ratio: 1; */
+  user-select: none;
+}
+.game-section * {
+  user-select: none;
 }
 
 .game-wrapper {
-  touch-action: manipulation; /*disables zoom on double tap for all but safari.*/
+  position: relative;
 
-  width: 25%; /*bigger than 1300 width = smaller width.*/
+  width: 50%; /*bigger than 1300 width = smaller width.*/
   height: 100%;
-  padding: 2ch;
 
-  border: rgba(128, 0, 128, 0.033) 2px solid;
+  padding: 2ch;
 
   background-color: rgba(15, 33, 195, 0.042);
 
-  display: flex;
+  /* display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: center; */
+  /* flex-shrink: 0; */
 
-  flex-shrink: 0;
-
-  border: 1px pink solid;
+  /* border: 1px pink solid; */
 }
+
+.game-input-eater {
+  position: absolute;
+
+  z-index: 4;
+
+  /* background-color: black; */
+
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+/* .game-input-eater-on {
+  touch-action: none;
+} */
+/* .game-input-eater-off {
+  touch-action: initial !important;
+} */
+
 .game-area-overlay {
   display: flex;
   flex-direction: column;
@@ -681,6 +714,8 @@ body {
   /* position: relative; */
 }
 .starting__options {
+  font-size: 24px;
+
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -698,7 +733,6 @@ body {
   /* height: 0; */
   /* transform: translateY(1ch); */
 }
-
 .hi__message,
 .game__start,
 .scroll__down {
@@ -712,6 +746,8 @@ body {
   font-size: 1.5ch;
 }
 .starting__options-hi-message {
+  /* border: red solid 1px; */
+
   position: relative;
   transition: all 0.5s;
   transform: translateY(5ch);
@@ -753,7 +789,8 @@ body {
   letter-spacing: 0.1ch;
 }
 
-.hi__message span {
+.hi__message-arrow {
+  /* color: inherit; */
   animation: upDownNameArrow 1.5s alternate ease-in-out infinite;
 }
 
@@ -916,7 +953,7 @@ body {
     background-color: var(--clickable-link-highlight);
   }
   .hi__message:hover {
-    color: var(--clickable-link-highlight);
+    color: yellow;
   }
   .difficulty-switch-label:hover {
     background-color: #e0bdff !important; /*more specific selectors above, so simply put !important here*/
@@ -952,6 +989,8 @@ body {
 
 .lives-wrapper {
   /* border: 1px solid green; */
+  touch-action: none;
+
   display: flex;
   align-items: flex-start;
   position: absolute;
@@ -960,6 +999,7 @@ body {
   transition: opacity 0.5s;
 }
 .lives-wrapper * {
+  touch-action: none;
   margin-right: 0.5ch;
 }
 .lives-wrapper p {
@@ -982,11 +1022,17 @@ body {
 }
 
 .game-button {
+  touch-action: none;
+
+  font-weight: bold;
+
   margin: 0;
   padding: 0;
 
-  width: 5ch;
-  height: 5ch;
+  /* width: 5ch;
+  height: 5ch; */
+  width: var(--GameCircleSize);
+  height: var(--GameCircleSize);
 
   /* border-width: 4px;
   
@@ -1007,7 +1053,10 @@ body {
   transform-origin: top left;
 
   opacity: 0;
-  z-index: 4;
+  z-index: 5;
+}
+.game-button * {
+  touch-action: none;
 }
 
 @media (hover: hover) {
@@ -1067,6 +1116,8 @@ body {
 }
 
 .confetti-wrapper {
+  touch-action: none;
+
   margin: 0;
   padding: 0;
   top: 0;
@@ -1088,6 +1139,9 @@ body {
   align-items: center;
 
   /* border: red 1px solid; */
+}
+.confetti-wrapper * {
+  touch-action: none;
 }
 
 .confetti {
@@ -1149,8 +1203,25 @@ body {
   border-bottom: 1ch solid rgb(122, 128, 0);
 }
 
+.game-alt {
+  font-size: 24px;
+
+  display: none;
+  align-items: center;
+}
+
 @media (max-width: 1300px) {
-  /* Width <= 1300 */
+  /* Width less than or equal to 1300 */
+
+  .game-alt,
+  .starting__options {
+    font-size: 28px;
+  }
+
+  .game-button {
+    font-size: 12px;
+  }
+
   .navbar__parent-container {
     margin: 0 5ch;
   }
@@ -1160,16 +1231,27 @@ body {
     height: var(--GameHeightJS); /*75% of screen height*/
   }
   .game-wrapper {
-    width: calc(var(--GameHeightJS) / 1.5); /*Game Height / 1.5*/
+    width: var(--GameWidthJS); /*Game Height / 1.5*/
   }
 }
+@media (max-width: 1000px) {
+  .game-button {
+    font-size: 10px;
+  }
+}
+
 @media (hover: none) {
   /*mobiles shouldn't have bars on the side*/
   .main-wrapper {
     width: 100%;
   }
 }
+
 @media (max-width: 600px) {
+  .game-alt,
+  .starting__options {
+    font-size: 24px;
+  }
   .main-wrapper {
     width: 100%;
   }
@@ -1208,11 +1290,6 @@ body {
   .game-wrapper {
     width: 100%;
   }
-}
-
-.game-alt {
-  display: none;
-  align-items: center;
 }
 
 @media (max-height: 400px) {

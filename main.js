@@ -519,9 +519,13 @@ function FooterEmailInteractEnd(){
 
 //4.============================GAME============================================
 const gameBoxWrapper = document.querySelector('.game-wrapper'); //Width
+
 const gameSection = document.querySelector('.game-section'); //Height 
 
 const gameBox = document.querySelector('.game-area');
+
+
+
 
 const gameCircle = document.querySelector('.game-button');
 const confettiElement = document.querySelector('.confetti-wrapper'); 
@@ -550,15 +554,17 @@ window.onresize = () => {
     clearTimeout(resizeTimeOutID);
     resizeTimeOutID = setTimeout(() => {
         coordArea = calculateGameBoxArea()
-        console.log("resized new coords: ", coordArea);
-        console.log("Game Circle Size: ", gameCircleSize)
+        // console.log("resized new coords: ", coordArea);
+        // console.log("Game Circle Size: ", gameCircleSize);
     }, 200);
 };
 function calculateGameBoxArea(){ //whenever window size changes (and hence when gameArea changes).
 
-    console.log("window resized: ", window.outerWidth , " x ", window.outerHeight);
+    // console.log("window resized: ", window.outerWidth , " x ", window.outerHeight);
     console.log("Screen height: ", screen.availHeight );
 
+    
+    document.documentElement.style.setProperty('--ScreenWidth', screen.availWidth + "px");
 
 
     if (window.matchMedia( "(hover: hover)" ).matches) {
@@ -572,21 +578,22 @@ function calculateGameBoxArea(){ //whenever window size changes (and hence when 
         //mobile uses screen height.
         // footerEmail.append(screen.availWidth, "x", screen.availHeight);
 
-        document.documentElement.style.setProperty('--GameHeightJS', 75 * screen.availHeight  / 100 + "px");
+        //check orientation first...
+
+        // if (screen.orientation.type === "landscape-primary") //not supported in safari right now...
+
+        document.documentElement.style.setProperty('--GameHeightJS', 75 * window.innerHeight / 100 + "px");
+
+
+        if (window.matchMedia("(orientation: portrait)").matches) { //if on portrait mode
+            document.documentElement.style.setProperty('--GameHeightJS', 75 * screen.availHeight  / 100 + "px");
+        }
+        else{
+            //if in landscape mode: use width instead...
+            document.documentElement.style.setProperty('--GameHeightJS', 75 * screen.availWidth  / 100 + "px");
+        }
 
     }
-
-
-
-    // gameSection.style.height = (75 * window.innerHeight / 100) + "px"; //75% of window's height.
-
-
-    // gameBoxWrapper.style.width = gameSection.clientHeight / 1.5 + "px";
-
-    // gameCircle.style.width = gameBox.clientWidth * 0.2 + "px";
-    // gameCircle.style.height = gameCircle.style.width;
-
-
 
     gameBoxSize = [gameBox.clientWidth , gameBox.clientHeight]; //client size = content + padding.
     gameCircleSize = [gameCircle.offsetWidth, gameCircle.offsetHeight]; //offset size = content + padding + border + margin
@@ -612,6 +619,8 @@ let lives; //set on playgame button click.
 const scoreElement = document.querySelector('.score');
 const livesElement = document.querySelector('.lives-wrapper');
 
+
+
 let extraCircles = [];
 
 function CreateNewCircle(Glide = false, TimerMS = null, Small = false, ToggleScale = false){
@@ -623,13 +632,21 @@ function CreateNewCircle(Glide = false, TimerMS = null, Small = false, ToggleSca
     if (Glide){gameCircleDuplicate.style.transitionDuration = "0.5s";}
     else {gameCircleDuplicate.style.transitionDuration = "0s";}
 
-    gameCircleDuplicate.onclick = ()  => {generateRandomCoordsAndSet(null, false, gameCircleDuplicate)};
+
+    if (window.matchMedia( "(hover: none)" ).matches) {
+        gameCircleDuplicate.ontouchstart = () => {generateRandomCoordsAndSet(null, false, gameCircleDuplicate)};
+        // console.log("Mobile: touch");
+    } else{
+        gameCircleDuplicate.onclick = ()  => {generateRandomCoordsAndSet(null, false, gameCircleDuplicate)};
+        // console.log("Desktop: click");
+    }
+
+
     gameBox.appendChild(gameCircleDuplicate);
 
     extraCircles.push(gameCircleDuplicate);
 
     gameCircleDuplicate.setAttribute("CircleTimerMS", TimerMS);
-
 
     //addditional attributes
     if (Small){
@@ -650,8 +667,6 @@ function CreateNewCircle(Glide = false, TimerMS = null, Small = false, ToggleSca
     return gameCircleDuplicate; //optional return
 }
 
-// let currentCircleTimer = null;
-
 function startCircleTimer(currentCircle, CircleTimer){ //on circle appear.
 
     currentCircle.setAttribute("TimeoutID", setTimeout(() => {
@@ -661,7 +676,7 @@ function startCircleTimer(currentCircle, CircleTimer){ //on circle appear.
     // console.log("Missed timer on Circle: ", currentCircle.className, " = ", currentCircle.getAttribute("TimeoutID"));
 };
 let CurrentLife = 1;
-let gameLost = false;
+let gameLost = true;
 function missedCircle(circleMissed){    //on circle timeout.
     if (CurrentLife <= 3){
         const CurrentLifeVisual = document.querySelector('.life-' + CurrentLife);
@@ -673,17 +688,38 @@ function missedCircle(circleMissed){    //on circle timeout.
     if (gameLost === false){
         lives -= 1;
         console.log("missed circle: ", circleMissed.className);
-        playSoundWithRandomPitch(Audio_HEALTH_DOWN);
-    }
 
+        if (lives > 0){
+            playAudio(Audio_HEALTH_DOWN, false, true);
+        }
+        else{
+            if (score >= 200){
+                //confetti explosion if survived until 200...
+                for (count = 0; count <= 25; count++){ //repeat 10 times.
+                    let randomDelay = Math.floor(Math.random() * 500 + 1);
+                    let delay = setTimeout(() => {
+                        confettiAtRandomPoint();
+                    }, randomDelay);
+                }
+                playAudio(Audio_GAME_WIN, false, true, 0.5);
+            }
+            else{
+                playAudio(Audio_GAME_LOSS, false, true);
+            }
+        }
+    }
     if (lives <= 0 && gameLost === false){ // game lost condition.
-        
         console.log("game lost");
         gameLost = true;
+        toggleGameBackgroundInputs(gameLost);
+
+        //remove circle interact. Restarted on game restart (ensures circle cant be clicked if game is not started.)
+        gameCircle.removeEventListener("touchstart", CircleInteract); 
+        gameCircle.removeEventListener("click", CircleInteract); 
 
         let restartDelay = setTimeout(() => {
             startingDisplay.style.display = "flex"; //re-enable mini-game options after half a second after losing.
-        }, 2000);
+        }, 1577); //timed with game_loss sound.
 
 
         gameCircle.style.display = "initial";
@@ -696,20 +732,6 @@ function missedCircle(circleMissed){    //on circle timeout.
             gameBox.removeChild(circle);
         });
         extraCircles = [];
-
-        if (score >= 200){
-            //confetti explosion if survived until 200...
-            for (count = 0; count <= 25; count++){ //repeat 10 times.
-                let randomDelay = Math.floor(Math.random() * 500 + 1);
-                let delay = setTimeout(() => {
-                    confettiAtRandomPoint();
-                }, randomDelay);
-            }
-            Audio_GAME_WIN.play();
-        }
-        else{
-            Audio_GAME_LOSS.play();
-        }
     }
 
     if (gameLost === false){
@@ -720,7 +742,6 @@ function missedCircle(circleMissed){    //on circle timeout.
 let currentCircleElement = gameCircle;
 let currentGameCircleTimerVisual = currentCircleElement.firstElementChild;
 let chanceOfGreen; //starts at 10% or 0.1f.
-// let circleTimerMiliSeconds;
 
 let increasePercentage; //resets to 0 after a certain number (5). Increases the speed at which circle's dissapear.
 
@@ -733,103 +754,255 @@ let nextCircleGlide = false;
 
 let alwaysGreenCircleOneOff = true;
 
-gameCircle.onclick = () => {generateRandomCoordsAndSet(null, false, gameCircle)}; //must be declared LAST. 
 
-const Audio_Circle = new Audio("/audio/Circle_Pop_6.mp3"); 
-const Audio_Circle_Right = new Audio("/audio/Circle_Pop_6_Right.mp3"); 
-const Audio_Circle_Left = new Audio("/audio/Circle_Pop_6_Left.mp3"); 
-const Audio_Circle_RightExtra = new Audio("/audio/Circle_Pop_6_Right_Extra.mp3"); 
-const Audio_Circle_LeftExtra = new Audio("/audio/Circle_Pop_6_Left_Extra.mp3"); 
-Audio_Circle.volume = 0.1;
-Audio_Circle.preservesPitch = false;
-Audio_Circle_Right.volume = 0.1;
-Audio_Circle_Right.preservesPitch = false;
-Audio_Circle_Left.volume = 0.1;
-Audio_Circle_Left.preservesPitch = false;
-Audio_Circle_RightExtra.volume = 0.1;
-Audio_Circle_RightExtra.preservesPitch = false;
-Audio_Circle_LeftExtra.volume = 0.1;
-Audio_Circle_LeftExtra.preservesPitch = false;
 
-const Audio_100_Increment = new Audio("/audio/100_Slow_Down.mp3"); 
-Audio_100_Increment.volume = 0.1;
-Audio_100_Increment.preservesPitch = false;
-Audio_100_Increment.playbackRate = 2;
+function preventDefault(e){
+    e.preventDefault();
+}
 
-const Audio_HEALTH_DOWN = new Audio("/audio/Health_Down.mp3"); 
-Audio_HEALTH_DOWN.preservesPitch = false;
-Audio_HEALTH_DOWN.volume = 0.1;
 
-const Audio_HEALTH_UP = new Audio("/audio/Health_Up.mp3"); 
-Audio_HEALTH_UP.volume = 0.1;
-Audio_HEALTH_UP.preservesPitch = false;
+const inputEater = document.querySelector('.game-input-eater');
 
-const Audio_GAME_LOSS = new Audio("/audio/Game_Over.mp3"); 
 
-const Audio_GAME_WIN = new Audio("/audio/200_Win_2.mp3"); 
+let TouchEvents = []; //if 2 then gesture is active.
+let previousPointerDiff = -1;
 
-let ButtonSoundIncrement = 0;
-function playSoundWithRandomPitch(Sound, StayLow = false, alternate = false){
-    Sound.currentTime = 0;
-    if (StayLow){
-        Sound.playbackRate = Math.random() * (0.6 - 0.58) + 0.58; //under 0.25 gets muted by Gecko
-    }
-    else if (alternate){
-        switch (ButtonSoundIncrement){
-            case 0:
-                ButtonSoundIncrement++;
-                Sound.playbackRate = 1 + (Math.random() * 0.1);
-                break;
-            case 1: 
-                ButtonSoundIncrement++;
-                Sound.playbackRate = 1.5;
-                break;
-            case 2: 
-                ButtonSoundIncrement++;
-                Sound.playbackRate = 2;
-                break;
-            case 3: 
-                ButtonSoundIncrement++;
-                Sound.playbackRate = 2.5;
-                break;
-            case 4: 
-                ButtonSoundIncrement++;
-                Sound.playbackRate = 2;
-                break;
-            case 5: 
-                ButtonSoundIncrement = 0;
-                Sound.playbackRate = 1.5;
-                break;
-        }
+let touch_1 = document.querySelector(".touch-1"); 
+let touch_2 = document.querySelector(".touch-2"); 
+let touch_difference = document.querySelector(".touch-difference"); 
+
+
+function gestureStart(e){
+    console.log("gesture start: ", e.pointerId);
+    TouchEvents.push(e);
+
+    if (TouchEvents.length === 1){
+        inputEater.style.touchAction = ""; //detect NEXT one...
     }
     else{
-        Sound.playbackRate = Math.random() * (1.5 - 1) + 1;
+        inputEater.style.touchAction = "none";
     }
 
-    Sound.play();
+    touch_difference.innerHTML = "Touches: "
+    touch_difference.innerHTML += TouchEvents.length;
+}
+
+
+function pointOff(e){
+    console.log("end: ", e.pointerId);
+
+    for (var i = 0; i < TouchEvents.length; i++) {
+        if (e.pointerId === TouchEvents[i].pointerId) {
+            TouchEvents.splice(i, 1);       //gets rid of ONE index at the i position in the array.
+            break;
+        }
+    }
+    touch_difference.innerHTML = "Touches: "
+    touch_difference.innerHTML += TouchEvents.length;
+
+    if (TouchEvents.length === 1){
+        inputEater.style.touchAction = ""; //detect NEXT one...
+    }
+    else{
+        inputEater.style.touchAction = "none";
+    }
+}
+
+function ZoomingDetection(e){
+    console.log("move: ", e.pointerId);
+
+    for (var i = 0; i < TouchEvents.length; i++) { //loop through touch array.
+        if(e.pointerId === TouchEvents[i].pointerId){   //if touch already has this eventID, then update (its new position (clientX and clientY is needed)).
+            TouchEvents[i] = e;
+            break; //no others need to be checked.
+        }
+    }
+    //
+    if (TouchEvents.length === 2){ //2 held down.
+
+        const xDistance = Math.pow(TouchEvents[1].clientX - TouchEvents[0].clientX, 2);
+        const yDistance = Math.pow(TouchEvents[1].clientY - TouchEvents[0].clientY, 2);
+
+        const currentDiff = Math.sqrt(xDistance + yDistance); //difference between 2 Vectors2s.
+
+        //  
+        if (previousPointerDiff > 0){
+            if (currentDiff < previousPointerDiff) { //ZOOMING OUT IS ALLOWED.
+
+
+
+                touch_1.innerHTML = "Zooming out.";
+                
+                inputEater.style.touchAction = "none";
+
+                return;                 //no prevent default.
+            }
+        }
+    inputEater.style.touchAction = "none";
+    preventDefault(e);
+}
+}
+
+
+function toggleGameBackgroundInputs(gamelost){
+    if (window.matchMedia( "(hover: none)" ).matches) {
+
+        if (gamelost){ //on game end.
+            inputEater.style.touchAction = "";
+
+            inputEater.removeEventListener('touchend', preventDefault);
+
+            // inputEater.style.touchAction = "";
+
+            // inputEater.removeEventListener('pointerdown', gestureStart);
+            // inputEater.removeEventListener('pointermove', ZoomingDetection);
+
+            // inputEater.removeEventListener('pointerup', pointOff);
+            // inputEater.removeEventListener('pointercancel', pointOff);
+            // inputEater.removeEventListener('pointerout', pointOff);
+            // inputEater.removeEventListener('pointerleave', pointOff);
+        } 
+
+        else{ //on game start. 
+            inputEater.style.touchAction = "pinch-zoom"; //only allow punch zoom... all others prevented.
+            inputEater.addEventListener('touchend', preventDefault); //should stop double-tap zooming.
+
+            // inputEater.style.touchAction = "";
+
+            // inputEater.addEventListener('pointerdown', gestureStart);
+            // inputEater.addEventListener('pointermove', ZoomingDetection);
+
+            // inputEater.addEventListener('pointerup', pointOff);
+            // inputEater.addEventListener('pointercancel', pointOff);
+            // inputEater.addEventListener('pointerout', pointOff);
+            // inputEater.addEventListener('pointerleave', pointOff);
+
+        }
+    }
 }
 
 
 
 
+function CircleInteract(e) {
+    generateRandomCoordsAndSet(null, false, gameCircle);
+    e.preventDefault();
+};
+function EatInputs(e){ //called for ALL child circle elements/confettiy, etc.
+    
+    console.log("ate input of: ", e);
+
+    e.preventDefault();
+}
+
+
+
+async function getAudioBuffer(filePath){
+    const AudioFile = await fetch(filePath);
+    const arrayBuffer = await AudioFile.arrayBuffer();
+    const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
+    
+    return audioBuffer;
+}
+
+let ButtonSoundIncrement = 0;
+function playAudio(audioBuffer, alternate, randomPitchShift, volume = 0.1){
+    //Circle sounds alternate.
+    //randomPitchShift: Audio Health Down... Health Up. 100.
+
+    const audioSource = audioCtx.createBufferSource();
+    audioSource.buffer = audioBuffer;
+ 
+    //pitch shifting...
+    if (alternate){
+        switch (ButtonSoundIncrement){
+            case 0:
+                ButtonSoundIncrement++;
+                audioSource.playbackRate.value = 1 + (Math.random() * 0.1);
+                break;
+            case 1: 
+                ButtonSoundIncrement++;
+                audioSource.playbackRate.value = 1.5;
+                break;
+            case 2: 
+                ButtonSoundIncrement++;
+                audioSource.playbackRate.value = 2;
+                break;
+            case 3: 
+                ButtonSoundIncrement++;
+                audioSource.playbackRate.value = 2.5;
+                break;
+            case 4: 
+                ButtonSoundIncrement++;
+                audioSource.playbackRate.value = 2;
+                break;
+            case 5: 
+                ButtonSoundIncrement = 0;
+                audioSource.playbackRate.value = 1.5;
+                break;
+        }
+    }
+    else if (randomPitchShift){ //small pitch shift.
+        audioSource.playbackRate.value = Math.random() * (1.5 - 1) + 1;
+    }
+
+    const Audio_GainNode = new GainNode(audioCtx, {gain: volume}); // volume.
+    //Audio_GainNode.gain.setTargetAtTime(volume, audioCtx.currentTime, .01); //smoother volume change (not really needed since volume is not changing in the middle of playing the sound).
+
+    audioSource.connect(Audio_GainNode);
+
+    Audio_GainNode.connect(audioCtx.destination);
+
+
+    audioSource.start(); //starts at '0' by default.
+}
+
+let Audio_Circle = 0; 
+let Audio_Circle_Right = 0;
+let Audio_Circle_Left = 0;
+let Audio_Circle_RightExtra = 0;
+let Audio_Circle_LeftExtra = 0;
+
+let Audio_100_Increment = 0;
+let Audio_HEALTH_DOWN = 0;
+let Audio_HEALTH_UP = 0;
+let Audio_GAME_LOSS = 0;
+let Audio_GAME_WIN = 0;
+function setupSFX(){
+    getAudioBuffer("/audio/Circle_Pop_6.mp3").then((response) => {Audio_Circle = response;});
+    getAudioBuffer("/audio/Circle_Pop_6_Right.mp3").then((response) => {Audio_Circle_Right = response;});
+    getAudioBuffer("/audio/Circle_Pop_6_Left.mp3").then((response) => {Audio_Circle_Left = response;});
+    getAudioBuffer("/audio/Circle_Pop_6_Right_Extra.mp3").then((response) => {Audio_Circle_RightExtra = response;});
+    getAudioBuffer("/audio/Circle_Pop_6_Left_Extra.mp3").then((response) => {Audio_Circle_LeftExtra = response;});
+
+    getAudioBuffer("/audio/100_Slow_Down.mp3").then((response) => {Audio_100_Increment = response;});
+    
+    getAudioBuffer("/audio/Health_Down.mp3").then((response) => {Audio_HEALTH_DOWN = response;});
+    getAudioBuffer("/audio/Health_Up.mp3").then((response) => {Audio_HEALTH_UP = response;});
+
+    getAudioBuffer("/audio/Game_Over.mp3").then((response) => {Audio_GAME_LOSS = response;});
+    getAudioBuffer("/audio/200_Win_2.mp3").then((response) => {Audio_GAME_WIN = response;});
+}
+
 function generateRandomCoordsAndSet(event, missed = false, ClickedCircleElement){  //on circle click + on circle missed.
+
     if (missed === false){
         const random3 = Math.floor(Math.random() * 4 + 1);
         switch (random3){
             case 0:
-                playSoundWithRandomPitch(Audio_Circle, false, true);
+                playAudio(Audio_Circle, true, false);
                 break;
             case 1:
-                playSoundWithRandomPitch(Audio_Circle_Right, false, true);
+                playAudio(Audio_Circle_Right, true, false);
                 break;
             case 2:
-                playSoundWithRandomPitch(Audio_Circle_Left, false, true);
+                playAudio(Audio_Circle_Left, true, false);
                 break;
             case 3:
-                playSoundWithRandomPitch(Audio_Circle_RightExtra, false, true);
+                playAudio(Audio_Circle_RightExtra, true, false);
                 break;
             case 4:
-                playSoundWithRandomPitch(Audio_Circle_LeftExtra, false, true);
+                playAudio(Audio_Circle_LeftExtra, true, false);
                 break;
         }
     }
@@ -853,7 +1026,7 @@ function generateRandomCoordsAndSet(event, missed = false, ClickedCircleElement)
         if (score === 100){ //when score reaches triple digits.
             scoreElement.style.fontSize = "9ch";
 
-            Audio_100_Increment.play();
+            playAudio(Audio_100_Increment, false, false);
         }
         else if (score === 1000){ //when score reaches 4 digits.
             scoreElement.style.fontSize = "7ch";
@@ -861,7 +1034,6 @@ function generateRandomCoordsAndSet(event, missed = false, ClickedCircleElement)
 
         scoreElement.textContent = score;
     };
-
 
     //Difficulty increases
     switch (score){
@@ -918,14 +1090,6 @@ function generateRandomCoordsAndSet(event, missed = false, ClickedCircleElement)
             newCircle = CreateNewCircle(true, null, false, true);}
         else{newCircle = CreateNewCircle(false, null, false, true);}
 
-
-        // if (alwaysGreenCircleOneOff){
-        //     alwaysGreenCircleOneOff = false;
-        //     //circle must always be green.
-        //     newCircle.setAttribute("isAlwaysGreen", null);
-        //     newCircle.setAttribute("MovesOnItsOwn", null);
-        // }
-
         setCircleToRandomPoint(newCircle, [Math.floor(Math.random() * coordArea[0] + 1), Math.floor(Math.random() * coordArea[1] + 1)]);
         //
         addCircleTarget += 25; //want to add circle after each 25 score AFTER 100 is reached.
@@ -964,8 +1128,7 @@ function generateRandomCoordsAndSet(event, missed = false, ClickedCircleElement)
 
         //Green Button Check
     ClickedCircleElement.style.backgroundColor = ""; //if was green, then resets to default.
-    if (ClickedCircleElement.getAttribute("isGreen") === "true"){ //if is green and just hit it.
-
+    if (ClickedCircleElement.getAttribute("isGreen") === "true" && (missed === false)){ //if is green and just hit it.
         ClickedCircleElement.setAttribute("isGreen", "false");
 
         if (lives < 3){ //multiple green circles can appear at once, clicking one may set it to 3, clicking the other should do nothing.
@@ -973,7 +1136,7 @@ function generateRandomCoordsAndSet(event, missed = false, ClickedCircleElement)
             //also need to increase lives visually
             CurrentLife-=1;
             document.querySelector('.life-' + CurrentLife).classList.remove("js-Life-Off");
-            Audio_HEALTH_UP.play();
+            playAudio(Audio_HEALTH_UP, false, true);
         }
     }
 
@@ -995,10 +1158,8 @@ function generateRandomCoordsAndSet(event, missed = false, ClickedCircleElement)
         };
     };
 
-
     //color change on circles after score 75.
     if (score >= 75){randomColorOnSpecificCircle(ClickedCircleElement);}
-
 
     if (lives < 3){ //can only turn green IF have less than max lives.
         const RandomFloat = Math.random(); //generates 0 - 1 float.
@@ -1010,10 +1171,8 @@ function generateRandomCoordsAndSet(event, missed = false, ClickedCircleElement)
 
         }
     };
-
     //Increase speed of circle Timer.
     let circleTimerMiliSeconds = currentCircleElement.getAttribute("CircleTimerMS");
-
 
     if (easyMode){
         //east mode
@@ -1024,8 +1183,6 @@ function generateRandomCoordsAndSet(event, missed = false, ClickedCircleElement)
         if (score >= 200){
             minimumTimer = 1200;
         }
-
-
         if (circleTimerMiliSeconds >= minimumTimer && increasePercentage >= 3){
     
             increasePercentage = 0;
@@ -1066,8 +1223,7 @@ function startMissedTimer(Circle){
     //Start Circle Timer.
     let TimerIndicator = Circle.firstElementChild;
 
-    console.log(Circle.className, " timer visualizer: ", TimerIndicator);
-
+    // console.log(Circle.className, " timer visualizer: ", TimerIndicator);
 
     TimerIndicator.style.transition = "scale " + 0 + "ms";
     TimerIndicator.style.scale = "0";
@@ -1107,18 +1263,13 @@ function randomColorOnSpecificCircle(SpecificCircle){
     SpecificCircle.style.backgroundColor = "rgb(" + r + "," + g +"," + b +")";
 }
 
-
-
 function confettiOnSpecificCircle(SpecificCircle){
     const confettiElementClone = confettiElement.cloneNode(true);
-
-    
 
     confettiElementClone.style.transform = SpecificCircle.style.transform;
     // console.log("confetti set to: ", confettiElementClone.style.transform);
 
     confettiElementClone.style.scale = SpecificCircle.style.scale;
-
 
     if (SpecificCircle.hasAttribute("ToggleScale") && SpecificCircle.style.transitionDuration === "0s"){
         if (SpecificCircle.style.scale === "0.75"){
@@ -1162,10 +1313,6 @@ function beginConfettiAnimation (confettiElementClone){
     } ,550); //0.5s is when animation ends.
 };
 
-
-
-
-
 //Game display button
 const gameStart = document.querySelector('.game__start');
 const startingDisplay = document.querySelector('.starting__options');
@@ -1203,40 +1350,71 @@ gameStart.onclick = () => {
     gameCircle.setAttribute("CircleTimerMS", 2000);
     gameCircle.style.transitionDuration = "0s"; //Ensures first circle does not glide in the beginning.
     gameCircle.style.transform = "translate(3.7em, 9em)"; //re-centers circle.
-    // circleTimerMiliSeconds = 2000;
 
     increasePercentage = 0;
     amountOfCircles = 1;
     addCircleTarget = 100;
     nextCircleGlide = false;
+
     gameLost = false;
+    //scroll up...
+
+    // window.scrollTo(0, 0);
+    window.scrollTo({top: 0, behavior: "smooth"});
+
+
+    toggleGameBackgroundInputs(gameLost);
+
+
+
     oneoff = true;
     alwaysGreenCircleOneOff = true;
+    ButtonSoundIncrement = 0;
 
     currentCircleElement.style.backgroundColor = "";
     chanceOfGreen = 0.1;
     gameCircle.removeAttribute("isGreen");
 
     gameCircle.style.scale = "";
-    // gameCircleDuplicate.style.scale = "";
-    // scoreElement.style.animation = "";
 
-    gameCircle.append("H I T ME!"); //adds hit me as text on the game button to notify the user. is removed on the first hit.
+    gameCircle.append("HIT ME!"); //adds hit me as text on the game button to notify the user. is removed on the first hit.
 
+
+
+
+    //Make circle interactable...
+    if (window.matchMedia( "(hover: none)" ).matches) {
+        // gameCircle.ontouchstart = () => {generateRandomCoordsAndSet(null, false, gameCircle)};
+        gameCircle.addEventListener("touchstart", CircleInteract); 
+        // console.log("Mobile: touch");
+    } else{
+        // gameCircle.onclick = () => {generateRandomCoordsAndSet(null, false, gameCircle)};
+        gameCircle.addEventListener("click", CircleInteract); 
+        // console.log("Desktop: click");
+    };
+    
     console.log("Running slow mode:", easyMode);
 };
-
-
+///
 const hi_message = document.querySelector('.starting__options-hi-message');
 const hi_messageButton = document.querySelector('.hi__message-game');
+const hi_messageArrow = document.querySelector('.hi__message-arrow-game');
 const starting_options = document.querySelector('.starting__options-selections');
 
 gameStart.tabIndex = -1;
 difficultyCheckbox.tabIndex = -1;
 const scrollDown = document.querySelector('.scroll__down');
 scrollDown.tabIndex = -1;
+///
+let audioCtx = null;
+hi_messageButton.onclick = () =>{
+    if (audioCtx === null){
+        console.log("AudioContect started...");
+        audioCtx = new AudioContext();
 
-hi_message.onclick = () =>{
+        setupSFX();
+    }
+    //
     if (hi_message.style.transform === "translateY(0ch)"){ //turn off
         hi_message.style.transform = "translateY(5ch)";
         starting_options.style.scale = "0";
@@ -1246,12 +1424,9 @@ hi_message.onclick = () =>{
         difficultyCheckbox.tabIndex = -1;
         scrollDown.tabIndex = -1;
 
-        // gameCircle.style.opacity = "0";
-        // scoreElement.style.opacity = "0";
-
+        hi_message.style.color = "";
+        hi_messageArrow.style.color = "";
         hi_messageButton.style.color = "";
-
-
     }
     else{ //turn on 
         hi_message.style.transform = "translateY(0ch)";
@@ -1261,56 +1436,31 @@ hi_message.onclick = () =>{
         gameStart.tabIndex = 0;
         difficultyCheckbox.tabIndex = 0;
         scrollDown.tabIndex = 0;
-
-        hi_messageButton.style.color = "#ffef00";
-        
-
-        // gameCircle.style.opacity = "1";
-        // scoreElement.style.opacity = "1";
     }
 };
 //hard mode or easy mode selected.
 difficultyCheckbox.onchange = () => { 
     if (difficultyCheckbox.checked === true){ //hard mode selected
         easyMode = false;
-
-
         gameCircle.style.transitionDuration = "0s";
-
     }
     else{                           //easy mode selected
         easyMode = true;
-
         gameCircle.style.transitionDuration = "0.5s";
-        // gameCircleDuplicate.style.display = "none";
-        // gameCircle.style.display = "initial"
     }
 };
-
 
 //Game-Touch Event Styles
 giveCircleTouchStyles(gameCircle);
 
 function giveCircleTouchStyles(circleElement){ //also called on each new circle addition.
-
-    // scoreElement.style.animation = "2s ease-in-out 0s infinite alternate none running glowRainBowJS";
-
     if (window.matchMedia( "(hover: none)" ).matches) {
         circleElement.addEventListener("touchstart", ()=> {
-            //circleElement.style.animation = "0.2s ease-in forwards js-game-button-touch"; //plays animations
-
-            // circleElement.style.boxShadow = "0 0 0 0 purple, 0 0 50px 0 peru";
-            // circleElement.style.backgroundColor = "yellow";
-
             circleElement.classList.add("js-game-button-touch");
-
             const TouchYellowDelay = setTimeout(() => { //require a brief timeout before showing timer visualizer.
                 circleElement.classList.remove("js-game-button-touch");
 
-                // circleElement.style.boxShadow = "";
-                // circleElement.style.backgroundColor = "";
             }, 200);
         });
     }
 }
-

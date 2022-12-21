@@ -244,7 +244,7 @@
         <div class="game-alt">
           <button class="hi__message">
             <p>Hi! I'm Arshvir :)</p>
-            <span>v</span>
+            <p class="hi__message-arrow">v</p>
           </button>
         </div>
 
@@ -255,7 +255,7 @@
                 <div class="starting__options-hi-message">
                   <button class="hi__message hi__message-game">
                     <p>Hi! I'm Arshvir :)</p>
-                    <span>v</span>
+                    <p class="hi__message-arrow-game hi__message-arrow">v</p>
                   </button>
                 </div>
 
@@ -293,16 +293,56 @@
 
             <div class="score-wrapper"><div class="score">0</div></div>
 
-            <div class="confetti-wrapper">
-              <div class="confetti">
-                <div class="confetti-sqauare"></div>
-                <div class="confetti-sqauare"></div>
-                <div class="confetti-circle"></div>
-                <div class="confetti-circle"></div>
-                <div class="confetti-triagle"></div>
-                <div class="confetti-triagle"></div>
-                <div class="confetti-line"></div>
-                <div class="confetti-line"></div>
+            <div
+              class="confetti-wrapper"
+              onclick="EatInputs(event);"
+              ontouchstart="EatInputs(event);"
+            >
+              <div
+                class="confetti"
+                onclick="EatInputs(event);"
+                ontouchstart="EatInputs(event);"
+              >
+                <div
+                  class="confetti-sqauare"
+                  onclick="EatInputs(event);"
+                  ontouchstart="EatInputs(event);"
+                ></div>
+                <div
+                  class="confetti-sqauare"
+                  onclick="EatInputs(event);"
+                  ontouchstart="EatInputs(event);"
+                ></div>
+                <div
+                  class="confetti-circle"
+                  onclick="EatInputs(event);"
+                  ontouchstart="EatInputs(event);"
+                ></div>
+                <div
+                  class="confetti-circle"
+                  onclick="EatInputs(event);"
+                  ontouchstart="EatInputs(event);"
+                ></div>
+                <div
+                  class="confetti-triagle"
+                  onclick="EatInputs(event);"
+                  ontouchstart="EatInputs(event);"
+                ></div>
+                <div
+                  class="confetti-triagle"
+                  onclick="EatInputs(event);"
+                  ontouchstart="EatInputs(event);"
+                ></div>
+                <div
+                  class="confetti-line"
+                  onclick="EatInputs(event);"
+                  ontouchstart="EatInputs(event);"
+                ></div>
+                <div
+                  class="confetti-line"
+                  onclick="EatInputs(event);"
+                  ontouchstart="EatInputs(event);"
+                ></div>
               </div>
             </div>
 
@@ -311,9 +351,15 @@
               class="game-button"
               tabindex="-1"
             >
-              <div class="timerGrow"></div>
+              <div
+                class="timerGrow"
+                onclick="EatInputs(event);"
+                ontouchstart="EatInputs(event);"
+              ></div>
             </button>
           </div>
+
+          <div class="game-input-eater"></div>
         </div>
       </section>
 
@@ -349,6 +395,12 @@
             </svg>
           </div>
           <ul class="footer__list">
+            <div class="debug-text" style="display: flex">
+              <p class="touch-1">debug text |</p>
+              <p class="touch-difference">debug text</p>
+            </div>
+            <p class="touch-2">debug text |</p>
+
             <li class="footer__email">
               <a class="footer__email-link" href="#"
                 >arshvir.s.goraya@gmail.com</a
