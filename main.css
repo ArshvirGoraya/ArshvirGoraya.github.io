@@ -4,16 +4,16 @@
 
   --text-color: #fdfffc;
   /* --text-color: hsl(0, 0%, 100%); */
-  --text-hover-color: hsl(180, 42%, 21%);
 
   /* --navbar-color: #1a9960; */
   --navbar-color: #1a9960;
 
-  --accent-color: #ff6978;
+  --accent-color: #ffffff;
+  --footer-circle-color: #ff6978;
 
+  --text-hover-color: hsl(180, 42%, 21%);
   --clickable-link: #62e4aa;
   --clickable-link-highlight: #8d5a97;
-  /* --clickable-link-highlight: #c03221; */
 
   --GameHeightJS: calc(
     75 * 100vh / 100
@@ -24,17 +24,62 @@
   --GameCircleSize: calc(var(--GameWidthJS) * 0.13);
 
   --ScreenWidth: 100vw;
+
+  --outline-stroke: var(--text-color);
+
+  --background-curve: #8d5a97;
+  --middleground-curve: #676f85;
+
+  --footer-circle-hover: var(--clickable-link-highlight);
+  --game-button-hover: var(--clickable-link-highlight);
+  --email-button-hover: var(--clickable-link-highlight);
+  --email-button-border: var(--clickable-link);
+
+  --game-knob: purple;
+  --lives-color: #14ff00;
+  --game-button-color: red;
+  --copywrite-text-color: black;
+
+  --footer-circle-scaleY: 2;
+  --footer-circle-endPoint: 50px;
 }
 
 /*is set to dark mode by default. Following is the style for light mode.*/
 .lightmode {
   /*added to html once light mode is toggled.*/
-  --background-color: hsl(0, 0%, 88%);
-  --navbar-color: hsl(153, 72%, 35%);
-  --main-wraper-bg: hsl(0, 0%, 64%);
+  --background-color: black;
+  --navbar-color: black;
+  --main-wraper-bg: #4a4a4a;
 
-  --text-color: hsl(0, 0%, 100%);
-  --text-hover-color: hsl(180, 42%, 21%);
+  --text-color: hsl(0, 0%, 100%); /*ALL text*/
+
+  --hover-colors: #fc60a8;
+
+  --accent-color: #ffffff; /**/
+
+  --footer-circle-color: var(--hover-colors);
+
+  --clickable-link: #4a4a4a; /*game button background colors*/
+  --email-button-border: #131313; /*BUTTON BORDERS (email and game)*/
+
+  --text-hover-color: var(--hover-colors); /*navbar icons hover*/
+
+  --game-button-hover: var(--hover-colors);
+  --email-button-hover: #6a00ff;
+
+  --footer-circle-hover: #6a00ff;
+
+  --outline-stroke: #ffffff00;
+
+  --background-curve: #6a00ff;
+  --middleground-curve: #944bf9;
+
+  --game-knob: black;
+
+  --lives-color: #6a00ff;
+  --game-button-color: #6a00ff;
+
+  --copywrite-text-color: white;
 }
 
 * {
@@ -385,11 +430,11 @@ body {
   .navbar__color-mode-button:focus-visible .st1,
   .navbar__color-mode-button:focus-visible .moon {
     fill: var(--text-hover-color); /*for logos/svg*/
-    stroke: var(--text-color);
+    stroke: var(--outline-stroke);
   }
   .navbar__burger-button:hover .burger,
   .navbar__burger-button:focus-visible .burger {
-    fill: var(--text-color);
+    fill: var(--outline-stroke);
     stroke: var(--text-hover-color);
     stroke-width: 1px;
   }
@@ -550,23 +595,28 @@ body {
 }
 
 .footer-circle {
-  transform: scaleY(2);
+  fill: var(--footer-circle-color);
   opacity: 0.2;
-  transition: fill 0.3s;
 
-  animation: sunCurve 50s alternate infinite ease-in-out;
+  scale: 0.8;
+
+  transition: fill 0.3s;
+  animation: sunCurve 50s alternate infinite ease-out;
 }
 .footer-circle:hover {
-  fill: var(--clickable-link-highlight);
+  fill: var(--footer-circle-hover);
 }
 @keyframes sunCurve {
   from {
-    transform: scaleY(2) translateX(0px);
+    transform: scaleY(var(--footer-circle-scaleY)) translateX(0px)
+      translateY(-1px);
   }
   to {
-    transform: scaleY(2) translateX(50px);
+    transform: scaleY(var(--footer-circle-scaleY))
+      translateX(var(--footer-circle-endPoint)) translateY(-1px);
   }
 }
+
 .foreground {
   animation: waveLeft 10s infinite linear;
   /* fill: red; */
@@ -582,10 +632,10 @@ body {
   /* fill: red; */
 }
 .js-footer-middleground-hover-color {
-  fill: #676f85;
+  fill: var(--middleground-curve);
 }
 .js-footer-backgroundground-hover-color {
-  fill: #8d5a97;
+  fill: var(--background-curve);
 }
 
 @keyframes waveLeft {
@@ -598,6 +648,7 @@ body {
 }
 
 .footer__list {
+  z-index: 997;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -610,11 +661,11 @@ body {
   margin-bottom: 1ch;
 }
 .footer__email-link {
-  background-color: var(--clickable-link);
+  background-color: var(--email-button-border);
 
-  border: 1ch solid var(--clickable-link);
-  border-top: 0.5ch solid var(--clickable-link);
-  border-bottom: 0.5ch solid var(--clickable-link);
+  border: 1ch solid var(--email-button-border);
+  border-top: 0.5ch solid var(--email-button-border);
+  border-bottom: 0.5ch solid var(--email-button-border);
   border-radius: 0.5ch;
   transition-property: background-color border;
   transition-duration: 0.5s;
@@ -623,24 +674,26 @@ body {
 @media (hover: hover) {
   .footer__email-link:hover,
   .footer__email-link:focus-visible {
-    background-color: var(--clickable-link-highlight);
+    background-color: var(--email-button-hover);
 
-    border: 1ch solid var(--clickable-link-highlight);
-    border-top: 0.5ch solid var(--clickable-link-highlight);
-    border-bottom: 0.5ch solid var(--clickable-link-highlight);
+    border: 1ch solid var(--email-button-hover);
+    border-top: 0.5ch solid var(--email-button-hover);
+    border-bottom: 0.5ch solid var(--email-button-hover);
   }
 }
 
 .js-footer__email-touch-start {
   /*for mobile only*/
-  background-color: var(--clickable-link-highlight);
+  background-color: var(--email-button-hover);
 
-  border: 1ch solid var(--clickable-link-highlight);
-  border-top: 0.5ch solid var(--clickable-link-highlight);
-  border-bottom: 0.5ch solid var(--clickable-link-highlight);
+  border: 1ch solid var(--email-button-hover);
+  border-top: 0.5ch solid var(--email-button-hover);
+  border-bottom: 0.5ch solid var(--email-button-hover);
 }
 
 .footer__copyright {
+  color: var(--copywrite-text-color);
+
   letter-spacing: normal;
   font-size: 1ch;
   margin-bottom: 2ch;
@@ -714,7 +767,7 @@ body {
   /* position: relative; */
 }
 .starting__options {
-  font-size: 24px;
+  font-size: 28px;
 
   display: flex;
   flex-direction: column;
@@ -725,6 +778,8 @@ body {
   z-index: 998;
 }
 .hi__message {
+  white-space: nowrap;
+
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -745,6 +800,10 @@ body {
   font-weight: bolder;
   font-size: 1.5ch;
 }
+.hi__message {
+  color: var(--accent-color);
+}
+
 .starting__options-hi-message {
   /* border: red solid 1px; */
 
@@ -864,6 +923,20 @@ body {
       0 0 60px peru, 0 0 70px peru, 0 0 80px peru;
   }
 }
+
+@keyframes glowDarkModeJS {
+  from {
+    text-shadow: 0 0 10px #cd863f7d, 0 0 20px #4c00826d, 0 0 30px #cd863f69,
+      0 0 40px #e600736b, 0 0 50px #e600736d, 0 0 60px #e6007370,
+      0 0 70px #cd863f57;
+  }
+  to {
+    text-shadow: 0 0 20px #cd863f8a, 0 0 30px #4c008278, 0 0 40px #cd863f76,
+      0 0 50px #ff4da66e, 0 0 60px #cd863f6c, 0 0 70px #cd863f67,
+      0 0 80px #cd863f6d;
+  }
+}
+
 @keyframes glowRainBowJS {
   from {
     text-shadow: 0 0 10px violet, 0 0 20px indigo, 0 0 30px blue, 0 0 40px green,
@@ -940,22 +1013,29 @@ body {
   transition-timing-function: cubic-bezier(0.175, 0.1, 0.5, 1.3);
 }
 #difficulty-checkbox:checked + .difficulty-switch-label {
-  background-color: yellow;
+  /* background of knob */
+  background-color: #e0bdff;
 }
+
 #difficulty-checkbox:checked + .difficulty-switch-label::after {
-  background-color: purple;
+  /*the knob*/
+  background-color: var(--game-knob);
   margin-left: 1.1ch;
 }
 
 @media (hover: hover) {
   .game__start:hover,
-  .scroll__down:hover {
-    background-color: var(--clickable-link-highlight);
+  .scroll__down:hover,
+  .game__start:focus-visible,
+  .scroll__down:focus-visible {
+    background-color: var(--game-button-hover);
   }
-  .hi__message:hover {
-    color: yellow;
-  }
-  .difficulty-switch-label:hover {
+  /* .hi__message:hover,
+  .hi__message:focus-visible {
+    color: white;
+  } */
+  .difficulty-switch-label:hover,
+  #difficulty-checkbox:focus-visible + .difficulty-switch-label {
     background-color: #e0bdff !important; /*more specific selectors above, so simply put !important here*/
   }
 }
@@ -963,17 +1043,21 @@ body {
 #difficulty-checkbox:focus-visible + .difficulty-switch-label {
   outline: auto;
 }
+
 .difficulty-text span {
   position: absolute;
 }
 .difficulty-text span::after {
   /* Hard mode when unchecked */
+  white-space: nowrap;
   content: "fast mode";
   width: 10ch;
   display: none;
 }
 .difficulty-text span::before {
   /* Easy mode when unchecked */
+  white-space: nowrap;
+
   display: inline-block;
   content: "slow mode";
   width: 10ch;
@@ -1010,7 +1094,7 @@ body {
   border-left: 0.5ch solid transparent;
   border-right: 0.5ch solid transparent;
 
-  border-bottom: 1ch solid #14ff00;
+  border-bottom: 1ch solid var(--lives-color);
 
   transform-origin: center;
   transition-property: transform border-bottom;
@@ -1042,7 +1126,7 @@ body {
 
   color: black;
 
-  background-color: red;
+  background-color: var(--game-button-color);
 
   position: absolute;
 
@@ -1204,7 +1288,7 @@ body {
 }
 
 .game-alt {
-  font-size: 24px;
+  font-size: 28px;
 
   display: none;
   align-items: center;
@@ -1215,7 +1299,7 @@ body {
 
   .game-alt,
   .starting__options {
-    font-size: 28px;
+    font-size: 18px;
   }
 
   .game-button {
@@ -1227,8 +1311,8 @@ body {
   }
 
   .game-section {
-    /* height: 100%; */
-    height: var(--GameHeightJS); /*75% of screen height*/
+    height: 75%;
+    /*height: var(--GameHeightJS); /*75% of screen height*/
   }
   .game-wrapper {
     width: var(--GameWidthJS); /*Game Height / 1.5*/
@@ -1247,15 +1331,18 @@ body {
   }
 }
 
-@media (max-width: 600px) {
-  .game-alt,
-  .starting__options {
-    font-size: 24px;
-  }
+@media (max-width: 1200px) {
   .main-wrapper {
     width: 100%;
   }
 
+  .footer-circle {
+    --footer-circle-endPoint: 75px;
+    scale: 0.8;
+  }
+}
+
+@media (max-width: 600px) {
   .navbar__vertical-name-seperator {
     display: inline-block;
   }
@@ -1290,10 +1377,18 @@ body {
   .game-wrapper {
     width: 100%;
   }
+  .game-alt,
+  .starting__options {
+    font-size: 22px;
+  }
 }
 
 @media (max-height: 400px) {
   /*Height limit: replace game with image*/
+
+  .game-section {
+    min-height: 250px;
+  }
   .game-wrapper {
     display: none;
   }
@@ -1315,5 +1410,17 @@ body {
   }
   .navbar__color-mode-button {
     margin-right: 1ch;
+  }
+}
+
+@media (hover: hover) and (max-width: 1200px) {
+  .footer__list {
+    padding-top: 2ch;
+  }
+}
+
+@media (hover: hover) and (max-width: 600px) {
+  .footer__list {
+    padding-top: 1ch;
   }
 }

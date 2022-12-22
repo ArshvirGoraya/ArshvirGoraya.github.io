@@ -1,6 +1,8 @@
 //1. =========================ColorMode Switcher===============================================
 //If colorMode is stored in local storage, will get it.
 let colorMode = localStorage.getItem('colorMode'); 
+const scoreElement = document.querySelector('.score');
+
 
 if (colorMode === 'light'){ //Default is dark mode, so if light was saved in local storage, must change to light.
     toggleLightMode();
@@ -22,7 +24,7 @@ function toggleColorMode(){ //called by in-line html.
     // console.log(colorMode);
 };
 
-function toggleDarkMode () {
+function toggleDarkMode () { //The Default... for now.
     //Removes lightmode style from HTML.
     localStorage.setItem('colorMode', null);
     document.querySelector('html').classList.remove('lightmode')
@@ -30,6 +32,9 @@ function toggleDarkMode () {
     //Hides moon logo and shows sun logo.
     document.querySelector('.sun').style.display = "flex";
     document.querySelector('.moon').style.display = "none";
+
+    scoreElement.style.animation = "";
+
 };
 function toggleLightMode() {
     //Adds lightmode style to HTML.
@@ -39,6 +44,8 @@ function toggleLightMode() {
     //Hides sun logo and shows moon logo.
     document.querySelector('.moon').style.display = "flex";
     document.querySelector('.sun').style.display = "none";
+
+    scoreElement.style.animation = "2s ease-in-out 0s infinite alternate none running glowDarkModeJS";
 };
 //2.============================Burger Menu============================================
 //Animation of BurgerMenu (on click) + Appearance of its menu.===========================
@@ -558,10 +565,17 @@ window.onresize = () => {
         // console.log("Game Circle Size: ", gameCircleSize);
     }, 200);
 };
+
+// const debugSizeText = document.querySelector('.debug-size');
+
 function calculateGameBoxArea(){ //whenever window size changes (and hence when gameArea changes).
+    // debugSizeText.innerHTML = window.innerWidth;
+    // debugSizeText.innerHTML += "  x  ";
+    // debugSizeText.innerHTML += window.innerHeight;
 
     // console.log("window resized: ", window.outerWidth , " x ", window.outerHeight);
-    console.log("Screen height: ", screen.availHeight );
+    // console.log("Screen height: ", screen.availHeight );
+
 
     
     document.documentElement.style.setProperty('--ScreenWidth', screen.availWidth + "px");
@@ -576,7 +590,7 @@ function calculateGameBoxArea(){ //whenever window size changes (and hence when 
     }
     else{
         //mobile uses screen height.
-        // footerEmail.append(screen.availWidth, "x", screen.availHeight);
+
 
         //check orientation first...
 
@@ -594,6 +608,7 @@ function calculateGameBoxArea(){ //whenever window size changes (and hence when 
         }
 
     }
+
 
     gameBoxSize = [gameBox.clientWidth , gameBox.clientHeight]; //client size = content + padding.
     gameCircleSize = [gameCircle.offsetWidth, gameCircle.offsetHeight]; //offset size = content + padding + border + margin
@@ -616,7 +631,6 @@ difficultyCheckbox.checked = true;
 gameCircle.style.transitionDuration = "0s";
 
 let lives; //set on playgame button click.
-const scoreElement = document.querySelector('.score');
 const livesElement = document.querySelector('.lives-wrapper');
 
 
@@ -704,7 +718,7 @@ function missedCircle(circleMissed){    //on circle timeout.
                 playAudio(Audio_GAME_WIN, false, true, 0.5);
             }
             else{
-                playAudio(Audio_GAME_LOSS, false, true);
+                playAudio(Audio_GAME_LOSS, false, false, 0.1, 1.3); //aligned with game options pop-up
             }
         }
     }
@@ -767,83 +781,6 @@ const inputEater = document.querySelector('.game-input-eater');
 let TouchEvents = []; //if 2 then gesture is active.
 let previousPointerDiff = -1;
 
-let touch_1 = document.querySelector(".touch-1"); 
-let touch_2 = document.querySelector(".touch-2"); 
-let touch_difference = document.querySelector(".touch-difference"); 
-
-
-function gestureStart(e){
-    console.log("gesture start: ", e.pointerId);
-    TouchEvents.push(e);
-
-    if (TouchEvents.length === 1){
-        inputEater.style.touchAction = ""; //detect NEXT one...
-    }
-    else{
-        inputEater.style.touchAction = "none";
-    }
-
-    touch_difference.innerHTML = "Touches: "
-    touch_difference.innerHTML += TouchEvents.length;
-}
-
-
-function pointOff(e){
-    console.log("end: ", e.pointerId);
-
-    for (var i = 0; i < TouchEvents.length; i++) {
-        if (e.pointerId === TouchEvents[i].pointerId) {
-            TouchEvents.splice(i, 1);       //gets rid of ONE index at the i position in the array.
-            break;
-        }
-    }
-    touch_difference.innerHTML = "Touches: "
-    touch_difference.innerHTML += TouchEvents.length;
-
-    if (TouchEvents.length === 1){
-        inputEater.style.touchAction = ""; //detect NEXT one...
-    }
-    else{
-        inputEater.style.touchAction = "none";
-    }
-}
-
-function ZoomingDetection(e){
-    console.log("move: ", e.pointerId);
-
-    for (var i = 0; i < TouchEvents.length; i++) { //loop through touch array.
-        if(e.pointerId === TouchEvents[i].pointerId){   //if touch already has this eventID, then update (its new position (clientX and clientY is needed)).
-            TouchEvents[i] = e;
-            break; //no others need to be checked.
-        }
-    }
-    //
-    if (TouchEvents.length === 2){ //2 held down.
-
-        const xDistance = Math.pow(TouchEvents[1].clientX - TouchEvents[0].clientX, 2);
-        const yDistance = Math.pow(TouchEvents[1].clientY - TouchEvents[0].clientY, 2);
-
-        const currentDiff = Math.sqrt(xDistance + yDistance); //difference between 2 Vectors2s.
-
-        //  
-        if (previousPointerDiff > 0){
-            if (currentDiff < previousPointerDiff) { //ZOOMING OUT IS ALLOWED.
-
-
-
-                touch_1.innerHTML = "Zooming out.";
-                
-                inputEater.style.touchAction = "none";
-
-                return;                 //no prevent default.
-            }
-        }
-    inputEater.style.touchAction = "none";
-    preventDefault(e);
-}
-}
-
-
 function toggleGameBackgroundInputs(gamelost){
     if (window.matchMedia( "(hover: none)" ).matches) {
 
@@ -851,32 +788,11 @@ function toggleGameBackgroundInputs(gamelost){
             inputEater.style.touchAction = "";
 
             inputEater.removeEventListener('touchend', preventDefault);
-
-            // inputEater.style.touchAction = "";
-
-            // inputEater.removeEventListener('pointerdown', gestureStart);
-            // inputEater.removeEventListener('pointermove', ZoomingDetection);
-
-            // inputEater.removeEventListener('pointerup', pointOff);
-            // inputEater.removeEventListener('pointercancel', pointOff);
-            // inputEater.removeEventListener('pointerout', pointOff);
-            // inputEater.removeEventListener('pointerleave', pointOff);
         } 
 
         else{ //on game start. 
             inputEater.style.touchAction = "pinch-zoom"; //only allow punch zoom... all others prevented.
             inputEater.addEventListener('touchend', preventDefault); //should stop double-tap zooming.
-
-            // inputEater.style.touchAction = "";
-
-            // inputEater.addEventListener('pointerdown', gestureStart);
-            // inputEater.addEventListener('pointermove', ZoomingDetection);
-
-            // inputEater.addEventListener('pointerup', pointOff);
-            // inputEater.addEventListener('pointercancel', pointOff);
-            // inputEater.addEventListener('pointerout', pointOff);
-            // inputEater.addEventListener('pointerleave', pointOff);
-
         }
     }
 }
@@ -890,7 +806,7 @@ function CircleInteract(e) {
 };
 function EatInputs(e){ //called for ALL child circle elements/confettiy, etc.
     
-    console.log("ate input of: ", e);
+    // console.log("ate input of: ", e);
 
     e.preventDefault();
 }
@@ -906,7 +822,7 @@ async function getAudioBuffer(filePath){
 }
 
 let ButtonSoundIncrement = 0;
-function playAudio(audioBuffer, alternate, randomPitchShift, volume = 0.1){
+function playAudio(audioBuffer, alternate, randomPitchShift, volume = 0.1, specificPitch = null){
     //Circle sounds alternate.
     //randomPitchShift: Audio Health Down... Health Up. 100.
 
@@ -945,6 +861,9 @@ function playAudio(audioBuffer, alternate, randomPitchShift, volume = 0.1){
     else if (randomPitchShift){ //small pitch shift.
         audioSource.playbackRate.value = Math.random() * (1.5 - 1) + 1;
     }
+    else if (specificPitch != null){
+        audioSource.playbackRate.value = specificPitch;
+    }
 
     const Audio_GainNode = new GainNode(audioCtx, {gain: volume}); // volume.
     //Audio_GainNode.gain.setTargetAtTime(volume, audioCtx.currentTime, .01); //smoother volume change (not really needed since volume is not changing in the middle of playing the sound).
@@ -954,7 +873,7 @@ function playAudio(audioBuffer, alternate, randomPitchShift, volume = 0.1){
     Audio_GainNode.connect(audioCtx.destination);
 
 
-    audioSource.start(); //starts at '0' by default.
+    audioSource.start(0); //starts at '0' by default.
 }
 
 let Audio_Circle = 0; 
@@ -1066,7 +985,7 @@ function generateRandomCoordsAndSet(event, missed = false, ClickedCircleElement)
                 scoreElement.style.animation = "";
             }
 
-            console.log("=> SCORE ANIMATION: ", scoreElement.style.animation);
+            // console.log("=> SCORE ANIMATION: ", scoreElement.style.animation);
 
             //Want to reset Circle Timer of ALL circles.
                 //loop through all circles and reset their timers.
@@ -1326,7 +1245,7 @@ gameStart.onclick = () => {
     gameBox.style.display = "flex";
 
     coordArea = calculateGameBoxArea();
-    console.log("resized new coords: ", coordArea);
+    console.log("resized game area: ", coordArea);
     console.log("Game Circle Size: ", gameCircleSize)
 
     lives = 3;
@@ -1409,7 +1328,7 @@ scrollDown.tabIndex = -1;
 let audioCtx = null;
 hi_messageButton.onclick = () =>{
     if (audioCtx === null){
-        console.log("AudioContect started...");
+        // console.log("AudioContect started...");
         audioCtx = new AudioContext();
 
         setupSFX();
