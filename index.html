@@ -110,12 +110,18 @@
               >
                 <svg viewBox="0 0 35.1 36.9" class="navbar__icon sun">
                   <polygon
-                    class="st0"
+                    class="st0 sun-outerCircle"
                     points="17.6,0 20.4,9.7 28.4,3.5 25,13 35.1,12.8 26.8,18.5 35.1,24.1 25,23.9 28.4,33.4 20.4,27.2 17.6,36.9 
                            14.7,27.2 6.7,33.4 10.1,23.9 0,24.1 8.3,18.5 0,12.8 10.1,13 6.7,3.5 14.7,9.7 "
                   />
-                  <circle class="st1" cx="17.6" cy="18.5" r="7.4" />
+                  <circle
+                    class="st1 sun-innerCircle"
+                    cx="17.6"
+                    cy="18.5"
+                    r="7.4"
+                  />
                 </svg>
+
                 <svg viewBox="0 0 35.1 36.9" class="navbar__icon moon">
                   <path
                     id="moonPath"
@@ -242,10 +248,15 @@
 
       <section class="game-section">
         <div class="game-alt">
-          <button class="hi__message">
-            <p>Hi! I'm Arshvir :)</p>
-            <p class="hi__message-arrow">v</p>
-          </button>
+          <div class="game-alt-wrapper">
+            <button class="hi__message hi__message-alt">
+              <p class="hi__message-text">Hi! I'm Arshvir :)</p>
+              <div class="hi__message-circle hi__message-circle-alt"></div>
+              <div class="hi__message-arrow-wrapper">
+                <p class="hi__message-arrow">v</p>
+              </div>
+            </button>
+          </div>
         </div>
 
         <div class="game-wrapper">
@@ -254,8 +265,13 @@
               <div class="starting__options">
                 <div class="starting__options-hi-message">
                   <button class="hi__message hi__message-game">
-                    <p>Hi! I'm Arshvir :)</p>
-                    <p class="hi__message-arrow-game hi__message-arrow">v</p>
+                    <p class="hi__message-text">Hi! I'm Arshvir :)</p>
+                    <div
+                      class="hi__message-circle hi__message-circle-game"
+                    ></div>
+                    <div class="hi__message-arrow-wrapper">
+                      <p class="hi__message-arrow hi__message-arrow-game">v</p>
+                    </div>
                   </button>
                 </div>
 
@@ -267,15 +283,19 @@
                         type="checkbox"
                         id="difficulty-checkbox"
                         checked="checkbox"
-                        aria-label="game hard mode difficulty"
+                        aria-label="game fast mode difficulty"
                         aria-checked="true"
                       />
                       <label
-                        class="difficulty-switch-label"
+                        class="difficulty-switch-label-label"
                         for="difficulty-checkbox"
                       >
+                        <div class="difficulty-switch-label-wrapper">
+                          <div class="difficulty-switch-label">
+                            <p class="difficulty-text"><span></span></p>
+                          </div>
+                        </div>
                       </label>
-                      <p class="difficulty-text"><span></span></p>
                     </div>
                   </div>
 
@@ -363,6 +383,9 @@
         </div>
       </section>
 
+      <section class="about__me"></section>
+      <section class="projects"></section>
+
       <footer class="footer" tabindex="-1">
         <!-- need tabindex -1 to not be focusable-->
 
@@ -400,7 +423,7 @@
             </svg>
           </div>
           <ul class="footer__list">
-            <!-- <p class="debug-size">debug text</p> -->
+            <p class="debug-size" style="color: red"></p>
 
             <!-- <div class="debug-text" style="display: flex">
               <p class="touch-1">debug text |</p>
@@ -428,6 +451,13 @@
         }
         .game-alt {
           display: flex;
+        }
+        .hi__message-text {
+          z-index: 1;
+        }
+        .hi__message-circle {
+          z-index: 0;
+          background: linear-gradient(red, transparent);
         }
       </style>
     </noscript>

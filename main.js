@@ -7,7 +7,13 @@ const scoreElement = document.querySelector('.score');
 if (colorMode === 'light'){ //Default is dark mode, so if light was saved in local storage, must change to light.
     toggleLightMode();
     console.log("light mode toggled");
-};
+}
+else{
+    toggleDarkMode();
+    console.log("dark mode toggled");
+}
+
+
 
 //Get button that toggles light/dark mode.
 // const colorModeToggle = document.querySelector('.navbar__color-mode-button');
@@ -30,10 +36,18 @@ function toggleDarkMode () { //The Default... for now.
     document.querySelector('html').classList.remove('lightmode')
     
     //Hides moon logo and shows sun logo.
-    document.querySelector('.sun').style.display = "flex";
-    document.querySelector('.moon').style.display = "none";
+    if (window.matchMedia( "(prefers-color-scheme: dark)" ).matches) {
+        document.querySelector('.sun').style.display = "none";
+        document.querySelector('.moon').style.display = "flex";
+        scoreElement.style.animation = "2s ease-in-out 0s infinite alternate none running glowDarkModeJS";
+    }
+    else{
+        document.querySelector('.sun').style.display = "flex";
+        document.querySelector('.moon').style.display = "none";
+        scoreElement.style.animation = "";
+    }
 
-    scoreElement.style.animation = "";
+
 
 };
 function toggleLightMode() {
@@ -41,18 +55,24 @@ function toggleLightMode() {
     localStorage.setItem('colorMode', 'light');
     document.querySelector('html').classList.add('lightmode')
 
-    //Hides sun logo and shows moon logo.
-    document.querySelector('.moon').style.display = "flex";
-    document.querySelector('.sun').style.display = "none";
 
-    scoreElement.style.animation = "2s ease-in-out 0s infinite alternate none running glowDarkModeJS";
+    //Hides sun logo and shows moon logo.
+    if (window.matchMedia( "(prefers-color-scheme: dark)" ).matches) {
+        document.querySelector('.moon').style.display = "none";
+        document.querySelector('.sun').style.display = "flex";
+        scoreElement.style.animation = "";
+    }
+    else{
+        document.querySelector('.moon').style.display = "flex";
+        document.querySelector('.sun').style.display = "none";
+        scoreElement.style.animation = "2s ease-in-out 0s infinite alternate none running glowDarkModeJS";
+    }
+
+
 };
+
 //2.============================Burger Menu============================================
 //Animation of BurgerMenu (on click) + Appearance of its menu.===========================
-
-
-
-
 const burgerMenuBtn = document.querySelector('.navbar__burger-button');
 const burgerMenuBtnLogo = document.querySelector('.burger');
 const burgerMenu = document.querySelector('.navbar__mob-collapsible-container');
@@ -94,8 +114,8 @@ function collapseBurgerMenu(){
     itchLogo.classList.remove("js-navbab__itch-github-collapse");
     githubLogo.classList.remove("js-navbab__itch-github-collapse");
 
-    itchLogo.classList.remove("js-navbab__itch-github-raised");
-    githubLogo.classList.remove("js-navbab__itch-github-raised");
+    // itchLogo.classList.remove("js-navbab__itch-github-raised");
+    // githubLogo.classList.remove("js-navbab__itch-github-raised");
 
      // Dont want these to be focusable/tabbable.
     itchLogo.classList.add("js-navbar__disable-links");
@@ -141,8 +161,8 @@ itchLogo.addEventListener('transitionend', mobLogosOpened); //no need to put on 
 function mobLogosOpened(e){ // after logos have been transitioned, gets rid of any transition delay
     itchLogo.removeEventListener('transitionend', mobLogosOpened);
 
-    itchLogo.classList.add("js-navbab__itch-github-raised");
-    githubLogo.classList.add("js-navbab__itch-github-raised");
+    // itchLogo.classList.add("js-navbab__itch-github-raised");
+    // githubLogo.classList.add("js-navbab__itch-github-raised");
 }
 
 
@@ -164,9 +184,6 @@ function DocumentClickListener(e){
         burgerMenuFlipped = !burgerMenuFlipped;
     }
 };
-
-
-
 //3.============================NavBar dots anim on on desktop and mobile============================================
 
 // NAME seperator (small screens only):
@@ -334,10 +351,6 @@ function nameSeperatorAnimationTouch() {
     }
 }
 
-
-
-
-
 //for tabbing + clicking + hovering:
 if (window.matchMedia("(hover: hover)").matches) { //Device has hover (i.e., not mobile).
         //hover effects
@@ -387,7 +400,6 @@ if (window.matchMedia("(hover: hover)").matches) { //Device has hover (i.e., not
         nameSeperator.classList.remove("js-navbar-name-seperator-trans-right");
     }
 }
-
 
 //3.============================Mobile Link Styles on Touch (navbar)============================================
 ///////////hover color on touch - no animations included here.//
@@ -447,18 +459,10 @@ function LinkStyleRemove(){
         StyledElement = null;
     }
 };
-
-
 //4.============================Footer============================================
 const footerEmail = document.querySelector('.footer__email-link');
 const footerCurveMiddleGround = document.querySelector('.middleground');
 const footerCurveBackGround = document.querySelector('.background');
-
-
-
-
-
-
 
 if (window.matchMedia( "(hover: hover)" ).matches) { //desktop - apply waves styles.
     footerEmail.addEventListener("focusin", () => {        
@@ -531,9 +535,6 @@ const gameSection = document.querySelector('.game-section'); //Height
 
 const gameBox = document.querySelector('.game-area');
 
-
-
-
 const gameCircle = document.querySelector('.game-button');
 const confettiElement = document.querySelector('.confetti-wrapper'); 
 
@@ -566,38 +567,22 @@ window.onresize = () => {
     }, 200);
 };
 
-// const debugSizeText = document.querySelector('.debug-size');
+const debugSizeText = document.querySelector('.debug-size');
 
 function calculateGameBoxArea(){ //whenever window size changes (and hence when gameArea changes).
     // debugSizeText.innerHTML = window.innerWidth;
     // debugSizeText.innerHTML += "  x  ";
     // debugSizeText.innerHTML += window.innerHeight;
 
-    // console.log("window resized: ", window.outerWidth , " x ", window.outerHeight);
-    // console.log("Screen height: ", screen.availHeight );
-
-
-    
     document.documentElement.style.setProperty('--ScreenWidth', screen.availWidth + "px");
 
 
     if (window.matchMedia( "(hover: hover)" ).matches) {
         //desktop uses window height.
-        // footerEmail.append(window.outerWidth, "x", window.innerHeight);
-
-
         document.documentElement.style.setProperty('--GameHeightJS', 75 * window.innerHeight / 100 + "px");
     }
     else{
-        //mobile uses screen height.
-
-
-        //check orientation first...
-
-        // if (screen.orientation.type === "landscape-primary") //not supported in safari right now...
-
         document.documentElement.style.setProperty('--GameHeightJS', 75 * window.innerHeight / 100 + "px");
-
 
         if (window.matchMedia("(orientation: portrait)").matches) { //if on portrait mode
             document.documentElement.style.setProperty('--GameHeightJS', 75 * screen.availHeight  / 100 + "px");
@@ -606,9 +591,7 @@ function calculateGameBoxArea(){ //whenever window size changes (and hence when 
             //if in landscape mode: use width instead...
             document.documentElement.style.setProperty('--GameHeightJS', 75 * screen.availWidth  / 100 + "px");
         }
-
     }
-
 
     gameBoxSize = [gameBox.clientWidth , gameBox.clientHeight]; //client size = content + padding.
     gameCircleSize = [gameCircle.offsetWidth, gameCircle.offsetHeight]; //offset size = content + padding + border + margin
@@ -621,7 +604,6 @@ function calculateGameBoxArea(){ //whenever window size changes (and hence when 
     return [gameBoxSize[0] - gameCircleSize[0], gameBoxSize[1] - gameCircleSize[1]];
 }
 
-
 //Gameplay stuff.
 let score; //increment on game button click, reset to 0 on play game button click
 
@@ -632,8 +614,6 @@ gameCircle.style.transitionDuration = "0s";
 
 let lives; //set on playgame button click.
 const livesElement = document.querySelector('.lives-wrapper');
-
-
 
 let extraCircles = [];
 
@@ -646,7 +626,6 @@ function CreateNewCircle(Glide = false, TimerMS = null, Small = false, ToggleSca
     if (Glide){gameCircleDuplicate.style.transitionDuration = "0.5s";}
     else {gameCircleDuplicate.style.transitionDuration = "0s";}
 
-
     if (window.matchMedia( "(hover: none)" ).matches) {
         gameCircleDuplicate.ontouchstart = () => {generateRandomCoordsAndSet(null, false, gameCircleDuplicate)};
         // console.log("Mobile: touch");
@@ -654,7 +633,6 @@ function CreateNewCircle(Glide = false, TimerMS = null, Small = false, ToggleSca
         gameCircleDuplicate.onclick = ()  => {generateRandomCoordsAndSet(null, false, gameCircleDuplicate)};
         // console.log("Desktop: click");
     }
-
 
     gameBox.appendChild(gameCircleDuplicate);
 
@@ -669,7 +647,6 @@ function CreateNewCircle(Glide = false, TimerMS = null, Small = false, ToggleSca
     if (ToggleScale){
         gameCircleDuplicate.setAttribute("ToggleScale", null); //Scale will toggle on and off depending on if it has this attribute
     }
-
     amountOfCircles+=1; 
     gameCircleDuplicate.classList.add ("CircleNum-"+amountOfCircles);
 
@@ -768,12 +745,9 @@ let nextCircleGlide = false;
 
 let alwaysGreenCircleOneOff = true;
 
-
-
 function preventDefault(e){
     e.preventDefault();
 }
-
 
 const inputEater = document.querySelector('.game-input-eater');
 
@@ -789,7 +763,6 @@ function toggleGameBackgroundInputs(gamelost){
 
             inputEater.removeEventListener('touchend', preventDefault);
         } 
-
         else{ //on game start. 
             inputEater.style.touchAction = "pinch-zoom"; //only allow punch zoom... all others prevented.
             inputEater.addEventListener('touchend', preventDefault); //should stop double-tap zooming.
@@ -797,21 +770,14 @@ function toggleGameBackgroundInputs(gamelost){
     }
 }
 
-
-
-
 function CircleInteract(e) {
     generateRandomCoordsAndSet(null, false, gameCircle);
     e.preventDefault();
 };
 function EatInputs(e){ //called for ALL child circle elements/confettiy, etc.
-    
     // console.log("ate input of: ", e);
-
     e.preventDefault();
 }
-
-
 
 async function getAudioBuffer(filePath){
     const AudioFile = await fetch(filePath);
@@ -1317,7 +1283,8 @@ gameStart.onclick = () => {
 ///
 const hi_message = document.querySelector('.starting__options-hi-message');
 const hi_messageButton = document.querySelector('.hi__message-game');
-const hi_messageArrow = document.querySelector('.hi__message-arrow-game');
+const hi_messageCircle = document.querySelector('.hi__message-circle-game');
+// const hi_messageArrow = document.querySelector('.hi__message-arrow-game');
 const starting_options = document.querySelector('.starting__options-selections');
 
 gameStart.tabIndex = -1;
@@ -1343,13 +1310,33 @@ hi_messageButton.onclick = () =>{
         difficultyCheckbox.tabIndex = -1;
         scrollDown.tabIndex = -1;
 
-        hi_message.style.color = "";
-        hi_messageArrow.style.color = "";
-        hi_messageButton.style.color = "";
+
+        // hi_messageCircle.style.scale = "";
+        hi_messageCircle.style.background = "";
+
+
+
+        document.documentElement.style.setProperty('--Hi_message-Scale', "1");
+        document.documentElement.style.setProperty('--Hi_message-hoverScale', "1.2");
+
+        // document.documentElement.style.setProperty('--hi-message-hover', "black");
     }
     else{ //turn on 
         hi_message.style.transform = "translateY(0ch)";
         starting_options.style.scale = "1";
+
+        // hi_messageCircle.style.scale = "1.2";
+
+        document.documentElement.style.setProperty('--Hi_message-Scale', "1.2");
+        document.documentElement.style.setProperty('--Hi_message-hoverScale', "1.4");
+
+
+        // hi_messageCircle.style.background = "linear-gradient(var(--game-circle-color), transparent)";
+
+
+
+        // document.documentElement.style.setProperty('--hi-message-unhover', "black");
+        // document.documentElement.style.setProperty('--hi-message-hover', "white");
 
         //ensure scaled up buttons CAN be tabbed into!
         gameStart.tabIndex = 0;
@@ -1382,4 +1369,118 @@ function giveCircleTouchStyles(circleElement){ //also called on each new circle 
             }, 200);
         });
     }
+}
+
+
+
+// touch styles
+
+if (window.matchMedia( "(hover: none)" ).matches) {
+    //color mode elements:
+    const colorModeButton = document.querySelector('.navbar__color-mode-button');
+    const Sun_outer = document.querySelector('.sun-outerCircle');
+    const Sun_inner = document.querySelector('.sun-innerCircle');
+    const Color_moon = document.querySelector('.moon');
+
+    colorModeButton.addEventListener("touchstart", () => {
+        Sun_outer.classList.add("js-TOUCH-navbar__color-mode-button");
+        Sun_inner.classList.add("js-TOUCH-navbar__color-mode-button");
+        Color_moon.classList.add("js-TOUCH-navbar__color-mode-button");
+        Color_moon.classList.add("js-TOUCH-navbar__color-mode-button-moon");
+    });
+    colorModeButton.addEventListener("touchend", () => {
+        Sun_outer.classList.remove("js-TOUCH-navbar__color-mode-button");
+        Sun_inner.classList.remove("js-TOUCH-navbar__color-mode-button");
+        Color_moon.classList.remove("js-TOUCH-navbar__color-mode-button");
+        Color_moon.classList.remove("js-TOUCH-navbar__color-mode-button-moon");
+    });
+    colorModeButton.addEventListener("touchcancel", () => {
+        Sun_outer.classList.remove("js-TOUCH-navbar__color-mode-button");
+        Sun_inner.classList.remove("js-TOUCH-navbar__color-mode-button");
+        Color_moon.classList.remove("js-TOUCH-navbar__color-mode-button");
+        Color_moon.classList.remove("js-TOUCH-navbar__color-mode-button-moon");
+    });
+
+    //burger element
+    burgerMenuBtn.addEventListener("touchstart", () => {
+        burgerMenuBtnLogo.classList.add("js-TOUCH-navbar__burger-button-logo");
+    });
+    burgerMenuBtn.addEventListener("touchend", () => {
+        burgerMenuBtnLogo.classList.remove("js-TOUCH-navbar__burger-button-logo");
+    });
+    burgerMenuBtn.addEventListener("touchcancel", () => {
+        burgerMenuBtnLogo.classList.remove("js-TOUCH-navbar__burger-button-logo");
+    });
+    
+    //Footer circle
+    const footerCircle = document.querySelector('.footer-circle');
+    footerCircle.addEventListener("touchstart", () => {
+        footerCircle.classList.add("js-TOUCH-footer-circle");
+        console.log("footer style!");
+    });
+    footerCircle.addEventListener("touchend", () => {
+        footerCircle.classList.remove("js-TOUCH-footer-circle");
+    });
+    footerCircle.addEventListener("touchcancel", () => {
+        footerCircle.classList.remove("js-TOUCH-footer-circle");
+    });
+
+    //Hi circle
+    const hi_messageAlt = document.querySelector('.hi__message-alt');
+    const hi_messageAltCircle = document.querySelector('.hi__message-circle-alt');
+    hi_messageAlt.addEventListener("touchstart", () => {
+        hi_messageAltCircle.classList.add("js-TOUCH-hi__message-circle");
+    })
+    hi_messageAlt.addEventListener("touchend", () => {
+        hi_messageAltCircle.classList.remove("js-TOUCH-hi__message-circle");
+    });
+    hi_messageAlt.addEventListener("touchcancel", () => {
+        hi_messageAltCircle.classList.remove("js-TOUCH-hi__message-circle");
+    });
+    // hi_messageButton
+    // hi_messageCircle
+    hi_messageButton.addEventListener("touchstart", () => {
+        hi_messageCircle.classList.add("js-TOUCH-hi__message-circle");
+    })
+    hi_messageButton.addEventListener("touchend", () => {
+        hi_messageCircle.classList.remove("js-TOUCH-hi__message-circle");
+    });
+    hi_messageButton.addEventListener("touchcancel", () => {
+        hi_messageCircle.classList.remove("js-TOUCH-hi__message-circle");
+    });
+
+    //game options
+    const knobLabel = document.querySelector('.difficulty-switch-label');
+    knobLabel.addEventListener("touchstart", () => {
+        knobLabel.classList.add("js-TOUCH-gameKnob");
+    })
+    knobLabel.addEventListener("touchend", () => {
+        knobLabel.classList.remove("js-TOUCH-gameKnob");
+    });
+    knobLabel.addEventListener("touchcancel", () => {
+        knobLabel.classList.remove("js-TOUCH-gameKnob");
+    });
+    //
+    gameStart.addEventListener("touchstart", () => {
+        gameStart.classList.add("js-TOUCH-gameButtons");
+    })
+    gameStart.addEventListener("touchend", () => {
+        gameStart.classList.remove("js-TOUCH-gameButtons");
+    });
+    gameStart.addEventListener("touchcancel", () => {
+        gameStart.classList.remove("js-TOUCH-gameButtons");
+    });
+    //
+    scrollDown.addEventListener("touchstart", () => {
+        scrollDown.classList.add("js-TOUCH-gameButtons");
+    })
+    scrollDown.addEventListener("touchend", () => {
+        scrollDown.classList.remove("js-TOUCH-gameButtons");
+    });
+    scrollDown.addEventListener("touchcancel", () => {
+        scrollDown.classList.remove("js-TOUCH-gameButtons");
+    });
+
+
+    
 }
