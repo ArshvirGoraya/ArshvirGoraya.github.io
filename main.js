@@ -13,12 +13,6 @@ else{
     console.log("dark mode toggled");
 }
 
-
-
-//Get button that toggles light/dark mode.
-// const colorModeToggle = document.querySelector('.navbar__color-mode-button');
-// colorModeToggle.onclick = toggleColorMode;
-
 function toggleColorMode(){ //called by in-line html.
     if (colorMode === "light"){ 
         toggleDarkMode();
@@ -46,10 +40,8 @@ function toggleDarkMode () { //The Default... for now.
         document.querySelector('.moon').style.display = "none";
         scoreElement.style.animation = "";
     }
-
-
-
 };
+
 function toggleLightMode() {
     //Adds lightmode style to HTML.
     localStorage.setItem('colorMode', 'light');
@@ -67,9 +59,53 @@ function toggleLightMode() {
         document.querySelector('.sun').style.display = "none";
         scoreElement.style.animation = "2s ease-in-out 0s infinite alternate none running glowDarkModeJS";
     }
-
-
 };
+//0.5.========================== Main Wrapper ========================================
+
+
+
+let mainClicked = localStorage.getItem('mainClicked'); 
+
+const mainWrapper = document.querySelector('.main-content');
+    //initally hiden mainWrapper. if was showing last time they visited, show initally now as well. 
+
+if (mainClicked === "true"){
+    mainWrapper.style.display = "grid";
+}
+
+const scrollDown = document.querySelector('.scroll__down');
+scrollDown.onclick = () => { /*show main wrapper and remember to show on next visit*/
+    localStorage.setItem('mainClicked', 'true');
+    mainWrapper.style.display = "grid";
+}
+
+const gameStart = document.querySelector('.game__start'); /*on click function below HIDES the mainWrapper*/ 
+
+
+const scrollDownButtons = document.querySelectorAll(".scroll-down-button");
+scrollDownButtons.forEach((ScrollDownElement)=>{
+    //normally, scroll down buttons scroll to about me section but navbar covers the about me Header, so want to scroll to just a little above it.
+    ScrollDownElement.removeAttribute("href");  //now wont scroll to about me section anymore as it normally would.
+
+    ScrollDownElement.addEventListener("click", () => {
+
+    //must get location of about me section to scroll to.
+    const AboutMe_Section = document.getElementById("about__me"); 
+    const AboutMeLocation = AboutMe_Section.getBoundingClientRect();
+
+    //must get Vertical size of navbar for offset.
+    const navbarElement = document.querySelector('.navbar');
+    const navbarHeight = navbarElement.offsetHeight;
+
+    
+    console.log(AboutMeLocation);
+    console.log("Scrlling to: ", AboutMeLocation.top)
+
+    //window.scrollTo(0, 0); //must scroll to top first.
+    window.scrollBy(window.scrollX, AboutMeLocation.top - navbarHeight); //scroll to top of about_me element minus navbarHeight.
+    });
+});
+
 
 //2.============================Burger Menu============================================
 //Animation of BurgerMenu (on click) + Appearance of its menu.===========================
@@ -114,9 +150,6 @@ function collapseBurgerMenu(){
     itchLogo.classList.remove("js-navbab__itch-github-collapse");
     githubLogo.classList.remove("js-navbab__itch-github-collapse");
 
-    // itchLogo.classList.remove("js-navbab__itch-github-raised");
-    // githubLogo.classList.remove("js-navbab__itch-github-raised");
-
      // Dont want these to be focusable/tabbable.
     itchLogo.classList.add("js-navbar__disable-links");
     githubLogo.classList.add("js-navbar__disable-links");
@@ -148,8 +181,12 @@ function raiseBurgerMenu(){
 
     itchLogo.classList.remove("js-navbab__itch-github-raise");
     githubLogo.classList.remove("js-navbab__itch-github-raise");
-    itchLogo.classList.add("js-navbab__itch-github-collapse");
-    githubLogo.classList.add("js-navbab__itch-github-collapse");
+
+
+    if (window.matchMedia( "(hover: none)" ).matches) {
+        itchLogo.classList.add("js-navbab__itch-github-collapse");
+        githubLogo.classList.add("js-navbab__itch-github-collapse");
+    }
 
     itchLogo.addEventListener('transitionend', mobLogosOpened);
 
@@ -161,8 +198,6 @@ itchLogo.addEventListener('transitionend', mobLogosOpened); //no need to put on 
 function mobLogosOpened(e){ // after logos have been transitioned, gets rid of any transition delay
     itchLogo.removeEventListener('transitionend', mobLogosOpened);
 
-    // itchLogo.classList.add("js-navbab__itch-github-raised");
-    // githubLogo.classList.add("js-navbab__itch-github-raised");
 }
 
 
@@ -177,6 +212,7 @@ mobNavElements.push(burgerMenu);
 
 
 function DocumentClickListener(e){
+    // console.log("Clicked element!")
     //need to close navbar after detecting click outside of mobile navbar.
     if (! mobNavElements.includes(e.target)){
         // console.log("NavBar not clicked... Must close.");
@@ -492,27 +528,32 @@ if (window.matchMedia( "(hover: hover)" ).matches) { //desktop - apply waves sty
 }
 
 if (window.matchMedia( "(hover: none)" ).matches) { // mobile
-    // footerEmail.addEventListener("touchend", () => {
-    //     FooterEmailInteractEnd();
-    //     footerEmail.classList.remove("js-footer__email-touch-start");
-    // });
-
-    // footerEmail.addEventListener("touchcancel", () => {
-    //     FooterEmailInteractEnd();
-    //     footerEmail.classList.remove("js-footer__email-touch-start");
-    // });
-
     footerEmail.addEventListener("touchstart", () => {
-
         FooterEmailInteract();
         footerEmail.classList.add("js-footer__email-touch-start");
-
-        let bruh = setTimeout(() => {
-            footerEmail.classList.remove("js-footer__email-touch-start");
-
-            FooterEmailInteractEnd();
-        }, 400); //after 0.4 seconds
     });
+
+    footerEmail.addEventListener("touchend", () => {
+        FooterEmailInteractEnd();
+        footerEmail.classList.remove("js-footer__email-touch-start");
+    });
+
+    footerEmail.addEventListener("touchcancel", () => {
+        FooterEmailInteractEnd();
+        footerEmail.classList.remove("js-footer__email-touch-start");
+    });
+
+    // footerEmail.addEventListener("touchstart", () => {
+
+    //     FooterEmailInteract();
+    //     footerEmail.classList.add("js-footer__email-touch-start");
+
+    //     let bruh = setTimeout(() => {
+    //         footerEmail.classList.remove("js-footer__email-touch-start");
+
+    //         FooterEmailInteractEnd();
+    //     }, 400); //after 0.4 seconds
+    // });
 }
 
 function FooterEmailInteract() {
@@ -568,30 +609,14 @@ window.onresize = () => {
 };
 
 const debugSizeText = document.querySelector('.debug-size');
-
+calculateGameBoxArea();
 function calculateGameBoxArea(){ //whenever window size changes (and hence when gameArea changes).
-    // debugSizeText.innerHTML = window.innerWidth;
-    // debugSizeText.innerHTML += "  x  ";
-    // debugSizeText.innerHTML += window.innerHeight;
+    debugSizeText.innerHTML = window.outerHeight;
+    debugSizeText.innerHTML += "  x  ";
+    debugSizeText.innerHTML += window.outerHeight;
 
-    document.documentElement.style.setProperty('--ScreenWidth', screen.availWidth + "px");
+    document.documentElement.style.setProperty('--GameHeightJS', 60 * window.outerHeight / 100 + "px");
 
-
-    if (window.matchMedia( "(hover: hover)" ).matches) {
-        //desktop uses window height.
-        document.documentElement.style.setProperty('--GameHeightJS', 75 * window.innerHeight / 100 + "px");
-    }
-    else{
-        document.documentElement.style.setProperty('--GameHeightJS', 75 * window.innerHeight / 100 + "px");
-
-        if (window.matchMedia("(orientation: portrait)").matches) { //if on portrait mode
-            document.documentElement.style.setProperty('--GameHeightJS', 75 * screen.availHeight  / 100 + "px");
-        }
-        else{
-            //if in landscape mode: use width instead...
-            document.documentElement.style.setProperty('--GameHeightJS', 75 * screen.availWidth  / 100 + "px");
-        }
-    }
 
     gameBoxSize = [gameBox.clientWidth , gameBox.clientHeight]; //client size = content + padding.
     gameCircleSize = [gameCircle.offsetWidth, gameCircle.offsetHeight]; //offset size = content + padding + border + margin
@@ -870,7 +895,6 @@ function setupSFX(){
 }
 
 function generateRandomCoordsAndSet(event, missed = false, ClickedCircleElement){  //on circle click + on circle missed.
-
     if (missed === false){
         const random3 = Math.floor(Math.random() * 4 + 1);
         switch (random3){
@@ -1121,9 +1145,6 @@ function startMissedTimer(Circle){
     }, 50);
 };
 
-
-
-
 function setCircleToRandomPoint(circleElement, Coords){
     circleElement.style.transform = "translate(" + (Coords[0]) + "px, " + (Coords[1]) + "px)";
 };
@@ -1164,7 +1185,6 @@ function confettiOnSpecificCircle(SpecificCircle){
             confettiElementClone.style.scale = "0.75";
         };
     };
-
     gameBox.appendChild(confettiElementClone);
     beginConfettiAnimation(confettiElementClone);
 }
@@ -1184,7 +1204,6 @@ function beginConfettiAnimation (confettiElementClone){
             confetti.style.opacity = "0"; //starts a transtion
 
             //want to give each a randomized color.
-
             let r = Math.floor(Math.random() * 255 + 1);
             let g = Math.floor(Math.random() * 255 + 1);
             let b = Math.floor(Math.random() * 255 + 1);
@@ -1199,13 +1218,15 @@ function beginConfettiAnimation (confettiElementClone){
 };
 
 //Game display button
-const gameStart = document.querySelector('.game__start');
 const startingDisplay = document.querySelector('.starting__options');
 
 gameStart.onclick = () => {
+    localStorage.setItem('mainClicked', 'false');
+    mainWrapper.style.display = "";
+
     score = 0;
     scoreElement.textContent = score;
-    document.querySelector('.score').style.fontSize = "14ch"
+    scoreElement.style.fontSize = "14ch"
     
     startingDisplay.style.display = "none";
     gameBox.style.display = "flex";
@@ -1250,8 +1271,6 @@ gameStart.onclick = () => {
 
     toggleGameBackgroundInputs(gameLost);
 
-
-
     oneoff = true;
     alwaysGreenCircleOneOff = true;
     ButtonSoundIncrement = 0;
@@ -1264,16 +1283,11 @@ gameStart.onclick = () => {
 
     gameCircle.append("HIT ME!"); //adds hit me as text on the game button to notify the user. is removed on the first hit.
 
-
-
-
     //Make circle interactable...
     if (window.matchMedia( "(hover: none)" ).matches) {
-        // gameCircle.ontouchstart = () => {generateRandomCoordsAndSet(null, false, gameCircle)};
         gameCircle.addEventListener("touchstart", CircleInteract); 
         // console.log("Mobile: touch");
     } else{
-        // gameCircle.onclick = () => {generateRandomCoordsAndSet(null, false, gameCircle)};
         gameCircle.addEventListener("click", CircleInteract); 
         // console.log("Desktop: click");
     };
@@ -1284,12 +1298,10 @@ gameStart.onclick = () => {
 const hi_message = document.querySelector('.starting__options-hi-message');
 const hi_messageButton = document.querySelector('.hi__message-game');
 const hi_messageCircle = document.querySelector('.hi__message-circle-game');
-// const hi_messageArrow = document.querySelector('.hi__message-arrow-game');
 const starting_options = document.querySelector('.starting__options-selections');
 
 gameStart.tabIndex = -1;
 difficultyCheckbox.tabIndex = -1;
-const scrollDown = document.querySelector('.scroll__down');
 scrollDown.tabIndex = -1;
 ///
 let audioCtx = null;
@@ -1310,38 +1322,33 @@ hi_messageButton.onclick = () =>{
         difficultyCheckbox.tabIndex = -1;
         scrollDown.tabIndex = -1;
 
-
-        // hi_messageCircle.style.scale = "";
         hi_messageCircle.style.background = "";
-
-
 
         document.documentElement.style.setProperty('--Hi_message-Scale', "1");
         document.documentElement.style.setProperty('--Hi_message-hoverScale', "1.2");
 
-        // document.documentElement.style.setProperty('--hi-message-hover', "black");
+        if (score > 0){
+            scoreElement.style.opacity = "";
+            livesElement.style.opacity = "";
+        }
+
     }
     else{ //turn on 
         hi_message.style.transform = "translateY(0ch)";
         starting_options.style.scale = "1";
 
-        // hi_messageCircle.style.scale = "1.2";
-
         document.documentElement.style.setProperty('--Hi_message-Scale', "1.2");
         document.documentElement.style.setProperty('--Hi_message-hoverScale', "1.4");
-
-
-        // hi_messageCircle.style.background = "linear-gradient(var(--game-circle-color), transparent)";
-
-
-
-        // document.documentElement.style.setProperty('--hi-message-unhover', "black");
-        // document.documentElement.style.setProperty('--hi-message-hover', "white");
 
         //ensure scaled up buttons CAN be tabbed into!
         gameStart.tabIndex = 0;
         difficultyCheckbox.tabIndex = 0;
         scrollDown.tabIndex = 0;
+
+        if (score > 0){
+            scoreElement.style.opacity = "1";
+            livesElement.style.opacity = "1";
+        }
     }
 };
 //hard mode or easy mode selected.
@@ -1371,10 +1378,7 @@ function giveCircleTouchStyles(circleElement){ //also called on each new circle 
     }
 }
 
-
-
 // touch styles
-
 if (window.matchMedia( "(hover: none)" ).matches) {
     //color mode elements:
     const colorModeButton = document.querySelector('.navbar__color-mode-button');
@@ -1480,7 +1484,141 @@ if (window.matchMedia( "(hover: none)" ).matches) {
     scrollDown.addEventListener("touchcancel", () => {
         scrollDown.classList.remove("js-TOUCH-gameButtons");
     });
+}
+/////////// Project Box Video manipulations on hover
+
+const FallingIslands_Box = document.querySelector('.project-box-fallingislands');
+const FallingIslands_CoverImage = document.querySelector('.fallingislands-image');
+
+const FallingIslands_Video = document.querySelector('.fallingislands-video');
+FallingIslands_Video.pause();
 
 
+if (window.matchMedia( "(hover: hover)" ).matches) {
+    let previousVideo = null;      //current video playing (timeout function is attached to).
+    let previousVideoTimeOut = null; //current video timeout funciton.
+
+    addCover_VideoManipulation(FallingIslands_Box, FallingIslands_Video);
+
+    function addCover_VideoManipulation(ProjectBox, videoElement){
+
+        ProjectBox.addEventListener("mouseenter", ()=>{
+            //if previous video is the current video... stop its pause timeOut.
+            // in fact, regardless of video it is, stop the timeout and pause it.
+                //can also check if previous video is the current we want to play, in which case there would be no point in pausing it because it will play right after.
+            clearTimeout(previousVideoTimeOut);
+            if (previousVideo !== null){previousVideo.pause();};
     
+            //after previous video is paused, simply play the current one.
+            videoElement.play();
+            previousVideo = videoElement;
+            // console.log("started video");
+        });
+    
+        ProjectBox.addEventListener("mouseleave", ()=>{
+            if (ProjectBox.contains(document.activeElement)){
+                // console.log("Focus element: ", document.activeElement);
+    
+                // console.log("contains focus! Not stopping video!")
+            }
+            else{
+                const VideoPauseDelay = setTimeout(() => { //want to add some time before it stops playing.
+                    videoElement.pause();
+                    // console.log("stopped video");
+
+                }, 600);
+                previousVideoTimeOut = VideoPauseDelay;
+    
+            }
+        });
+    
+        FallingIslands_Box.addEventListener("focusin", ()=> {
+        clearTimeout(previousVideoTimeOut); 
+
+            if (previousVideo !== null){previousVideo.pause();};
+            videoElement.play();
+            previousVideo = videoElement;
+    
+            // console.log("Box focus in.");
+            // console.log("started video");
+    
+        });
+        FallingIslands_Box.addEventListener("focusout", ()=> {
+            const VideoPauseDelay = setTimeout(() => { //want to add some time before it stops playing.
+                videoElement.pause();
+                // console.log("FOCUS OUT: stopped video");
+
+            }, 600);
+            previousVideoTimeOut = VideoPauseDelay;
+        });
+    }
+}
+
+
+
+////project box touch styles....
+let CurrentRunningVideo = "";
+let videoPauseTimer = null;
+
+if (window.matchMedia( "(hover: none)" ).matches) {
+    ///Video uncover logic
+
+    addCover_VideoManipulation_Touch(FallingIslands_Box, FallingIslands_Video, FallingIslands_CoverImage);
+
+    function addCover_VideoManipulation_Touch(ProjectBox, videoElement, imageElement){
+        ProjectBox.addEventListener("touchstart", ()=>{
+                if (CurrentRunningVideo !== videoElement){
+                    
+                    if (videoPauseTimer !== null){clearTimeout(videoPauseTimer);};
+
+                    CurrentRunningVideo = videoElement;
+                    imageElement.style.opacity = "0";
+                    videoElement.play();
+                    console.log("started video");
+        
+                    document.addEventListener("touchstart", e => {listenStopVideo(e, ProjectBox, videoElement, imageElement)});
+                };
+
+        });
+    };
+
+    function listenStopVideo(e, ProjectBox, videoElement, imageElement){
+        if (e.target === ProjectBox || ProjectBox.contains(e.target)){
+            // console.log("Project box contains clicked element!");
+            // return;
+        }
+        else{
+            document.removeEventListener("touchstart", listenStopVideo);
+            imageElement.style.opacity = "1";
+            CurrentRunningVideo = "";
+
+            clearTimeout(videoPauseTimer);
+            videoPauseTimer = setTimeout(() => { //want to add some time before it stops playing.
+                videoElement.pause();
+                console.log("stopped video");
+            }, 600);
+        }
+    };
+
+
+
+    /// Link buttons
+    const ProjectLinkButtons = document.querySelectorAll(".project-link-button");
+    ProjectLinkButtons.forEach((ProjectButton) => {
+        const LinkLogo = ProjectButton.firstElementChild;
+        // console.log("link logo: ", LinkLogo);
+
+        ProjectButton.addEventListener("touchstart", ()=>{
+            LinkLogo.classList.add("js-project-link-touch");
+            ProjectButton.classList.add("js-project-links-wrapper-li-touch");
+        });
+        ProjectButton.addEventListener("touchend", ()=>{
+            LinkLogo.classList.remove("js-project-link-touch");
+            ProjectButton.classList.remove("js-project-links-wrapper-li-touch");
+        });
+        ProjectButton.addEventListener("touchcancel", ()=>{
+            LinkLogo.classList.remove("js-project-link-touch");
+            ProjectButton.classList.remove("js-project-links-wrapper-li-touch");
+        });
+    });
 }
