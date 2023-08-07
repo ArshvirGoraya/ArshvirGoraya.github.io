@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Arshvir Goraya</title>
+    <meta name="author" content="Arshvir Goraya" />
+    <meta
+      name="description"
+      content="Arshvir Goraya's portfolio. Platinum Driver showcase"
+    />
+    <meta
+      name="keywords"
+      content="Arshvir, Goraya, portfolio, game, developer, programmer, gamedev, indie, video game, Platinum Driver"
+    />
+
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+    <link rel="stylesheet" type="text/css" href="/hover.css" />
+
+    <link rel="icon" href="/favicon.ico" />
+
+    <!-- <script defer src="main.js"></script> -->
+    <script src="/colorMode.js"></script>
+
+    <script defer src="/main.js"></script>
+    <script defer src="/ProjectPageJS.js"></script>
+
+    <script
+      defer
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/emailjs-com@2.4.0/dist/email.min.js"
+    ></script>
+
+    <script defer src="/autoEmail.js"></script>
+  </head>
+  <body onload="SetColorLogo()">
+    <div class="main-wrapper">
+      <!--  -->
+      <!--  -->
+      <!--  -->
+      <!--  -->
+      <!--  -->
+
+      <nav class="navbar">
+        <ul class="navbar__parent-container">
+          <div class="navbar__home-container">
+            <li>
+              <a
+                class="navbar__item navbar__home name"
+                href="/index.html"
+                aria-label="Go to home page"
+                target="_self"
+                rel="noopener prev"
+                referrerpolicy="strict-origin-when-cross-origin"
+                ><span class="fn">ARSHVIR</span>
+                <span class="ln">GORAYA</span>
+              </a>
+            </li>
+            <div class="navbar__vertical-name-seperator navbar__item"></div>
+          </div>
+          <div class="navbar__collapsible-container">
+            <div class="navbar__items-container">
+              <!--contains contact and resume-->
+              <li>
+                <a
+                  class="navbar__item bbottom contact"
+                  href="mailto:ArshvirGoraya@outlook.com"
+                  aria-label="E-mail"
+                  rel="noopener"
+                  referrerpolicy="strict-origin-when-cross-origin"
+                  >CONTACT</a
+                >
+              </li>
+              <li>
+                <a
+                  class="navbar__item bbottom resume PDF_link"
+                  target="_blank"
+                  href="/PDFs\Resume_ArshvirGoraya.pdf"
+                  rel="noopener"
+                  referrerpolicy="strict-origin-when-cross-origin"
+                  aria-label="Résumé"
+                  data-PDF_alt="PDFs\PDF_Resume.html"
+                  >RÉSUMÉ</a
+                >
+              </li>
+            </div>
+
+            <div class="navbar__vertical-seperator navbar__item"></div>
+
+            <div class="navbar__links-container">
+              <li>
+                <a
+                  class="navbar__item navbar__icon github"
+                  href="https://github.com/ArshvirGoraya"
+                  aria-label="Go to my Github page"
+                  target="_blank"
+                  rel="external noopener"
+                  referrerpolicy="strict-origin-when-cross-origin"
+                >
+                  <svg viewBox="0 0 32.6 31.8">
+                    <path
+                      d="M16.3,0C7.3,0,0,7.3,0,16.3c0,7.2,4.7,13.3,11.1,15.5c0.8,0.1,1.1-0.4,1.1-0.8s0-1.4,0-2.8
+                         c-4.5,1-5.5-2.2-5.5-2.2c-0.7-1.9-1.8-2.4-1.8-2.4c-1.5-1,0.1-1,0.1-1c1.6,0.1,2.5,1.7,2.5,1.7c1.5,2.5,3.8,1.8,4.7,1.4
+                         c0.1-1.1,0.6-1.8,1-2.2c-3.6-0.4-7.4-1.8-7.4-8.1c0-1.8,0.6-3.2,1.7-4.4c-0.1-0.3-0.7-2,0.2-4.2c0,0,1.4-0.4,4.5,1.7
+                         C13.5,8.1,14.9,8,16.3,8s2.8,0.2,4.1,0.5c3.1-2.1,4.5-1.7,4.5-1.7c0.9,2.2,0.3,3.9,0.2,4.3c1,1.1,1.7,2.6,1.7,4.4
+                         c0,6.3-3.8,7.6-7.4,8c0.6,0.5,1.1,1.5,1.1,3c0,2.2,0,3.9,0,4.5c0,0.4,0.3,0.9,1.1,0.8c6.5-2.2,11.1-8.3,11.1-15.5
+                         C32.6,7.3,25.3,0,16.3,0z"
+                    />
+                  </svg>
+                </a>
+              </li>
+              <li>
+                <a
+                  class="navbar__item navbar__icon linkedin"
+                  href="https://www.linkedin.com/in/arshvir-goraya-1b2739266/"
+                  aria-label="Go to my linked in page"
+                  target="_blank"
+                  rel="external noopener"
+                  referrerpolicy="strict-origin-when-cross-origin"
+                >
+                  <svg viewBox="0 0 54 54">
+                    <path
+                      d="M48.1,12.9v26.8c0,2.2-0.8,4.1-2.4,5.7c-1.6,1.6-3.5,2.4-5.7,2.4H13.3c-2.2,0-4.1-0.8-5.7-2.4c-1.6-1.6-2.4-3.5-2.4-5.7   V12.9c0-2.2,0.8-4.1,2.4-5.7c1.6-1.6,3.5-2.4,5.7-2.4H40c2.2,0,4.1,0.8,5.7,2.4C47.3,8.8,48.1,10.7,48.1,12.9z M18.7,15.4   c0-1-0.4-1.8-1-2.4C17,12.3,16.2,12,15.1,12c-1.1,0-2,0.3-2.6,0.9c-0.7,0.6-1,1.4-1,2.4c0,0.9,0.3,1.7,1,2.4c0.7,0.6,1.5,1,2.6,1h0   c1.1,0,2-0.3,2.7-1C18.4,17.1,18.7,16.3,18.7,15.4z M11.8,40.7h6.4V21.3h-6.4V40.7z M35,40.7h6.4V29.6c0-2.9-0.7-5-2-6.5   c-1.4-1.5-3.2-2.2-5.4-2.2c-2.5,0-4.5,1.1-5.8,3.3h0.1v-2.8h-6.4c0.1,1.2,0.1,7.7,0,19.4h6.4V29.9c0-0.7,0.1-1.2,0.2-1.6   c0.3-0.7,0.7-1.2,1.3-1.7c0.6-0.5,1.2-0.7,2.1-0.7c2.2,0,3.2,1.5,3.2,4.4V40.7z"
+                    />
+                  </svg>
+                </a>
+              </li>
+
+              <li>
+                <a
+                  class="navbar__item navbar__icon linktree"
+                  href="https://linktr.ee/arshvirgoraya"
+                  aria-label="Go to my link tree page"
+                  target="_blank"
+                  rel="external noopener"
+                  referrerpolicy="strict-origin-when-cross-origin"
+                  >LINKTREE
+                </a>
+              </li>
+            </div>
+          </div>
+          <div class="navbar__mode-container">
+            <!--contains color mode and mobile mode icons-->
+            <li>
+              <button
+                aria-label="toggle light/dark mode"
+                class="navbar__item navbar__color-mode-button"
+                onclick="toggleColorMode()"
+              >
+                <svg viewBox="0 0 35.1 36.9" class="navbar__icon sun">
+                  <polygon
+                    class="st0 sun-outerCircle"
+                    points="17.6,0 20.4,9.7 28.4,3.5 25,13 35.1,12.8 26.8,18.5 35.1,24.1 25,23.9 28.4,33.4 20.4,27.2 17.6,36.9 
+                           14.7,27.2 6.7,33.4 10.1,23.9 0,24.1 8.3,18.5 0,12.8 10.1,13 6.7,3.5 14.7,9.7 "
+                  />
+                  <circle
+                    class="st1 sun-innerCircle"
+                    cx="17.6"
+                    cy="18.5"
+                    r="7.4"
+                  />
+                </svg>
+
+                <svg viewBox="0 0 35.1 36.9" class="navbar__icon moon">
+                  <path
+                    id="moonPath"
+                    d="M17.5,1.1c-0.7,0-1.3,0-2,0.1c4.1,1.6,6.9,5.6,6.9,10.2c0,6.1-4.9,11-11,11c-5.2,0-9.6-3.7-10.7-8.5
+                     c-0.4,1.5-0.6,3-0.6,4.6C0.2,28,8,35.8,17.5,35.8S34.9,28,34.9,18.4S27.1,1.1,17.5,1.1z"
+                  />
+                </svg>
+              </button>
+            </li>
+            <li>
+              <button
+                aria-label="toggle navigation menu"
+                class="navbar__item navbar__burger-button"
+              >
+                <svg viewBox="0 0 28.7 21.7" class="navbar__icon burger">
+                  <g>
+                    <path
+                      class="st0"
+                      d="M0.8,3.2C0.6,3.2,0.4,3,0.4,2.8V0.8c0-0.3,0.2-0.5,0.5-0.5h27c0.3,0,0.5,0.2,0.5,0.5v1.9
+                  c0,0.3-0.2,0.5-0.5,0.5H0.8z"
+                    />
+                    <path
+                      d="M27.9,0.8C27.9,0.8,28,0.8,27.9,0.8l0.1,2c0,0,0,0.1-0.1,0.1h-27c0,0-0.1,0-0.1-0.1V0.8c0,0,0-0.1,0.1-0.1H27.9 M27.9,0
+                  h-27C0.4,0,0,0.4,0,0.8v1.9c0,0.5,0.4,0.8,0.8,0.8h27c0.5,0,0.8-0.4,0.8-0.8V0.8C28.7,0.4,28.3,0,27.9,0L27.9,0z"
+                    />
+                  </g>
+                  <g>
+                    <path
+                      class="st0"
+                      d="M0.8,12.3c-0.3,0-0.5-0.2-0.5-0.5V9.9c0-0.3,0.2-0.5,0.5-0.5h27c0.3,0,0.5,0.2,0.5,0.5v1.9
+                  c0,0.3-0.2,0.5-0.5,0.5H0.8z"
+                    />
+                    <path
+                      d="M27.9,9.8C27.9,9.8,28,9.8,27.9,9.8l0.1,2c0,0,0,0.1-0.1,0.1h-27c0,0-0.1,0-0.1-0.1V9.9c0,0,0-0.1,0.1-0.1H27.9 M27.9,9.1
+                  h-27C0.4,9.1,0,9.4,0,9.9v1.9c0,0.5,0.4,0.8,0.8,0.8h27c0.5,0,0.8-0.4,0.8-0.8V9.9C28.7,9.4,28.3,9.1,27.9,9.1L27.9,9.1z"
+                    />
+                  </g>
+                  <g>
+                    <path
+                      class="st0"
+                      d="M0.8,21.3c-0.3,0-0.5-0.2-0.5-0.5V19c0-0.3,0.2-0.5,0.5-0.5h27c0.3,0,0.5,0.2,0.5,0.5v1.9
+                  c0,0.3-0.2,0.5-0.5,0.5H0.8z"
+                    />
+                    <path
+                      d="M27.9,18.9C27.9,18.9,28,18.9,27.9,18.9l0.1,2c0,0,0,0.1-0.1,0.1h-27c0,0-0.1,0-0.1-0.1V19c0,0,0-0.1,0.1-0.1H27.9
+                   M27.9,18.1h-27C0.4,18.1,0,18.5,0,19v1.9c0,0.5,0.4,0.8,0.8,0.8h27c0.5,0,0.8-0.4,0.8-0.8V19C28.7,18.5,28.3,18.1,27.9,18.1
+                  L27.9,18.1z"
+                    />
+                  </g>
+                </svg>
+              </button>
+            </li>
+          </div>
+          <div
+            class="navbar__mob-collapsible-container js-navbar__collapsible-container"
+          >
+            <div class="navbar__mob-items-container">
+              <li>
+                <a
+                  class="navbar__item bbottom mob-contact"
+                  href="mailto:ArshvirGoraya@outlook.com"
+                  aria-label="E-mail"
+                  rel="noopener"
+                  referrerpolicy="strict-origin-when-cross-origin"
+                  >CONTACT</a
+                >
+              </li>
+              <li>
+                <a
+                  class="navbar__item bbottom mob-resume PDF_link"
+                  target="_blank"
+                  href="/PDFs\Resume_ArshvirGoraya.pdf"
+                  rel="noopener"
+                  referrerpolicy="strict-origin-when-cross-origin"
+                  aria-label="Résumé"
+                  data-PDF_alt="PDFs\PDF_Resume.html"
+                  >RÉSUMÉ</a
+                >
+              </li>
+            </div>
+
+            <div class="navbar__mob-vertical-seperator navbar__item"></div>
+
+            <div class="navbar__mob-links-container">
+              <li>
+                <a
+                  class="navbar__item navbar__icon mob-github js-navbab__itch-github-raise"
+                  href="https://github.com/ArshvirGoraya"
+                  aria-label="Go to my Github page"
+                  target="_blank"
+                  rel="external noopener"
+                  referrerpolicy="strict-origin-when-cross-origin"
+                >
+                  <svg viewBox="0 0 32.6 31.8">
+                    <path
+                      d="M16.3,0C7.3,0,0,7.3,0,16.3c0,7.2,4.7,13.3,11.1,15.5c0.8,0.1,1.1-0.4,1.1-0.8s0-1.4,0-2.8
+                         c-4.5,1-5.5-2.2-5.5-2.2c-0.7-1.9-1.8-2.4-1.8-2.4c-1.5-1,0.1-1,0.1-1c1.6,0.1,2.5,1.7,2.5,1.7c1.5,2.5,3.8,1.8,4.7,1.4
+                         c0.1-1.1,0.6-1.8,1-2.2c-3.6-0.4-7.4-1.8-7.4-8.1c0-1.8,0.6-3.2,1.7-4.4c-0.1-0.3-0.7-2,0.2-4.2c0,0,1.4-0.4,4.5,1.7
+                         C13.5,8.1,14.9,8,16.3,8s2.8,0.2,4.1,0.5c3.1-2.1,4.5-1.7,4.5-1.7c0.9,2.2,0.3,3.9,0.2,4.3c1,1.1,1.7,2.6,1.7,4.4
+                         c0,6.3-3.8,7.6-7.4,8c0.6,0.5,1.1,1.5,1.1,3c0,2.2,0,3.9,0,4.5c0,0.4,0.3,0.9,1.1,0.8c6.5-2.2,11.1-8.3,11.1-15.5
+                         C32.6,7.3,25.3,0,16.3,0z"
+                    />
+                  </svg>
+                </a>
+              </li>
+              <li>
+                <a
+                  class="navbar__item navbar__icon mob-linkedin js-navbab__itch-github-raise"
+                  href="https://www.linkedin.com/in/arshvir-goraya-1b2739266/"
+                  aria-label="Go to my linked in page"
+                  target="_blank"
+                  rel="external noopener"
+                  referrerpolicy="strict-origin-when-cross-origin"
+                >
+                  <svg viewBox="0 0 54 54">
+                    <path
+                      d="M48.1,12.9v26.8c0,2.2-0.8,4.1-2.4,5.7c-1.6,1.6-3.5,2.4-5.7,2.4H13.3c-2.2,0-4.1-0.8-5.7-2.4c-1.6-1.6-2.4-3.5-2.4-5.7   V12.9c0-2.2,0.8-4.1,2.4-5.7c1.6-1.6,3.5-2.4,5.7-2.4H40c2.2,0,4.1,0.8,5.7,2.4C47.3,8.8,48.1,10.7,48.1,12.9z M18.7,15.4   c0-1-0.4-1.8-1-2.4C17,12.3,16.2,12,15.1,12c-1.1,0-2,0.3-2.6,0.9c-0.7,0.6-1,1.4-1,2.4c0,0.9,0.3,1.7,1,2.4c0.7,0.6,1.5,1,2.6,1h0   c1.1,0,2-0.3,2.7-1C18.4,17.1,18.7,16.3,18.7,15.4z M11.8,40.7h6.4V21.3h-6.4V40.7z M35,40.7h6.4V29.6c0-2.9-0.7-5-2-6.5   c-1.4-1.5-3.2-2.2-5.4-2.2c-2.5,0-4.5,1.1-5.8,3.3h0.1v-2.8h-6.4c0.1,1.2,0.1,7.7,0,19.4h6.4V29.9c0-0.7,0.1-1.2,0.2-1.6   c0.3-0.7,0.7-1.2,1.3-1.7c0.6-0.5,1.2-0.7,2.1-0.7c2.2,0,3.2,1.5,3.2,4.4V40.7z"
+                    />
+                  </svg>
+                </a>
+              </li>
+            </div>
+            <li>
+              <a
+                class="navbar__item mob-linktree"
+                href="https://linktr.ee/arshvirgoraya"
+                aria-label="Go to my link tree page"
+                target="_blank"
+                rel="external noopener"
+                referrerpolicy="strict-origin-when-cross-origin"
+                >LINKTREE
+              </a>
+            </li>
+          </div>
+        </ul>
+      </nav>
+
+      <!--  -->
+      <!--  -->
+      <!--  -->
+      <!--  -->
+      <!--  -->
+
+      <div class="project-page-main-content">
+        <div class="project-page-cover-wrapper">
+          <header>Visual Novel Engine</header>
+          <img
+            class="project-page-cover-image project-page-cover-image-VN"
+            src="/images\VN Header.jpg"
+            alt="Visual Novel Header Image"
+          />
+        </div>
+
+        <section class="project-page-main-section">
+          <nav class="project-page-nav">
+            <h3>Article Sections</h3>
+            <hr />
+            <div class="project-page-articleNav-texts-Superwrapper">
+              <div class="scroll-progress-wrapper"></div>
+
+              <div class="project-page-articleNav-text-wrapper">
+                <div class="project-page-articleNav-marker"></div>
+                <a
+                  id="Description-link"
+                  class="project-page-nav-link"
+                  href="#Description"
+                  aria-label="jump to description section"
+                  rel="noopener"
+                  referrerpolicy="strict-origin-when-cross-origin"
+                  >Description</a
+                >
+              </div>
+              <div class="project-page-articleNav-text-wrapper">
+                <div class="project-page-articleNav-marker"></div>
+                <a
+                  id="Roles-link"
+                  class="project-page-nav-link"
+                  href="#Capabilities"
+                  aria-label="jump to Capabilities section"
+                  rel="noopener"
+                  referrerpolicy="strict-origin-when-cross-origin"
+                  >Capabilities</a
+                >
+              </div>
+
+              <div class="project-page-articleNav-text-wrapper">
+                <div class="project-page-articleNav-marker"></div>
+                <a
+                  id="Challenge-link"
+                  class="project-page-nav-link"
+                  href="#Challenge"
+                  aria-label="jump to Biggest Challenge section"
+                  rel="noopener"
+                  referrerpolicy="strict-origin-when-cross-origin"
+                  >Biggest Challenge</a
+                >
+              </div>
+            </div>
+          </nav>
+
+          <article class="project-page-article">
+            <section class="project-page-article-section Scroll_to">
+              <h2 id="Description">Description</h2>
+              <hr />
+              <div
+                class="project-page_description-and-video-wrapper project-page_description-and-video-wrapper_Description"
+              >
+                <div class="project-page-Media-and-Accordion-wrapper-float">
+                  <div class="project-page-Media-and-Accordion-wrapper">
+                    <video
+                      muted
+                      class="project-page-media"
+                      controls
+                      preload="auto"
+                      src="/videos\VN Showcase.mp4#t=0.1"
+                      playsinline
+                    >
+                      [Your browser does not support the html video tag :(]
+                    </video>
+                  </div>
+                </div>
+
+                <div>
+                  <p>
+                    A still-in-progress engine and Godot plugin designed to make
+                    visual novels either within Godot or entirely separate from
+                    it.
+                  </p>
+                  <p>
+                    Designed by me to make visual novels which could include
+                    complex mini-games created within Godot that other visual
+                    novel engines cannot allow. Other capabilities of Godot
+                    (e.g., particle effects and everything else the engine is
+                    capable of) can also be used if this is used as a plugin
+                    within the Godot engine.
+                  </p>
+                  <p>
+                    It is also planned to release as a stand-alone visual novel
+                    engine, which would not include all of Godot's capabilities,
+                    but offer a simple, code-free way of creating visual novel
+                    games.
+                  </p>
+
+                  <div class="accordion-wrapper accordion-wrapper_non-media">
+                    <input
+                      type="checkbox"
+                      class="accordion-checkbox"
+                      id="accordion-checkbox-ProjectDetails"
+                      aria-label="toggle details"
+                      aria-checked="true"
+                      checked
+                    />
+
+                    <label
+                      class="accordion-checkbox-label"
+                      for="accordion-checkbox-ProjectDetails"
+                    >
+                      <h4 class="accordion-header">Project Details</h4>
+                    </label>
+
+                    <p class="project-page-details-text accordion-text-wrapper">
+                      <span class="accordion-text-wrapper_marker"></span>
+                      Program: Godot <br />
+                      Language: GDScript <br />
+                      Independent Project<br />
+                      In Development
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- For pages without a showcase image, this is required! -->
+
+            <div class="span-column-1 empty-column"></div>
+
+            <section class="project-page-article-section Scroll_to">
+              <h2 id="Capabilities">Capabilities (so far...)</h2>
+              <hr />
+              <div
+                class="project-page_description-and-video-wrapper project-page_description-and-video-wrapper-float"
+              >
+                <div class="project-page-Media-and-Accordion-wrapper-float">
+                  <div class="project-page-Media-and-Accordion-wrapper">
+                    <video
+                      muted
+                      class="project-page-media"
+                      controls
+                      preload="auto"
+                      src="/videos\VN Dialogue Change.mp4#t=0.1"
+                      playsinline
+                    >
+                      [Your browser does not support the html video tag :(]
+                    </video>
+
+                    <div class="accordion-wrapper">
+                      <input
+                        type="checkbox"
+                        class="accordion-checkbox"
+                        id="accordion-checkbox-Dialogue"
+                        aria-label="toggle details"
+                        aria-checked="false"
+                      />
+
+                      <label
+                        class="accordion-checkbox-label"
+                        for="accordion-checkbox-Dialogue"
+                      >
+                        <h4 class="accordion-header">
+                          Plugin Showcase: how dialogue can be inserted through
+                          the plugin
+                        </h4>
+                      </label>
+
+                      <p
+                        class="project-page-details-text accordion-text-wrapper"
+                      >
+                        <span class="accordion-text-wrapper_marker"></span>
+                        This showcases a inspector plugin I developed for Godot
+                        that can take a name and dialogue string and display
+                        them within a dialogue box.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="project-page-Media-and-Accordion-wrapper-float">
+                  <div class="project-page-Media-and-Accordion-wrapper">
+                    <video
+                      muted
+                      class="project-page-media"
+                      controls
+                      preload="auto"
+                      src="/videos\VN Sprite Change.mp4#t=0.1"
+                      playsinline
+                    >
+                      [Your browser does not support the html video tag :(]
+                    </video>
+
+                    <div class="accordion-wrapper">
+                      <input
+                        type="checkbox"
+                        class="accordion-checkbox"
+                        id="accordion-checkbox-Sprite"
+                        aria-label="toggle details"
+                        aria-checked="false"
+                      />
+
+                      <label
+                        class="accordion-checkbox-label"
+                        for="accordion-checkbox-Sprite"
+                      >
+                        <h4 class="accordion-header">
+                          Plugin Showcase: how sprites can be manipulated
+                          through the plugin
+                        </h4>
+                      </label>
+
+                      <p
+                        class="project-page-details-text accordion-text-wrapper"
+                      >
+                        <span class="accordion-text-wrapper_marker"></span>
+                        This showcases how the plugin allows for sprite changes
+                        in the game. It can even allow for viewing which sprite
+                        you are selecting by highlighting the options.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <ul>
+                  <li>
+                    <div class="accordion-wrapper accordion-wrapper_non-media">
+                      <input
+                        type="checkbox"
+                        class="accordion-checkbox"
+                        id="accordion-checkbox-roles-Pathing"
+                        aria-label="toggle details"
+                        aria-checked="true"
+                        checked
+                      />
+
+                      <label
+                        class="accordion-checkbox-label"
+                        for="accordion-checkbox-roles-Pathing"
+                      >
+                        <h4 class="accordion-header">
+                          Re-enterable Pathing System
+                        </h4>
+                      </label>
+
+                      <p
+                        class="project-page-details-text accordion-text-wrapper"
+                      >
+                        <span class="accordion-text-wrapper_marker"></span>
+                        Each choice leads to a path. When the player goes back
+                        and selects a different choice, the prior choice's path
+                        gets deleted. If the player wants to re-visit this path,
+                        they will have to do everything in that path again
+                        instead of just being able to fast-forward through it.
+                        In my system, each path is saved and can be re-entered
+                        allowing for this fast-forward ability in the path they
+                        have already reached.
+                      </p>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="accordion-wrapper accordion-wrapper_non-media">
+                      <input
+                        type="checkbox"
+                        class="accordion-checkbox"
+                        id="accordion-checkbox-roles-Changes"
+                        aria-label="toggle details"
+                        aria-checked="true"
+                        checked
+                      />
+
+                      <label
+                        class="accordion-checkbox-label"
+                        for="accordion-checkbox-roles-Changes"
+                      >
+                        <h4 class="accordion-header">
+                          Multiple Changes in a Single Event
+                        </h4>
+                      </label>
+
+                      <p
+                        class="project-page-details-text accordion-text-wrapper"
+                      >
+                        <span class="accordion-text-wrapper_marker"></span>A
+                        path is made up of events and multiple changes can occur
+                        in a single event. For example, as sprite's frame may
+                        change and a corresponding dialogue may appear. Many
+                        different changes can occur along side just these two
+                        changes as well.
+                      </p>
+                    </div>
+                  </li>
+
+                  <li>
+                    <div class="accordion-wrapper accordion-wrapper_non-media">
+                      <input
+                        type="checkbox"
+                        class="accordion-checkbox"
+                        id="accordion-checkbox-roles-Serialisation-Settings"
+                        aria-label="toggle details"
+                        aria-checked="true"
+                        checked
+                      />
+
+                      <label
+                        class="accordion-checkbox-label"
+                        for="accordion-checkbox-roles-Serialisation-Settings"
+                      >
+                        <h4 class="accordion-header">
+                          Serialisation & Settings
+                        </h4>
+                      </label>
+
+                      <p
+                        class="project-page-details-text accordion-text-wrapper"
+                      >
+                        <span class="accordion-text-wrapper_marker"></span>
+                        Not only can each path be saved and loaded, but the code
+                        allows for different saving behaviour.
+                      </p>
+                      <p
+                        class="project-page-details-text accordion-text-wrapper"
+                      >
+                        <span class="accordion-text-wrapper_marker"></span>
+                        A traditional saving method can be toggled where exited
+                        paths are deleted. Also, events that happened an
+                        arbitrary amount of events ago can be set up to be
+                        deleted automatically since the player will likely never
+                        go back to these.
+                      </p>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </section>
+
+            <section class="project-page-article-section Scroll_to">
+              <h2 id="Challenge">Biggest Challenge</h2>
+              <hr />
+              <div
+                class="project-page_description-and-video-wrapper project-page_description-and-video-wrapper-float"
+              >
+                <div class="project-page-Media-and-Accordion-wrapper-float">
+                  <div class="project-page-Media-and-Accordion-wrapper">
+                    <video
+                      muted
+                      class="project-page-media"
+                      controls
+                      preload="auto"
+                      src="/videos\VN Early VisualTimeMap.mp4#t=0.1"
+                      playsinline
+                    >
+                      [Your browser does not support the html video tag :(]
+                    </video>
+
+                    <div class="accordion-wrapper">
+                      <input
+                        type="checkbox"
+                        class="accordion-checkbox"
+                        id="accordion-checkbox-VisualTM"
+                        aria-label="toggle details"
+                        aria-checked="false"
+                      />
+
+                      <label
+                        class="accordion-checkbox-label"
+                        for="accordion-checkbox-VisualTM"
+                      >
+                        <h4 class="accordion-header">
+                          Early work-in-progress footage of the visual path map
+                          system.
+                        </h4>
+                      </label>
+
+                      <p
+                        class="project-page-details-text accordion-text-wrapper"
+                      >
+                        <span class="accordion-text-wrapper_marker"></span>
+                        Although in a very primitive state, this system will
+                        visualize all the paths and events the player has
+                        travelled to. It will also allow the player to travel to
+                        different events by simply clicking on them.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <p>
+                  One of the hardest things was the pathing system. Since I
+                  decided that all paths must be re-enterable, creating the
+                  system was made much more complicated and went through 3
+                  different iterations before finally being settled on the
+                  current one. Most of these changes involved how save data
+                  storage was implemented and how the user would experience
+                  navigating the paths themselves. It’s possible that the system
+                  will go through other changes as development continues.
+                </p>
+              </div>
+            </section>
+          </article>
+        </section>
+      </div>
+
+      <!--  -->
+      <!--  -->
+      <!--  -->
+      <!--  -->
+      <!--  -->
+
+      <footer class="footer" tabindex="-1">
+        <!-- need tabindex -1 to not be focusable-->
+
+        <div class="footer-wrapper">
+          <div class="footer-curve">
+            <svg viewBox="0 0 200 1">
+              <circle cx="25" cy="2" r="3" class="footer-circle" />
+            </svg>
+
+            <svg viewBox="0 0 200 4" class="footer-curve-svg">
+              <polygon
+                class="background"
+                opacity="0.25"
+                points="150,0.4 125,4 100,0.4 75,4 50,0.4 25,4 0,0.4 0,7.7 200,7.7 200,0.4 175,4 "
+              />
+              <path
+                class="middleground"
+                opacity="0.7"
+                d="M175,7c-12.5,0-12.5-7-25-7s-12.5,7-25,7s-12.5-7-25-7S87.5,7,75,7S62.5,0,50,0S37.5,7,25,7S12.5,0,0,0v7.7h200
+                V0C187.5,0,187.5,7,175,7z"
+              />
+              <path
+                class="foreground"
+                d="M100,1.1c-25,0-25,5.7-50,5.7S25,1.1,0,1.1V16h200V1.1c-25,0-25,5.7-50,5.7S125,1.1,100,1.1z"
+              />
+            </svg>
+          </div>
+          <ul class="footer__list">
+            <p class="debug-text" style="color: red"></p>
+
+            <li class="footer__email">
+              <a
+                class="footer__email-link"
+                href="mailto:ArshvirGoraya@outlook.com"
+                aria-label="E-mail"
+                rel="noopener"
+                referrerpolicy="strict-origin-when-cross-origin"
+                >ArshvirGoraya@outlook.com</a
+              >
+            </li>
+            <li class="footer-links-wrapper">
+              <ul>
+                <li>
+                  <a
+                    class="PDF_link footer__link"
+                    target="_blank"
+                    href="/PDFs\Resume_ArshvirGoraya.pdf"
+                    rel="noopener"
+                    referrerpolicy="strict-origin-when-cross-origin"
+                    aria-label="Résumé"
+                    data-PDF_alt="PDFs\PDF_Resume.html"
+                    >Résumé
+                    <svg class="external-link-SVG" viewBox="0 0 28.7 21.7">
+                      <line class="st0" x1="14" y1="12.7" x2="22.4" y2="4.4" />
+                      <polygon class="st1" points="23.1,8.8 24.9,1.9 18,3.8" />
+                      <polyline
+                        class="st2"
+                        points="15.1,5.6 12.2,2.9 5.3,3 5.3,20.1 23.4,20.1 23.4,14.9 21.5,11.9 "
+                      />
+                    </svg>
+                  </a>
+                </li>
+                <div class="vertical-seperator">|</div>
+                <li>
+                  <a
+                    class="footer__link"
+                    href="https://www.linkedin.com/in/arshvir-goraya-1b2739266/"
+                    aria-label="Go to my linked in page"
+                    target="_blank"
+                    rel="external noopener"
+                    referrerpolicy="strict-origin-when-cross-origin"
+                    >LinkedIn
+                    <svg class="external-link-SVG" viewBox="0 0 28.7 21.7">
+                      <line class="st0" x1="14" y1="12.7" x2="22.4" y2="4.4" />
+                      <polygon class="st1" points="23.1,8.8 24.9,1.9 18,3.8" />
+                      <polyline
+                        class="st2"
+                        points="15.1,5.6 12.2,2.9 5.3,3 5.3,20.1 23.4,20.1 23.4,14.9 21.5,11.9 "
+                      />
+                    </svg>
+                  </a>
+                </li>
+                <!-- <div class="vertical-seperator">|</div>
+                <li>
+                  <a
+                    class="footer__link"
+                    href="https://arshvirgoraya.itch.io/"
+                    aria-label="Go to my Itch.io page"
+                    target="_blank"
+                    rel="external noopener"
+                    referrerpolicy="strict-origin-when-cross-origin"
+                    >Itch.io
+                    <svg class="external-link-SVG" viewBox="0 0 28.7 21.7">
+                      <line class="st0" x1="14" y1="12.7" x2="22.4" y2="4.4" />
+                      <polygon class="st1" points="23.1,8.8 24.9,1.9 18,3.8" />
+                      <polyline
+                        class="st2"
+                        points="15.1,5.6 12.2,2.9 5.3,3 5.3,20.1 23.4,20.1 23.4,14.9 21.5,11.9 "
+                      />
+                    </svg>
+                  </a>
+                </li> -->
+                <!-- <div class="vertical-seperator">|</div>
+                <li>
+                  <a
+                    class="footer__link"
+                    href="https://github.com/ArshvirGoraya"
+                    aria-label="Go to my Github page"
+                    target="_blank"
+                    rel="external noopener"
+                    referrerpolicy="strict-origin-when-cross-origin"
+                    >Github
+                    <svg class="external-link-SVG" viewBox="0 0 28.7 21.7">
+                      <line class="st0" x1="14" y1="12.7" x2="22.4" y2="4.4" />
+                      <polygon class="st1" points="23.1,8.8 24.9,1.9 18,3.8" />
+                      <polyline
+                        class="st2"
+                        points="15.1,5.6 12.2,2.9 5.3,3 5.3,20.1 23.4,20.1 23.4,14.9 21.5,11.9 "
+                      />
+                    </svg>
+                  </a>
+                </li> -->
+                <!-- <div class="vertical-seperator">|</div>
+                <li>
+                  <a
+                    class="footer__link"
+                    href="https://www.youtube.com/@ArshvirGoraya"
+                    aria-label="Go to my youtube page"
+                    target="_blank"
+                    rel="external noopener"
+                    referrerpolicy="strict-origin-when-cross-origin"
+                    >Youtube
+                    <svg class="external-link-SVG" viewBox="0 0 28.7 21.7">
+                      <line class="st0" x1="14" y1="12.7" x2="22.4" y2="4.4" />
+                      <polygon class="st1" points="23.1,8.8 24.9,1.9 18,3.8" />
+                      <polyline
+                        class="st2"
+                        points="15.1,5.6 12.2,2.9 5.3,3 5.3,20.1 23.4,20.1 23.4,14.9 21.5,11.9 "
+                      />
+                    </svg>
+                  </a>
+                </li> -->
+                <div class="vertical-seperator">|</div>
+                <li>
+                  <a
+                    class="footer__link"
+                    href="https://linktr.ee/arshvirgoraya"
+                    aria-label="Go to my link tree page"
+                    target="_blank"
+                    rel="external noopener"
+                    referrerpolicy="strict-origin-when-cross-origin"
+                    >Linktree
+                    <svg class="external-link-SVG" viewBox="0 0 28.7 21.7">
+                      <line class="st0" x1="14" y1="12.7" x2="22.4" y2="4.4" />
+                      <polygon class="st1" points="23.1,8.8 24.9,1.9 18,3.8" />
+                      <polyline
+                        class="st2"
+                        points="15.1,5.6 12.2,2.9 5.3,3 5.3,20.1 23.4,20.1 23.4,14.9 21.5,11.9 "
+                      />
+                    </svg>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <li class="footer__copyright">
+              &copy; 2023 Arshvir Goraya. All Rights Reserved.
+            </li>
+          </ul>
+        </div>
+      </footer>
+
+      <!--  -->
+      <!--  -->
+      <!--  -->
+      <!--  -->
+      <!--  -->
+    </div>
+    <noscript>
+      <style>
+        .game-wrapper {
+          display: none;
+        }
+        .game-alt {
+          display: flex;
+        }
+        .main-content {
+          display: grid;
+        }
+        .hi__message-text {
+          z-index: 1;
+        }
+        .hi__message-circle {
+          z-index: 0;
+          background: linear-gradient(red, transparent);
+        }
+
+        .accordion-text-wrapper {
+          transition-timing-function: cubic-bezier(
+            0.68,
+            -0.55,
+            0.265,
+            1.55
+          ) !important;
+        }
+      </style>
+    </noscript>
+  </body>
+</html>

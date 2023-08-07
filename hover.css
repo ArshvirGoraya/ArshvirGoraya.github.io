@@ -1,0 +1,173 @@
+@media (hover: hover) {
+  /* for devices that can hover (desktop, mostly) */
+  /* Detects PRIMARY input method only. Mobiles cant hover even if a stylus is being used on them that allows hovering. These setles will not aply on them.*/
+
+  /*Hover and Focus-Visble Styles. Focus Visible allows hover styles to be applied for users who tab through elemenets in a better way than just using :focus (i.e., after clciking element, giving it focus, un-hovering will not keep the focus style there.)*/
+
+  .navbar__item:hover,
+  .navbar__item:focus-visible {
+    color: var(--text-hover-color); /*for texts*/
+    fill: var(--text-hover-color); /*for logos/svg*/
+
+    stroke: var(--text-hover-color); /*only for footer external link logo*/
+
+    outline-offset: 0.3ch;
+  }
+
+  /*for buttons: light/dark theme and mobile hamburger menu.*/
+
+  .navbar__color-mode-button:hover,
+  .navbar__color-mode-button:focus-visible {
+    transform: rotateZ(360deg);
+  }
+
+  .navbar__color-mode-button:hover .st0,
+  .navbar__color-mode-button:hover .st1,
+  .navbar__color-mode-button:hover .moon,
+  .navbar__color-mode-button:focus-visible .st0,
+  .navbar__color-mode-button:focus-visible .st1,
+  .navbar__color-mode-button:focus-visible .moon {
+    fill: var(--text-hover-color); /*for logos/svg*/
+    stroke: var(--navbar-color);
+
+    /* stroke: transparent; */
+  }
+  .navbar__color-mode-button:hover .moon,
+  .navbar__color-mode-button:focus-visible .moon {
+    stroke-width: 2px;
+  }
+  .navbar__burger-button:hover .burger,
+  .navbar__burger-button:focus-visible .burger {
+    fill: var(--moon-hover-color);
+    stroke: var(--moon-hover-stroke);
+    /* stroke: transparent; */
+    stroke-width: 1px;
+  }
+}
+
+@media (hover: hover) {
+  .footer-circle:hover {
+    fill: var(--footer-circle-hover);
+  }
+}
+
+@media (hover: hover) {
+  .footer__email-link:hover,
+  .footer__email-link:focus-visible {
+    background-color: var(--email-button-hover);
+  }
+
+  .footer__link:hover,
+  .footer__link:focus-visible {
+    color: var(--text-hover-color) !important;
+    fill: var(--text-hover-color);
+    stroke: var(--text-hover-color);
+  }
+}
+
+@media (hover: hover) {
+  .hi__message:hover .hi__message-circle {
+    scale: var(--Hi_message-hoverScale);
+  }
+}
+
+@media (hover: hover) {
+  .game__start:hover,
+  .scroll__down:hover,
+  .game__start:focus-visible,
+  .scroll__down:focus-visible {
+    background-color: var(--game-button-hover);
+  }
+  .difficulty-switch-label:hover,
+  #difficulty-checkbox:focus-visible
+    + .difficulty-switch-label-label
+    > .difficulty-switch-label-wrapper
+    > .difficulty-switch-label {
+    background-color: var(
+      --game-knob-hover
+    ) !important; /*more specific selectors above, so simply put !important here*/
+    outline: auto;
+  }
+}
+
+@media (hover: hover) {
+  .project-box:hover > .project-image-wrapper > .project-image {
+    opacity: 0;
+  }
+
+  .project-box:focus-within {
+    outline: auto;
+  }
+  .project-box:focus-within > .project-image-wrapper > .project-image {
+    opacity: 0;
+  }
+
+  /* Firefox does not currenlly have access to :has -> replace above 2 with bottom 2 once it does.*/
+
+  /*Desktop only*/
+  .game-button:hover {
+    box-shadow: 0 0 0 0 purple, 0 0 50px 0 peru;
+    background-color: yellow;
+    /* background-color: purple; */
+  }
+}
+
+@media (hover: hover) {
+  .project-link-container:has(.project-link:focus-visible) {
+    /* Firefox does not currently support :has selector... */
+    scale: 2;
+  }
+
+  .project-link-container:has(.project-link:focus-visible .project-link-svg) {
+    /* Firefox does not currently support :has selector... */
+    fill: var(--text-color);
+    stroke: var(--text-color);
+  }
+
+  /*   
+    .project-link-container:focus-within  */
+  .project-link-container:hover {
+    scale: 1.5;
+  }
+  /* .project-link-container:focus-within
+      .project-link-svg */
+  .project-link-container:hover .project-link-svg {
+    fill: var(--text-color);
+    stroke: var(--text-color);
+  }
+}
+
+@media (hover: hover) {
+  .external-link:hover,
+  .external-link:focus-visible {
+    opacity: 1;
+  }
+
+  .project-page-nav .project-page-articleNav-text-wrapper:hover,
+  .project-page-nav .project-page-articleNav-text-wrapper:focus-visible {
+    opacity: 1;
+  }
+  .project-page-nav
+    .project-page-articleNav-text-wrapper:hover
+    > .project-page-articleNav-marker,
+  .project-page-nav
+    .project-page-articleNav-text-wrapper:focus-visible
+    > .project-page-articleNav-marker {
+    opacity: 1;
+    translate: 0ch;
+    /* transform: translateX(0ch); */
+  }
+
+  .accordion-checkbox-label:hover {
+    opacity: 1;
+  }
+  .accordion-checkbox:focus-visible + .accordion-checkbox-label {
+    outline: auto;
+    opacity: 1;
+  }
+
+  .about__me-Box1:hover {
+    background-position: -10px -210px;
+    filter: var(--HoverFilterSetting);
+  }
+}

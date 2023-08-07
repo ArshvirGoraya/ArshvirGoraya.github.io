@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Resume</title>
+    <meta name="author" content="Arshvir Goraya" />
+    <meta name="description" content="Arshvir Goraya's portfolio" />
+    <meta
+      name="keywords"
+      content="Arshvir, Goraya, portfolio, game, developer, programmer, gamedev, indie, video game, resume"
+    />
+
+    <!-- <meta http-equiv="Content-Security-Policy" content="" /> -->
+
+    <link rel="stylesheet" type="text/css" href="../main.css" />
+    <link rel="icon" href="../favicon.ico" />
+
+    <script
+      type="text/javascript"
+      src="https://documentservices.adobe.com/view-sdk/viewer.js"
+    ></script>
+
+    <script type="text/javascript">
+      let ClientID;
+
+      let PDFText;
+
+      function getID() {
+        if (window.location.href.includes(".io")) {
+          //github.io crentials
+          ClientID = "f987565e22b345d6bde8798e5fc30f90";
+          PDFText = ".io link";
+          // alert("using github!");
+        } else {
+          ClientID = "331cec46aa794f2e88efa00fe7c83611";
+          PDFText = ".com link";
+          // alert("not github!");
+        }
+
+        return ClientID;
+      }
+
+      document.addEventListener("adobe_dc_view_sdk.ready", function () {
+        var adobeDCView = new AdobeDC.View({
+          clientId: getID(),
+          divId: "adobe-dc-view",
+        });
+        adobeDCView.previewFile({
+          content: {
+            location: {
+              url: "https://arshvirgoraya.com/PDFs/First GDD.pdf",
+            },
+          },
+          metaData: { fileName: "First GDD_ArshvirGoraya.pdf" },
+        });
+      });
+
+      // function loaded() {
+      //   //on body load.
+      //   const downloadPDFText = document.querySelector(
+      //     ".pdf-download-link_Text"
+      //   );
+      //   downloadPDFText.innerHTML = PDFText;
+      //   console.log("Hello??");
+      // }
+    </script>
+
+    <style>
+      body {
+        display: flex;
+        flex-direction: column;
+      }
+      .pdf-download-link {
+        /* display: block; */
+        /* position: relative; */
+        /* top: 0px; */
+
+        cursor: pointer;
+
+        width: 100%;
+        text-align: center;
+        padding: 1ch 0ch;
+      }
+
+      body {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+      .embedded-PDF-wrapper {
+        /* padding: 1ch; */
+
+        width: 100%;
+        height: 100%;
+        /* background-color: red; */
+      }
+      .embedded-PDF-container {
+        width: 100%;
+        height: 100%;
+      }
+
+      .embedded-PDF-wrapper .background-Text {
+        text-align: center;
+        width: 100%;
+        position: absolute;
+        color: var(--text-color);
+        /* font-size: xx-small; */
+
+        z-index: -1;
+      }
+
+      .d-load_SVG {
+        /* display: none; */
+        /* height: auto; */
+        width: 3ch;
+        fill: red;
+        stroke: var(--text-color);
+        fill: var(--text-color);
+
+        transform: translateY(0.2ch);
+        /* scale: 1; */
+      }
+    </style>
+  </head>
+  <!-- onload="loaded()" -->
+  <body>
+    <!-- Users are linked to this page through JS if their browser does not support preview PDF viewing -->
+    <!-- This will embed a PDF using google's PDF viewer and offer a download button if it is unreachable -->
+
+    <!-- Don't link to this HTML by default because: IF user does not have JS enabled, google's PDF viewer will not work. -->
+    <!-- If user's browser does not have default in-line viewing support AND does not have JS enabled: PDF will download PDF automatically. -->
+
+    <a
+      href="First GDD.pdf"
+      class="pdf-download-link"
+      download
+      target="_self"
+      type="application/pdf"
+      rel="noopener"
+      referrerpolicy="strict-origin-when-cross-origin"
+      ><div class="pdf-download-link_Text">
+        Download PDF
+        <svg
+          viewBox="0 0 28.7 21.7"
+          class="project-link-svg project-link-svg_download d-load_SVG"
+        >
+          <line class="st0" x1="14.4" y1="1" x2="14.4" y2="9.5" />
+          <polygon class="st1" points="10.8,8.5 14.4,14.7 17.9,8.5" />
+          <polyline class="st2" points="5.4,14 5.4,20.2 23.5,20.2 23.5,14" />
+        </svg></div
+    ></a>
+
+    <div class="embedded-PDF-wrapper">
+      <p class="background-Text">[PDF preview not available]</p>
+      <div id="adobe-dc-view"></div>
+    </div>
+  </body>
+</html>
