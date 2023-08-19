@@ -922,6 +922,11 @@ const Sorting_CoverImage = document.querySelector('.sorting-image');
 const Sorting_Video = document.querySelector('.Sorting-video');
 Sorting_Video.pause();
 
+const CollapsibleContainer_Box = document.querySelector('.project-box-CollapsibleContainer'); 
+const CollapsibleContainer_CoverImage = document.querySelector('.CollapsibleContainer-image');
+const CollapsibleContainer_Video = document.querySelector('.CollapsibleContainer-video');
+CollapsibleContainer_Video.pause();
+
 // const VN_Box = document.querySelector('.project-box-visualnovel'); 
 // const VN_CoverImage = document.querySelector('.visualnovel-image');
 // const VN_Video = document.querySelector('.VisualNovel-video');
@@ -995,6 +1000,7 @@ if (window.matchMedia( "(hover: hover)" ).matches) {
         addCover_VideoManipulation(PlatinumDriver_Box, PlatinumDriver_Video);
         addCover_VideoManipulation(SuperBlueBall_Box, SuperBlueBall_Video);
         addCover_VideoManipulation(Sorting_Box, Sorting_Video);
+        addCover_VideoManipulation(CollapsibleContainer_Box, CollapsibleContainer_Video);
         // addCover_VideoManipulation(VN_Box, VN_Video);
     }
 
@@ -1017,6 +1023,7 @@ if ((window.matchMedia( "(hover: none)" ).matches) || onSamsungChrome()) {
     addCover_VideoManipulation_Touch(PlatinumDriver_Box, PlatinumDriver_Video, PlatinumDriver_CoverImage);
     addCover_VideoManipulation_Touch(SuperBlueBall_Box, SuperBlueBall_Video, SuperBlueBall_CoverImage);
     addCover_VideoManipulation_Touch(Sorting_Box, Sorting_Video, Sorting_CoverImage);
+    addCover_VideoManipulation_Touch(CollapsibleContainer_Box, CollapsibleContainer_Video, CollapsibleContainer_CoverImage);
 //     addCover_VideoManipulation_Touch(VN_Box, VN_Video, VN_CoverImage);
 }
 
