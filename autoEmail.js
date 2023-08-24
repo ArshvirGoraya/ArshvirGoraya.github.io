@@ -28,7 +28,7 @@ function PageObservor(PerformanceEntries){
 
             //ensure we did not come from another page of the site.
             if (!(document.referrer.includes("https://arshvirgoraya.com")) && !(document.referrer.includes("https://arshvirgoraya.github.io"))){
-                //if not from the same site + not refreshed + not back/forth, can send from email
+                //if not from the same site + not refreshed + not back/forth, can send from email.
 
                 if (!ReferrerLink){   //if referrer is empty, likely came from a direct link.
                     fromLink = "direct link";
