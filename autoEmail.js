@@ -5,7 +5,6 @@
 
 emailjs.init("M9MpKGUB8dcPxrCHR"); // Initalized EmailJS.
 let disabled = false;
-disabled = true;
 
 const navigationObservor = new PerformanceObserver(PageObservor); //observs the page and sends a list to the function
 
