@@ -907,6 +907,11 @@ const AiArena_CoverImage = document.querySelector('.aiarena-image');
 const AiArena_Video = document.querySelector('.aiarena-video');
 AiArena_Video.pause();
 
+const Daggerfall_Box = document.querySelector('.project-box-DaggerfallMods'); 
+const Daggerfall_CoverImage = document.querySelector('.DaggerfallMods-image');
+const Daggerfall_Video = document.querySelector('.DaggerfallMods-video');
+Daggerfall_Video.pause();
+
 const FallingIslands_Box = document.querySelector('.project-box-fallingislands');
 const FallingIslands_CoverImage = document.querySelector('.fallingislands-image');
 const FallingIslands_Video = document.querySelector('.fallingislands-video');
@@ -1002,6 +1007,7 @@ if (window.matchMedia( "(hover: hover)" ).matches) {
     if (! onSamsungChrome()){
         //Do not apply if in samsung chrome mobile (which sees hover: hover as true even on mobile).
         addCover_VideoManipulation(AiArena_Box, AiArena_Video);
+        addCover_VideoManipulation(Daggerfall_Box, Daggerfall_Video);
         addCover_VideoManipulation(FallingIslands_Box, FallingIslands_Video);
         addCover_VideoManipulation(PlatinumDriver_Box, PlatinumDriver_Video);
         addCover_VideoManipulation(SuperBlueBall_Box, SuperBlueBall_Video);
@@ -1026,6 +1032,7 @@ if ((window.matchMedia( "(hover: none)" ).matches) || onSamsungChrome()) {
 //simulate a click here on the background (which does nothing).
 
     addCover_VideoManipulation_Touch(AiArena_Box , AiArena_Video, AiArena_CoverImage);
+    addCover_VideoManipulation_Touch(Daggerfall_Box , Daggerfall_Video, Daggerfall_CoverImage);
     addCover_VideoManipulation_Touch(FallingIslands_Box, FallingIslands_Video, FallingIslands_CoverImage);
     addCover_VideoManipulation_Touch(PlatinumDriver_Box, PlatinumDriver_Video, PlatinumDriver_CoverImage);
     addCover_VideoManipulation_Touch(SuperBlueBall_Box, SuperBlueBall_Video, SuperBlueBall_CoverImage);
