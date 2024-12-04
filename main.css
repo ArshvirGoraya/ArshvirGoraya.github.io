@@ -2032,6 +2032,15 @@ body {
   border-radius: 1ch;
 }
 
+.float-right{
+  float: right;
+  width: 35%;
+}
+
+.project-page-article-section-description_daggerfallMods{
+  display: flex;
+}
+
 .project-image {
   z-index: 4;
 
@@ -2242,6 +2251,9 @@ body {
     display: flex;
     margin-left: 0ch;
   }
+  .project-page-article-section-description_daggerfallMods{
+    display: initial;
+  }
   .sun {
     scale: 1.5;
   }
@@ -2381,6 +2393,10 @@ body {
 .project-page-cover-image-PlatinumDriver {
   object-position: 0 -16ch;
   filter: hue-rotate(180deg);
+}
+
+.project-page-cover-image-DaggerfallMods {
+  object-position: 0 -35ch;
 }
 
 .project-page-cover-image-SuperBlueBall {
@@ -2743,6 +2759,9 @@ body {
   align-items: center;
   margin: 0;
 }
+.project-page-project-links-container-nexusMods {
+  width: 100%;
+}
 
 .project-link-container {
   width: 11%;
@@ -2799,6 +2818,10 @@ body {
 
   align-self: center;
   max-height: 100%;
+}
+
+.project-link-svg_nexus {
+  stroke-width: 0;
 }
 
 .project-link-svg_itch {
@@ -2909,6 +2932,9 @@ body {
 @media (max-width: 800px) {
   .project-page-nav {
     display: none;
+  }
+  .project-page-cover-image-DaggerfallMods{
+    object-position: 0 0ch;
   }
 }
 
