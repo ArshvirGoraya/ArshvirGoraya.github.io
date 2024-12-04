@@ -91,14 +91,17 @@
 }
 
 @media (hover: hover) {
-  .project-box:hover > .project-image-wrapper > .project-image {
+  .project-box:hover > .project-image-wrapper > .project-image,
+  .experience-content--box:hover > .project-image-wrapper > .project-image {
     opacity: 0;
   }
 
-  .project-box:focus-within {
+  .project-box:focus-within,
+  .experience-content--box:focus-within {
     outline: auto;
   }
-  .project-box:focus-within > .project-image-wrapper > .project-image {
+  .project-box:focus-within > .project-image-wrapper > .project-image,
+  .experience-content--box:focus-within > .project-image-wrapper > .project-image{
     opacity: 0;
   }
 

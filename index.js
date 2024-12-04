@@ -902,6 +902,11 @@ if ((window.matchMedia( "(hover: none)" ).matches) || onSamsungChrome()) {
     });
 }
 /////////// Project Box Video manipulations on hover
+const AiArena_Box = document.querySelector('.experience-content--box'); 
+const AiArena_CoverImage = document.querySelector('.aiarena-image');
+const AiArena_Video = document.querySelector('.aiarena-video');
+AiArena_Video.pause();
+
 const FallingIslands_Box = document.querySelector('.project-box-fallingislands');
 const FallingIslands_CoverImage = document.querySelector('.fallingislands-image');
 const FallingIslands_Video = document.querySelector('.fallingislands-video');
@@ -996,6 +1001,7 @@ function blurElement(){ //only on mouse down and touch end (not on, for instance
 if (window.matchMedia( "(hover: hover)" ).matches) {
     if (! onSamsungChrome()){
         //Do not apply if in samsung chrome mobile (which sees hover: hover as true even on mobile).
+        addCover_VideoManipulation(AiArena_Box, AiArena_Video);
         addCover_VideoManipulation(FallingIslands_Box, FallingIslands_Video);
         addCover_VideoManipulation(PlatinumDriver_Box, PlatinumDriver_Video);
         addCover_VideoManipulation(SuperBlueBall_Box, SuperBlueBall_Video);
@@ -1019,6 +1025,7 @@ if ((window.matchMedia( "(hover: none)" ).matches) || onSamsungChrome()) {
 //For some reason, videos do not play on touch on some devices UNLESS something is touched BEFOREhand...
 //simulate a click here on the background (which does nothing).
 
+    addCover_VideoManipulation_Touch(AiArena_Box , AiArena_Video, AiArena_CoverImage);
     addCover_VideoManipulation_Touch(FallingIslands_Box, FallingIslands_Video, FallingIslands_CoverImage);
     addCover_VideoManipulation_Touch(PlatinumDriver_Box, PlatinumDriver_Video, PlatinumDriver_CoverImage);
     addCover_VideoManipulation_Touch(SuperBlueBall_Box, SuperBlueBall_Video, SuperBlueBall_CoverImage);
