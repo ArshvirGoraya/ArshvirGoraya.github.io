@@ -997,7 +997,7 @@ body {
   margin-bottom: 1ch;
 }
 .footer__email-link {
-  background-color: var(--email-button-border);
+  background-color: transparent;
 
   border: 1ch solid transparent;
   border-top: 0.5ch solid transparent;
