@@ -2037,7 +2037,7 @@ body {
   width: 35%;
 }
 
-.project-page-article-section-description_daggerfallMods{
+.project-page-article-section-description_gameMods{
   display: flex;
 }
 
@@ -2251,7 +2251,7 @@ body {
     display: flex;
     margin-left: 0ch;
   }
-  .project-page-article-section-description_daggerfallMods{
+  .project-page-article-section-description_gameMods{
     display: initial;
   }
   .sun {
@@ -2395,7 +2395,7 @@ body {
   filter: hue-rotate(180deg);
 }
 
-.project-page-cover-image-DaggerfallMods {
+.project-page-cover-image-gameMods {
   object-position: 0 -35ch;
 }
 
@@ -2933,7 +2933,7 @@ body {
   .project-page-nav {
     display: none;
   }
-  .project-page-cover-image-DaggerfallMods{
+  .project-page-cover-image-gameMods{
     object-position: 0 0ch;
   }
 }

@@ -902,45 +902,51 @@ if ((window.matchMedia( "(hover: none)" ).matches) || onSamsungChrome()) {
     });
 }
 /////////// Project Box Video manipulations on hover
-const AiArena_Box = document.querySelector('.experience-content--box'); 
-const AiArena_CoverImage = document.querySelector('.aiarena-image');
-const AiArena_Video = document.querySelector('.aiarena-video');
-AiArena_Video.pause();
-
-const Daggerfall_Box = document.querySelector('.project-box-DaggerfallMods'); 
-const Daggerfall_CoverImage = document.querySelector('.DaggerfallMods-image');
-const Daggerfall_Video = document.querySelector('.DaggerfallMods-video');
-Daggerfall_Video.pause();
-
-const FallingIslands_Box = document.querySelector('.project-box-fallingislands');
-const FallingIslands_CoverImage = document.querySelector('.fallingislands-image');
-const FallingIslands_Video = document.querySelector('.fallingislands-video');
-FallingIslands_Video.pause();
-
-const PlatinumDriver_Box = document.querySelector('.project-box-PlatinumDriver');
-const PlatinumDriver_CoverImage = document.querySelector('.PlatinumDriver-image');
-const PlatinumDriver_Video = document.querySelector('.PlatinumDriver-video');
-PlatinumDriver_Video.pause();
-
-const SuperBlueBall_Box = document.querySelector('.project-box-SuperBlueBall');
-const SuperBlueBall_CoverImage = document.querySelector('.SuperBlueBall-image');
-const SuperBlueBall_Video = document.querySelector('.SuperBlueBall-video');
-SuperBlueBall_Video.pause();
-
-const Sorting_Box = document.querySelector('.project-box-Sorting'); 
-const Sorting_CoverImage = document.querySelector('.sorting-image');
-const Sorting_Video = document.querySelector('.Sorting-video');
-Sorting_Video.pause();
-
-const CollapsibleContainer_Box = document.querySelector('.project-box-CollapsibleContainer'); 
-const CollapsibleContainer_CoverImage = document.querySelector('.CollapsibleContainer-image');
-const CollapsibleContainer_Video = document.querySelector('.CollapsibleContainer-video');
-CollapsibleContainer_Video.pause();
-
+const projectBoxes = {
+    AiArena: {
+        Box: document.querySelector('.experience-content--box'),
+        CoverImage: document.querySelector('.aiarena-image'),
+        Video: document.querySelector('.aiarena-video')
+    },
+    Mods: {
+        Box: document.querySelector('.project-box-gameMods'),
+        CoverImage: document.querySelector('.gameMods-image'),
+        Video: document.querySelector('.gameMods-video')
+    },
+    FallingIslands: {
+        Box: document.querySelector('.project-box-fallingislands'),
+        CoverImage: document.querySelector('.fallingislands-image'),
+        Video: document.querySelector('.fallingislands-video')
+    },
+    PlatinumDriver: {
+        Box: document.querySelector('.project-box-PlatinumDriver'),
+        CoverImage: document.querySelector('.PlatinumDriver-image'),
+        Video: document.querySelector('.PlatinumDriver-video')
+    },
+    SuperBlueBall: {
+        Box: document.querySelector('.project-box-SuperBlueBall'),
+        CoverImage: document.querySelector('.SuperBlueBall-image'),
+        Video: document.querySelector('.SuperBlueBall-video')
+    },
+    Sorting: {
+        Box: document.querySelector('.project-box-Sorting'),
+        CoverImage: document.querySelector('.sorting-image'),
+        Video: document.querySelector('.Sorting-video')
+    },
+    CollapsibleContainer: {
+        Box: document.querySelector('.project-box-CollapsibleContainer'),
+        CoverImage: document.querySelector('.CollapsibleContainer-image'),
+        Video: document.querySelector('.CollapsibleContainer-video')
+    },
+}
 // const VN_Box = document.querySelector('.project-box-visualnovel'); 
 // const VN_CoverImage = document.querySelector('.visualnovel-image');
 // const VN_Video = document.querySelector('.VisualNovel-video');
 // VN_Video.pause();
+
+Object.values(projectBoxes).forEach(projectBox => {
+    projectBox.Video.pause();
+})
 
 const playImages = document.querySelectorAll(".play-image_button");
 playImages.forEach((playImage) => {
@@ -1006,14 +1012,9 @@ function blurElement(){ //only on mouse down and touch end (not on, for instance
 if (window.matchMedia( "(hover: hover)" ).matches) {
     if (! onSamsungChrome()){
         //Do not apply if in samsung chrome mobile (which sees hover: hover as true even on mobile).
-        addCover_VideoManipulation(AiArena_Box, AiArena_Video);
-        addCover_VideoManipulation(Daggerfall_Box, Daggerfall_Video);
-        addCover_VideoManipulation(FallingIslands_Box, FallingIslands_Video);
-        addCover_VideoManipulation(PlatinumDriver_Box, PlatinumDriver_Video);
-        addCover_VideoManipulation(SuperBlueBall_Box, SuperBlueBall_Video);
-        addCover_VideoManipulation(Sorting_Box, Sorting_Video);
-        addCover_VideoManipulation(CollapsibleContainer_Box, CollapsibleContainer_Video);
-        // addCover_VideoManipulation(VN_Box, VN_Video);
+        Object.values(projectBoxes).forEach(projectBox => {
+            addCover_VideoManipulation(projectBox.Box, projectBox.Video)
+        })
     }
 
 }
@@ -1030,15 +1031,9 @@ const fireClickElement = document.querySelector('.navbar');
 if ((window.matchMedia( "(hover: none)" ).matches) || onSamsungChrome()) {
 //For some reason, videos do not play on touch on some devices UNLESS something is touched BEFOREhand...
 //simulate a click here on the background (which does nothing).
-
-    addCover_VideoManipulation_Touch(AiArena_Box , AiArena_Video, AiArena_CoverImage);
-    addCover_VideoManipulation_Touch(Daggerfall_Box , Daggerfall_Video, Daggerfall_CoverImage);
-    addCover_VideoManipulation_Touch(FallingIslands_Box, FallingIslands_Video, FallingIslands_CoverImage);
-    addCover_VideoManipulation_Touch(PlatinumDriver_Box, PlatinumDriver_Video, PlatinumDriver_CoverImage);
-    addCover_VideoManipulation_Touch(SuperBlueBall_Box, SuperBlueBall_Video, SuperBlueBall_CoverImage);
-    addCover_VideoManipulation_Touch(Sorting_Box, Sorting_Video, Sorting_CoverImage);
-    addCover_VideoManipulation_Touch(CollapsibleContainer_Box, CollapsibleContainer_Video, CollapsibleContainer_CoverImage);
-//     addCover_VideoManipulation_Touch(VN_Box, VN_Video, VN_CoverImage);
+    Object.values(projectBoxes).forEach(projectBox => {
+        addCover_VideoManipulation_Touch(projectBox.Box, projectBox.Video, projectBox.CoverImage)
+    })
 }
 
 
