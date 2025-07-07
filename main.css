@@ -2496,6 +2496,10 @@ body {
 
   line-height: 3ch;
 }
+.project-page-article-p-full{
+  max-width: 110ch !important;
+}
+
 .empty-column {
   width: 100%;
   margin: 0;
