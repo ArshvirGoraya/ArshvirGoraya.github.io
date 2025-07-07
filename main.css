@@ -2766,8 +2766,9 @@ body {
   align-items: center;
   margin: 0;
 }
-.project-page-project-links-container-nexusMods {
+.project-page-project-links-container-gameMods {
   width: 100%;
+  flex-direction: row !important;
 }
 
 .project-link-container {
@@ -2810,6 +2811,9 @@ body {
   align-items: center;
 
   overflow: hidden;
+}
+.project-link-mod{
+  width: 50%;
 }
 
 .project-page-project-link-container .project-link {
@@ -2934,14 +2938,14 @@ body {
   .project-page-article-section {
     font-size: small !important;
   }
+  .project-page-cover-image-gameMods{
+    object-position: 0 0ch;
+  }
 }
 
 @media (max-width: 800px) {
   .project-page-nav {
     display: none;
-  }
-  .project-page-cover-image-gameMods{
-    object-position: 0 0ch;
   }
 }
 
