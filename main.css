@@ -2600,6 +2600,9 @@ body {
   height: auto;
   margin-bottom: 2ch;
 }
+.accordion-wrapper-left-margin{
+  margin-left:15% !important;
+}
 
 .accordion-checkbox {
   opacity: 0;
